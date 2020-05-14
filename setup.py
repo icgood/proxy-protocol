@@ -28,7 +28,7 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 setup(name='proxy-protocol',
-      version='0.1.0',
+      version='0.1.0-alpha',
       author='Ian Good',
       author_email='icgood@gmail.com',
       description='PROXY protocol library with asyncio server implementation',
