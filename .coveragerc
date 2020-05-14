@@ -1,0 +1,5 @@
+[report]
+omit = */echo.py
+exclude_lines =
+    pragma: no cover
+    ^\s*...\s*$
