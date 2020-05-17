@@ -7,10 +7,9 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from asyncio import StreamReader, StreamWriter
 from functools import partial
 
-from .any import ProxyProtocolAny
-from .base import ProxyProtocol
-from .v1 import ProxyProtocolV1
-from .v2 import ProxyProtocolV2
+from . import ProxyProtocol
+from .sock import SocketInfo
+from .version import ProxyProtocolVersion
 
 __all__ = ['main']
 
@@ -22,17 +21,12 @@ def main() -> int:
                         help='the listener host')
     parser.add_argument('--port', default=10007, type=int,
                         help='the listener port')
-    parser.add_argument('type', choices=['any', 'v1', 'v2'], default='any',
-                        nargs='?', help='the PROXY protocol version')
+    parser.add_argument('type', default='detect', nargs='?',
+                        choices=[v.name.lower() for v in ProxyProtocolVersion],
+                        help='the PROXY protocol version')
     args = parser.parse_args()
 
-    pp: ProxyProtocol
-    if args.type == 'any':
-        pp = ProxyProtocolAny()
-    elif args.type == 'v1':
-        pp = ProxyProtocolV1()
-    elif args.type == 'v2':
-        pp = ProxyProtocolV2()
+    pp = ProxyProtocolVersion.get(args.type)
     return asyncio.run(run(args.host, args.port, pp))
 
 
@@ -48,7 +42,8 @@ async def run(host: str, port: int, pp: ProxyProtocol) -> int:
 async def run_conn(pp: ProxyProtocol, reader: StreamReader,
                    writer: StreamWriter) -> None:
     result = await pp.read(reader)
-    print(result)
+    info = SocketInfo(writer, result)
+    print(info)
     while True:
         line = await reader.readline()
         if not line:

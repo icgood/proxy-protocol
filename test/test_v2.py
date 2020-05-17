@@ -3,14 +3,19 @@ import socket
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
-from proxyprotocol.base import ProxyProtocolError
+from proxyprotocol import ProxyProtocolError
+from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultLocal, \
-    ProxyProtocolResultUnknown, ProxyProtocolResult4, ProxyProtocolResult6, \
-    ProxyProtocolResultUnix
+    ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
+    ProxyProtocolResultIPv6, ProxyProtocolResultUnix
 from proxyprotocol.v2 import ProxyProtocolV2Header, ProxyProtocolV2
 
 
 class TestProxyProtocolV2(unittest.TestCase):
+
+    def test_version(self) -> None:
+        pp = ProxyProtocolVersion.get('V2')
+        self.assertIsInstance(pp, ProxyProtocolV2)
 
     def test_parse_header(self) -> None:
         pp = ProxyProtocolV2()
@@ -23,7 +28,7 @@ class TestProxyProtocolV2(unittest.TestCase):
 
     def test_parse_header_bad(self) -> None:
         pp = ProxyProtocolV2()
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(ProxyProtocolError):
             pp.parse_header(b'bad')
         with self.assertRaises(ProxyProtocolError):
             pp.parse_header(b'\r\n\r\n\x00\r\nQUIT\n\x31\x21\xf0\xf0')
@@ -35,10 +40,10 @@ class TestProxyProtocolV2(unittest.TestCase):
         res = pp.parse_addresses(b'', header)
         if not isinstance(res, ProxyProtocolResultLocal):
             self.fail('expected ProxyProtocolResultLocal instance')
+        self.assertIsNone(res.source)
+        self.assertIsNone(res.dest)
         self.assertEqual(socket.AF_UNSPEC, res.family)
         self.assertIsNone(res.protocol)
-        self.assertTrue(res.is_local)
-        self.assertFalse(res.is_unknown)
 
     def test_parse_addresses_bad(self) -> None:
         pp = ProxyProtocolV2()
@@ -54,10 +59,10 @@ class TestProxyProtocolV2(unittest.TestCase):
         res = pp.parse_addresses(b'', header)
         if not isinstance(res, ProxyProtocolResultUnknown):
             self.fail('expected ProxyProtocolResultUnknown instance')
+        self.assertIsNone(res.source)
+        self.assertIsNone(res.dest)
         self.assertEqual(socket.AF_UNSPEC, res.family)
         self.assertIsNone(res.protocol)
-        self.assertFalse(res.is_local)
-        self.assertTrue(res.is_unknown)
 
     def test_parse_addresses_inet(self) -> None:
         pp = ProxyProtocolV2()
@@ -65,12 +70,10 @@ class TestProxyProtocolV2(unittest.TestCase):
                                        protocol=socket.SOCK_STREAM, addr_len=0)
         res = pp.parse_addresses(
             b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19', header)
-        if not isinstance(res, ProxyProtocolResult4):
+        if not isinstance(res, ProxyProtocolResultIPv4):
             self.fail('expected ProxyProtocolResult4 instance')
         self.assertEqual(socket.AF_INET, res.family)
         self.assertEqual(socket.SOCK_STREAM, res.protocol)
-        self.assertFalse(res.is_local)
-        self.assertFalse(res.is_unknown)
         self.assertIsInstance(res.source[0], IPv4Address)
         self.assertIsInstance(res.dest[0], IPv4Address)
         self.assertEqual('0.0.0.0', str(res.source[0]))
@@ -84,12 +87,10 @@ class TestProxyProtocolV2(unittest.TestCase):
                                        protocol=socket.SOCK_STREAM, addr_len=0)
         res = pp.parse_addresses(
             (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19', header)
-        if not isinstance(res, ProxyProtocolResult6):
+        if not isinstance(res, ProxyProtocolResultIPv6):
             self.fail('expected ProxyProtocolResult6 instance')
         self.assertEqual(socket.AF_INET6, res.family)
         self.assertEqual(socket.SOCK_STREAM, res.protocol)
-        self.assertFalse(res.is_local)
-        self.assertFalse(res.is_unknown)
         self.assertIsInstance(res.source[0], IPv6Address)
         self.assertIsInstance(res.dest[0], IPv6Address)
         self.assertEqual('::1', str(res.source[0]))
@@ -105,9 +106,7 @@ class TestProxyProtocolV2(unittest.TestCase):
             b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102, header)
         if not isinstance(res, ProxyProtocolResultUnix):
             self.fail('expected ProxyProtocolResultUnix instance')
-        self.assertEqual(socket.AF_UNIX, res.family)
-        self.assertEqual(socket.SOCK_STREAM, res.protocol)
-        self.assertFalse(res.is_local)
-        self.assertFalse(res.is_unknown)
         self.assertEqual('abc', res.source)
         self.assertEqual('defghi', res.dest)
+        self.assertEqual(socket.AF_UNIX, res.family)
+        self.assertEqual(socket.SOCK_STREAM, res.protocol)

@@ -30,29 +30,50 @@ v2.
 
 ```python
 from functools import partial
-from proxyprotocol.any import ProxyProtocolAny
+
+from proxyprotocol.base import ProxyProtocol
+from proxyprotocol.detect import ProxyProtocolDetect
+from proxyprotocol.socket import SocketInfo
 
 async def run(host: str, port: int) -> None:
-    pp = ProxyProtocolAny()
+    pp = ProxyProtocolDetect()
     callback = partial(on_connection, pp)
     server = await asyncio.start_server(callback, host, port)
     async with server:
         await server.serve_forever()
 
-async def on_connection(pp: ProxyProtocolAny,
+async def on_connection(pp: ProxyProtocolDetect,
                         reader: StreamReader, writer: StreamWriter) -> None:
     result = await pp.read(reader)
+    info = SocketInfo(writer, result)
+    print(info.family, info.peername)
     # ... continue using connection
-    # result contains the original connection info
 ```
 
-You may also check out the [`proxyprotocol/echo.py`][4] reference
+To simplify PROXY protocol use based on configuration, the version can also be
+read from a string.
+
+```python
+from proxyprotocol.version import ProxyProtocolVersion
+
+pp_noop = ProxyProtocolVersion.get()
+pp_detect = ProxyProtocolVersion.get('detect')
+pp_v1 = ProxyProtocolVersion.get('v1')
+pp_v2 = ProxyProtocolVersion.get('v2')
+```
+
+The `pp_noop` object in this example is a special case implementation that does
+not read a PROXY protocol header from the stream at all. It may be used to
+disable PROXY protocol use without complicating your server code.
+
+You can also check out the [`proxyprotocol/echo.py`][4] reference
 implementation. If you configure your proxy to send PROXY protocol to
 `localhost:10007`, you can see it in action:
 
 ```bash
 $ proxyprotocol-echo --help
-$ proxyprotocol-echo any
+$ proxyprotocol-echo detect
+$ proxyprotocol-echo noop
 ```
 
 ## Development and Testing
