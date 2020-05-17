@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown
 from .typing import StreamReaderProtocol

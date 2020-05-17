@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import socket
 import pkg_resources
 from abc import abstractmethod, ABCMeta

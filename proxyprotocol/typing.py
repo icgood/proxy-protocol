@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 from abc import abstractmethod
 from typing import Any, Union, Tuple
 from typing_extensions import Protocol

@@ -1,7 +1,5 @@
 """Simple PROXY protocol echo server."""
 
-from __future__ import annotations
-
 import asyncio
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from asyncio import StreamReader, StreamWriter
@@ -26,16 +24,19 @@ def main() -> int:
                         help='the PROXY protocol version')
     args = parser.parse_args()
 
+    loop = asyncio.get_event_loop()
     pp = ProxyProtocolVersion.get(args.type)
-    return asyncio.run(run(args.host, args.port, pp))
-
-
-async def run(host: str, port: int, pp: ProxyProtocol) -> int:
     callback = partial(run_conn, pp)
-    server = await asyncio.start_server(callback, host, port)
+    start_server = asyncio.start_server(callback, args.host, args.port)
+    server = loop.run_until_complete(start_server)
 
-    async with server:
-        await server.serve_forever()
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print()
+    server.close()
+    loop.run_until_complete(server.wait_closed())
+    loop.close()
     return 0
 
 

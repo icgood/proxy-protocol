@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import socket
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
