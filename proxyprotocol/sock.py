@@ -5,18 +5,21 @@ import socket
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
 from ssl import SSLContext
-from typing import Any, Union, Optional, Mapping
+from typing import Any, Union, Optional, Container, Mapping
+from typing_extensions import Final
 
 from . import ProxyProtocolResult
+from .result import ProxyProtocolResultLocal
 from .typing import Address, TransportProtocol
 
 __all__ = ['SocketInfo']
 
 _missing = object()
 _PeerCert = Mapping[str, Any]  # e.g. {'issuer': ...}
+_IP = Union[None, IPv4Address, IPv6Address]
 
 
-class SocketInfo:
+class SocketInfo(Container[str]):
     """Provides information about the connection, from either the underlying
     :mod:`asyncio` transport layer or overridden by the PROXY protocol result.
 
@@ -31,13 +34,13 @@ class SocketInfo:
 
     """
 
-    __slots__ = ['_transport', '_result']
+    __slots__ = ['_transport', 'pp_result']
 
     def __init__(self, transport: TransportProtocol,
                  result: Optional[ProxyProtocolResult] = None) -> None:
         super().__init__()
         self._transport = transport
-        self._result = result
+        self.pp_result: Final = result or ProxyProtocolResultLocal()
 
     @property
     def socket(self) -> socket.socket:
@@ -50,7 +53,7 @@ class SocketInfo:
         ret: socket.socket = self._transport.get_extra_info('socket')
         return ret
 
-    def _get_ip(self, addr: Address) -> Union[None, IPv4Address, IPv6Address]:
+    def _get_ip(self, addr: Address) -> _IP:
         if self.family in (socket.AF_INET, socket.AF_INET6):
             ip_str: str = addr[0]  # type: ignore
             ip: Union[IPv4Address, IPv6Address] = ip_address(ip_str)
@@ -65,6 +68,18 @@ class SocketInfo:
             return port
         return None
 
+    def _get_str(self, addr: Address, ip: _IP,
+                 port: Optional[int]) -> Optional[str]:
+        if self.family in (socket.AF_INET, socket.AF_INET6):
+            return f'[{ip!s}]:{port!s}'
+        elif self.family == socket.AF_UNIX:
+            addr_str: str = addr  # type: ignore
+            return addr_str
+        elif self.family == socket.AF_UNSPEC:
+            return None
+        else:  # pragma: no cover
+            return str(addr)
+
     @property
     def sockname(self) -> Address:
         """The local address of the socket.
@@ -73,11 +88,11 @@ class SocketInfo:
             :meth:`~socket.socket.getsockname`
 
         """
-        if self._result is None or self._result.use_socket:
+        if self.pp_result.proxied:
+            return self.pp_result._sockname
+        else:
             ret: Address = self._transport.get_extra_info('sockname')
             return ret
-        else:
-            return self._result._sockname
 
     @property
     def sockname_ip(self) -> Union[None, IPv4Address, IPv6Address]:
@@ -96,6 +111,16 @@ class SocketInfo:
         return self._get_port(self.sockname)
 
     @property
+    def sockname_str(self) -> Optional[str]:
+        """The :attr:`.sockname` address as a string. For
+        :attr:`~socket.AF_INET`/:attr:`~socket.AF_INET6` families, this is
+        ``ip:port``.
+
+        """
+        return self._get_str(self.sockname, self.sockname_ip,
+                             self.sockname_port)
+
+    @property
     def peername(self) -> Address:
         """The remote address of the socket.
 
@@ -103,11 +128,11 @@ class SocketInfo:
             :meth:`~socket.socket.getpeername`
 
         """
-        if self._result is None or self._result.use_socket:
+        if self.pp_result.proxied:
+            return self.pp_result._peername
+        else:
             ret: Address = self._transport.get_extra_info('peername')
             return ret
-        else:
-            return self._result._peername
 
     @property
     def peername_ip(self) -> Union[None, IPv4Address, IPv6Address]:
@@ -126,6 +151,16 @@ class SocketInfo:
         return self._get_port(self.peername)
 
     @property
+    def peername_str(self) -> Optional[str]:
+        """The :attr:`.peername` address as a string. For
+        :attr:`~socket.AF_INET`/:attr:`~socket.AF_INET6` families, this is
+        ``ip:port``.
+
+        """
+        return self._get_str(self.peername, self.peername_ip,
+                             self.peername_port)
+
+    @property
     def family(self) -> AddressFamily:
         """The socket address family.
 
@@ -133,10 +168,10 @@ class SocketInfo:
             :attr:`socket.socket.family`
 
         """
-        if self._result is None or self._result.use_socket:
-            return self.socket.family  # type: ignore
+        if self.pp_result.proxied:
+            return self.pp_result.family
         else:
-            return self._result.family
+            return self.socket.family  # type: ignore
 
     @property
     def protocol(self) -> Optional[SocketKind]:
@@ -146,10 +181,10 @@ class SocketInfo:
             :attr:`socket.socket.proto`
 
         """
-        if self._result is None or self._result.use_socket:
-            return self.socket.proto  # type: ignore
+        if self.pp_result.proxied:
+            return self.pp_result.protocol
         else:
-            return self._result.protocol
+            return self.socket.proto  # type: ignore
 
     @property
     def peercert(self) -> Optional[_PeerCert]:
@@ -194,12 +229,41 @@ class SocketInfo:
             return False
         return ip.is_loopback
 
-    def __getattr__(self, name: str) -> Any:
+    def __contains__(self, name: object) -> bool:
+        if not isinstance(name, str):
+            return False
+        try:
+            self[name]
+        except KeyError:
+            return False
+        else:
+            return True
+
+    def __getitem__(self, name: str) -> Any:
         ret = self._transport.get_extra_info(name, _missing)
         if ret is _missing:
-            raise AttributeError(name)
+            raise KeyError(name)
         return ret
 
+    def get(self, name: str, default: Any = None) -> Any:
+        """Return the :meth:`~asyncio.BaseTransport.get_extra_info` data
+        indicated by *name*, returning *default* if the data is not available.
+
+        Note:
+            This object also implements :meth:`~object.__getitem__`, which will
+            throw :exc:`KeyError` if the data is not available.
+
+        Args:
+            name: The data name, e.g. ``cipher``.
+            default: The object to return if the data is not available.
+
+        """
+        try:
+            return self[name]
+        except KeyError:
+            return default
+
     def __str__(self) -> str:
-        return '<SocketInfo peername=%r sockname=%r peercert=%r>' \
-            % (self.peername, self.sockname, self.peercert)
+        proxied = ' proxied=True' if self.pp_result.proxied else ''
+        return '<SocketInfo peername=%r sockname=%r peercert=%r%s>' \
+            % (self.peername_str, self.sockname_str, self.peercert, proxied)

@@ -146,19 +146,42 @@ class TestSocketInfo(unittest.TestCase):
         info = SocketInfo(self.transport, result)
         self.assertTrue(info.from_localhost)
 
-    def test_getattr(self) -> None:
+    def test_getitem(self) -> None:
         info = SocketInfo(self.transport)
-        self.extra['foo'] = foo = ('foo', 'bar')
-        self.assertEqual(foo, info.foo)
+        self.extra['key'] = 'value'
+        self.assertEqual('value', info['key'])
+        with self.assertRaises(KeyError):
+            info['invalid']
 
-    def test_getattr_invalid(self) -> None:
+    def test_get(self) -> None:
         info = SocketInfo(self.transport)
-        with self.assertRaises(AttributeError):
-            info.foo
+        self.extra['key'] = 'value'
+        self.assertIn('key', info)
+        self.assertNotIn('invalid', info)
+        self.assertNotIn(13, info)
+        self.assertEqual('value', info.get('key'))
+        self.assertEqual('default', info.get('invalid', 'default'))
 
-    def test_str(self) -> None:
+    def test_str_unix(self) -> None:
         info = SocketInfo(self.transport)
         self.extra['sockname'] = 'source'
         self.extra['peername'] = 'dest'
+        self.extra['socket'] = sock = MagicMock(socket.socket)
+        sock.family = socket.AF_UNIX
         self.assertEqual("<SocketInfo peername='dest' sockname='source' "
                          "peercert=None>", str(info))
+
+    def test_str_ipv6(self) -> None:
+        info = SocketInfo(self.transport)
+        self.extra['sockname'] = ('::1', 10)
+        self.extra['peername'] = ('::2', 20)
+        self.extra['socket'] = sock = MagicMock(socket.socket)
+        sock.family = socket.AF_INET6
+        self.assertEqual("<SocketInfo peername='[::2]:20' sockname='[::1]:10' "
+                         "peercert=None>", str(info))
+
+    def test_str_unknown(self) -> None:
+        result = ProxyProtocolResultUnknown()
+        info = SocketInfo(self.transport, result)
+        self.assertEqual("<SocketInfo peername=None sockname=None "
+                         "peercert=None proxied=True>", str(info))

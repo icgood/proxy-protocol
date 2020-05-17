@@ -10,7 +10,7 @@ install:
   - travis_retry pip install -e .
 script:
   - py.test --cov=proxyprotocol
-  - mypy --strict proxyprotocol test
+  - mypy proxyprotocol test
   - flake8 proxyprotocol test
 after_success:
   - coveralls
