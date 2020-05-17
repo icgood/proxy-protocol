@@ -1,0 +1,1128 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>proxyprotocol &#8212; proxy-protocol 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="proxy-protocol Documentation" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="proxy-protocol Documentation"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">proxy-protocol 0.1.0 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-proxyprotocol">
+<span id="proxyprotocol"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code><a class="headerlink" href="#module-proxyprotocol" title="Permalink to this headline">¶</a></h1>
+<dl class="py exception">
+<dt id="proxyprotocol.ProxyProtocolError">
+<em class="property">exception </em><code class="sig-prename descclassname">proxyprotocol.</code><code class="sig-name descname">ProxyProtocolError</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates a failure in parsing the PROXY protocol header. This indicates
+a syntax issue in the header, not simply bad data.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is possible that the entire PROXY protocol header was not yet read
+from the stream before failure. The stream should be considered invalid
+and closed.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.ProxyProtocolResult">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.</code><code class="sig-name descname">ProxyProtocolResult</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for PROXY protocol results.</p>
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocolResult.source">
+<em class="property">abstract property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocolResult.dest">
+<em class="property">abstract property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocolResult.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket address family.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocolResult.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocolResult.use_socket">
+<em class="property">property </em><code class="sig-name descname">use_socket</code><a class="headerlink" href="#proxyprotocol.ProxyProtocolResult.use_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the result should be ignored in favor of the underlying
+socket information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.ProxyProtocol">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.</code><code class="sig-name descname">ProxyProtocol</code><a class="headerlink" href="#proxyprotocol.ProxyProtocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base class for PROXY protocol implementations.</p>
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocol.is_valid">
+<em class="property">abstract </em><code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocol.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the signature is valid for this implementation of
+the PROXY protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.ProxyProtocol.read">
+<em class="property">abstract async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocol.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from the given stream and return
+information about the original connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
+<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.IncompleteReadError" title="(in Python v3.8)"><strong>IncompleteReadError</strong></a> – The header failed to parse due
+    to an EOF from the input stream.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
+    syntax error or unsupported format.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+    in the header.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="module-proxyprotocol.version">
+<span id="proxyprotocol-version"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.version</span></code><a class="headerlink" href="#module-proxyprotocol.version" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.version.ProxyProtocolVersion">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.version.</code><code class="sig-name descname">ProxyProtocolVersion</code><a class="headerlink" href="#proxyprotocol.version.ProxyProtocolVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumerates the supported PROXY protocol versions.</p>
+<dl class="py attribute">
+<dt id="proxyprotocol.version.ProxyProtocolVersion.NOOP">
+<code class="sig-name descname">NOOP</code><em class="property"> = &lt;proxyprotocol.noop.ProxyProtocolNoop object&gt;</em><a class="headerlink" href="#proxyprotocol.version.ProxyProtocolVersion.NOOP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not read a PROXY protocol header from the input stream.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.version.ProxyProtocolVersion.DETECT">
+<code class="sig-name descname">DETECT</code><em class="property"> = &lt;proxyprotocol.detect.ProxyProtocolDetect object&gt;</em><a class="headerlink" href="#proxyprotocol.version.ProxyProtocolVersion.DETECT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version should be detected from the signature. This is the
+recommended choice.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.version.ProxyProtocolVersion.V1">
+<code class="sig-name descname">V1</code><em class="property"> = &lt;proxyprotocol.v1.ProxyProtocolV1 object&gt;</em><a class="headerlink" href="#proxyprotocol.version.ProxyProtocolVersion.V1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use PROXY protocol version 1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.version.ProxyProtocolVersion.V2">
+<code class="sig-name descname">V2</code><em class="property"> = &lt;proxyprotocol.v2.ProxyProtocolV2 object&gt;</em><a class="headerlink" href="#proxyprotocol.version.ProxyProtocolVersion.V2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use PROXY protocol version 2.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.typing">
+<span id="proxyprotocol-typing"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.typing</span></code><a class="headerlink" href="#module-proxyprotocol.typing" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt id="proxyprotocol.typing.Address">
+<code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">Address</code><em class="property"> = typing.Union[NoneType, str, typing.Tuple[str, int], typing.Tuple[str, int, int, int]]</em><a class="headerlink" href="#proxyprotocol.typing.Address" title="Permalink to this definition">¶</a></dt>
+<dd><p>The types that can be retured by <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getsockname" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getsockname()</span></code></a> and
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getpeername" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getpeername()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.typing.StreamReaderProtocol">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">StreamReaderProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.StreamReaderProtocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>A typing abstraction intended to be compatible with
+<a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.StreamReader" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReader</span></code></a>..</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.typing.TransportProtocol">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">TransportProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.TransportProtocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>A typing abstraction intended to be compatible with both
+<a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransport</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.StreamWriter" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamWriter</span></code></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.noop">
+<span id="proxyprotocol-noop"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.noop</span></code><a class="headerlink" href="#module-proxyprotocol.noop" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.noop.ProxyProtocolNoop">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.noop.</code><code class="sig-name descname">ProxyProtocolNoop</code><a class="headerlink" href="#proxyprotocol.noop.ProxyProtocolNoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements <code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code> but does not read
+anything from the stream. A
+<a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultLocal" title="proxyprotocol.result.ProxyProtocolResultLocal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResultLocal</span></code></a> result is always
+returned.</p>
+<dl class="py method">
+<dt id="proxyprotocol.noop.ProxyProtocolNoop.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.noop.ProxyProtocolNoop.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the signature is valid for this implementation of
+the PROXY protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.NoReturn" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">NoReturn</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.noop.ProxyProtocolNoop.read">
+<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.noop.ProxyProtocolNoop.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from the given stream and return
+information about the original connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
+<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.IncompleteReadError" title="(in Python v3.8)"><strong>IncompleteReadError</strong></a> – The header failed to parse due
+    to an EOF from the input stream.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
+    syntax error or unsupported format.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+    in the header.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultLocal" title="proxyprotocol.result.ProxyProtocolResultLocal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResultLocal</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.detect">
+<span id="proxyprotocol-detect"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code><a class="headerlink" href="#module-proxyprotocol.detect" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.detect.ProxyProtocolDetect">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.detect.</code><code class="sig-name descname">ProxyProtocolDetect</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">versions</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect" title="Permalink to this definition">¶</a></dt>
+<dd><p>A PROXY protocol implementation that detects the version based on the
+first 8 bytes from the stream and passes it on to the version parser. This
+adds minimal overhead and <em>should</em> be used instead of a specific version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>versions</strong> (<a class="reference internal" href="#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a>) – Override the default set of PROXY protocol implementations.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="proxyprotocol.detect.ProxyProtocolDetect.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the signature is valid for this implementation of
+the PROXY protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.detect.ProxyProtocolDetect.read">
+<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from the given stream and return
+information about the original connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
+<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.IncompleteReadError" title="(in Python v3.8)"><strong>IncompleteReadError</strong></a> – The header failed to parse due
+    to an EOF from the input stream.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
+    syntax error or unsupported format.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+    in the header.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.detect.ProxyProtocolDetect.choose_version">
+<code class="sig-name descname">choose_version</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.choose_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choose the PROXY protocol version based on the 8-byte signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.v1">
+<span id="proxyprotocol-v1"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v1</span></code><a class="headerlink" href="#module-proxyprotocol.v1" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.v1.ProxyProtocolV1">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.v1.</code><code class="sig-name descname">ProxyProtocolV1</code><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements version 1 of the PROXY protocol.</p>
+<dl class="py method">
+<dt id="proxyprotocol.v1.ProxyProtocolV1.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the signature is valid for this implementation of
+the PROXY protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.v1.ProxyProtocolV1.read">
+<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from the given stream and return
+information about the original connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
+<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.IncompleteReadError" title="(in Python v3.8)"><strong>IncompleteReadError</strong></a> – The header failed to parse due
+    to an EOF from the input stream.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
+    syntax error or unsupported format.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+    in the header.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.v1.ProxyProtocolV1.parse_line">
+<code class="sig-name descname">parse_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.parse_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the PROXY protocol v1 header line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>line</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The line bytestring to parse.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.v2">
+<span id="proxyprotocol-v2"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v2</span></code><a class="headerlink" href="#module-proxyprotocol.v2" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.v2.ProxyProtocolV2Header">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.v2.</code><code class="sig-name descname">ProxyProtocolV2Header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em>, <em class="sig-param"><span class="n">family</span></em>, <em class="sig-param"><span class="n">protocol</span></em>, <em class="sig-param"><span class="n">addr_len</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2Header" title="Permalink to this definition">¶</a></dt>
+<dd><p>The 16-byte header that precedes the source and destination address data
+in PROXY protocol v2.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.v2.ProxyProtocolV2">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.v2.</code><code class="sig-name descname">ProxyProtocolV2</code><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements version 2 of the PROXY protocol.</p>
+<dl class="py method">
+<dt id="proxyprotocol.v2.ProxyProtocolV2.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">signature</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the signature is valid for this implementation of
+the PROXY protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.v2.ProxyProtocolV2.read">
+<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from the given stream and return
+information about the original connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
+<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-exceptions.html#asyncio.IncompleteReadError" title="(in Python v3.8)"><strong>IncompleteReadError</strong></a> – The header failed to parse due
+    to an EOF from the input stream.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
+    syntax error or unsupported format.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+    in the header.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.v2.ProxyProtocolV2.parse_header">
+<code class="sig-name descname">parse_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">header</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the PROXY protocol v2 header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>header</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The header bytestring to parse.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.v2.ProxyProtocolV2Header" title="proxyprotocol.v2.ProxyProtocolV2Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolV2Header</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.v2.ProxyProtocolV2.parse_addresses">
+<code class="sig-name descname">parse_addresses</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">addresses</span></em>, <em class="sig-param"><span class="n">header</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the address information read from the stream after the v2
+header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addresses</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The addresses bytestring to parse.</p></li>
+<li><p><strong>sock</strong> – The underlying socket for the connection.</p></li>
+<li><p><strong>header</strong> (<a class="reference internal" href="#proxyprotocol.v2.ProxyProtocolV2Header" title="proxyprotocol.v2.ProxyProtocolV2Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolV2Header</span></code></a>) – The version 2 header info.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.result">
+<span id="proxyprotocol-result"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code><a class="headerlink" href="#module-proxyprotocol.result" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResult">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResult</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for PROXY protocol results.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResult.source">
+<em class="property">abstract property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResult.dest">
+<em class="property">abstract property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResult.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket address family.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResult.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResult.use_socket">
+<em class="property">property </em><code class="sig-name descname">use_socket</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResult.use_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the result should be ignored in favor of the underlying
+socket information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResultLocal">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResultLocal</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the connection should be treated as if it is not proxied.
+The real socket <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getpeername" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getpeername()</span></code></a> and
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getsockname" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getsockname()</span></code></a> will provide the correct address
+information.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultLocal.source">
+<em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultLocal.dest">
+<em class="property">property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultLocal.use_socket">
+<em class="property">property </em><code class="sig-name descname">use_socket</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal.use_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the result should be ignored in favor of the underlying
+socket information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code></a>[True]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnknown">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResultUnknown</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exception</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnknown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that the source of the connection is unknown.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnknown.exception">
+<em class="property">property </em><code class="sig-name descname">exception</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnknown.exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>An exception that occurred during reading or parsing the PROXY
+protocol header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnknown.source">
+<em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnknown.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnknown.dest">
+<em class="property">property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnknown.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv4">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResultIPv4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">dest</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">protocol</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv4" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original connection was made with an IPv4 socket. The
+<a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultIPv4.source" title="proxyprotocol.result.ProxyProtocolResultIPv4.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a> and <a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultIPv4.dest" title="proxyprotocol.result.ProxyProtocolResultIPv4.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a tuple of an
+<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a> and a port number.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv4.source">
+<em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv4.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv4.dest">
+<em class="property">property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv4.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv4.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv4.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket address family.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv4.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv4.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv6">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResultIPv6</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">dest</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">protocol</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv6" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original connection was made with an IPv6 socket. The
+<a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultIPv6.source" title="proxyprotocol.result.ProxyProtocolResultIPv6.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a> and <a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultIPv6.dest" title="proxyprotocol.result.ProxyProtocolResultIPv6.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a tuple of an
+<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a> and a port number.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv6.source">
+<em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv6.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv6.dest">
+<em class="property">property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv6.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv6.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv6.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket address family.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultIPv6.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultIPv6.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnix">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.result.</code><code class="sig-name descname">ProxyProtocolResultUnix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">dest</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">protocol</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original connection was made with a UNIX socket. The <a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultUnix.source" title="proxyprotocol.result.ProxyProtocolResultUnix.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a>
+and <a class="reference internal" href="#proxyprotocol.result.ProxyProtocolResultUnix.dest" title="proxyprotocol.result.ProxyProtocolResultUnix.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a the full path to the socket
+file.</p>
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnix.source">
+<em class="property">property </em><code class="sig-name descname">source</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnix.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnix.dest">
+<em class="property">property </em><code class="sig-name descname">dest</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnix.dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original destination address info for the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnix.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnix.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket address family.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.result.ProxyProtocolResultUnix.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultUnix.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original socket protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.sock">
+<span id="proxyprotocol-sock"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code><a class="headerlink" href="#module-proxyprotocol.sock" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.sock.SocketInfo">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.sock.</code><code class="sig-name descname">SocketInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transport</span></em>, <em class="sig-param"><span class="n">result</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.sock.SocketInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides information about the connection, from either the underlying
+<a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a> transport layer or overridden by the PROXY protocol result.</p>
+<p>Undocumented properties will pass through as calls to
+<a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport.get_extra_info" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_extra_info()</span></code></a> and will raise
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">AttributeError</span></code></a> if there is no value available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> (<a class="reference internal" href="#proxyprotocol.typing.TransportProtocol" title="proxyprotocol.typing.TransportProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransportProtocol</span></code></a>) – The <a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransport</span></code></a> or
+<a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.StreamWriter" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamWriter</span></code></a> for the connection.</p></li>
+<li><p><strong>result</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a>]) – The PROXY protocol result.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.socket">
+<em class="property">property </em><code class="sig-name descname">socket</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>The underlying socket object.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport.get_extra_info" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_extra_info()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">socket</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.sockname">
+<em class="property">property </em><code class="sig-name descname">sockname</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname" title="Permalink to this definition">¶</a></dt>
+<dd><p>The local address of the socket.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getsockname" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getsockname()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.sockname_ip">
+<em class="property">property </em><code class="sig-name descname">sockname_ip</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>The IP address object from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.sockname" title="proxyprotocol.sock.SocketInfo.sockname"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sockname</span></code></a>, for
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.sockname_port">
+<em class="property">property </em><code class="sig-name descname">sockname_port</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>The port number from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.sockname" title="proxyprotocol.sock.SocketInfo.sockname"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sockname</span></code></a>, for
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.peername">
+<em class="property">property </em><code class="sig-name descname">peername</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername" title="Permalink to this definition">¶</a></dt>
+<dd><p>The remote address of the socket.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getpeername" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getpeername()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.peername_ip">
+<em class="property">property </em><code class="sig-name descname">peername_ip</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>The IP address object from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername" title="proxyprotocol.sock.SocketInfo.peername"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername</span></code></a>, for
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.peername_port">
+<em class="property">property </em><code class="sig-name descname">peername_port</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>The port number from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername" title="proxyprotocol.sock.SocketInfo.peername"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername</span></code></a>, for
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.family">
+<em class="property">property </em><code class="sig-name descname">family</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The socket address family.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.family" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">socket.socket.family</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.protocol">
+<em class="property">property </em><code class="sig-name descname">protocol</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>The socket protocol.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.proto" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">socket.socket.proto</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.peercert">
+<em class="property">property </em><code class="sig-name descname">peercert</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peercert" title="Permalink to this definition">¶</a></dt>
+<dd><p>The peer certificate for the socket, if encrypted.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport.get_extra_info" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_extra_info()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.ssl_context">
+<em class="property">property </em><code class="sig-name descname">ssl_context</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.ssl_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SSL context for the socket, if encrypted.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport.get_extra_info" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_extra_info()</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLContext" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLContext</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.sock.SocketInfo.from_localhost">
+<em class="property">property </em><code class="sig-name descname">from_localhost</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.from_localhost" title="Permalink to this definition">¶</a></dt>
+<dd><p>True for local socket connections, if:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.sock.SocketInfo.family" title="proxyprotocol.sock.SocketInfo.family"><code class="xref py py-attr docutils literal notranslate"><span class="pre">family</span></code></a> is <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_UNIX</span></code>, or</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername_ip" title="proxyprotocol.sock.SocketInfo.peername_ip"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername_ip</span></code></a> has True
+<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_loopback" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_loopback</span></code></a> flag.</p></li>
+</ul>
+<p>To be specific, True for <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_UNIX</span></code> connections and True
+for IPv4/IPv6 connections with True
+<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_loopback" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_loopback</span></code></a> flags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a><ul>
+<li><a class="reference internal" href="#module-proxyprotocol.version"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.version</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.typing"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.typing</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.noop"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.noop</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.detect"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.v1"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v1</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.v2"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v2</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.result"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.sock"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="index.html"
+                          title="Previous page">&larr; <code class="docutils literal notranslate"><span class="pre">proxy-protocol</span></code> Documentation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/proxyprotocol.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="proxy-protocol Documentation"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">proxy-protocol 0.1.0 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Ian Good.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
