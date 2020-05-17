@@ -1,34 +1,34 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
-from .base import ProxyProtocolError, DataReader, ProxyProtocol
-from .result import ProxyProtocolResult
+from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
+from .typing import StreamReaderProtocol
 from .v1 import ProxyProtocolV1
 from .v2 import ProxyProtocolV2
 
-__all__ = ['ProxyProtocolAny']
+__all__ = ['ProxyProtocolDetect']
 
 
-class ProxyProtocolAny(ProxyProtocol):
+class ProxyProtocolDetect(ProxyProtocol):
     """A PROXY protocol implementation that detects the version based on the
     first 8 bytes from the stream and passes it on to the version parser. This
     adds minimal overhead and *should* be used instead of a specific version.
 
     Args:
-        v1: The PROXY protocol v1 implementation.
-        v2: The PROXY protocol v2 implementation.
+        versions: Override the default set of PROXY protocol implementations.
 
     """
 
-    def __init__(self, *, v1: Optional[ProxyProtocolV1] = None,
-                 v2: Optional[ProxyProtocolV2] = None) -> None:
-        super().__init__()
-        self.v1 = v1 or ProxyProtocolV1()
-        self.v2 = v2 or ProxyProtocolV2()
+    __slots__ = ['versions']
 
-    async def read(self, reader: DataReader, *,
+    def __init__(self, *versions: ProxyProtocol) -> None:
+        super().__init__()
+        self.versions = versions or [ProxyProtocolV1(), ProxyProtocolV2()]
+
+    def is_valid(self, signature: bytes) -> bool:
+        return any(v.is_valid(signature) for v in self.versions)
+
+    async def read(self, reader: StreamReaderProtocol, *,
                    signature: bytes = b'') \
             -> ProxyProtocolResult:  # pragma: no cover
         signature += await reader.readexactly(8 - len(signature))
@@ -42,10 +42,8 @@ class ProxyProtocolAny(ProxyProtocol):
             signature: The signature bytestring.
 
         """
-        if signature.startswith(b'PROXY '):
-            return self.v1
-        elif signature.startswith(b'\r\n\r\n\x00\r\nQ'):
-            return self.v2
-        else:
-            raise ProxyProtocolError(
-                'Unrecognized proxy protocol version signature')
+        for version in self.versions:
+            if version.is_valid(signature):
+                return version
+        raise ProxyProtocolError(
+            'Unrecognized proxy protocol version signature')

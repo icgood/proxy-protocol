@@ -2,50 +2,18 @@
 from __future__ import annotations
 
 import socket
-from abc import ABCMeta
-from dataclasses import dataclass
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from typing import Any, Optional, Tuple
+from typing import Optional, Tuple, Sequence
 from typing_extensions import Literal
 
+from . import ProxyProtocolResult
+
 __all__ = ['ProxyProtocolResult', 'ProxyProtocolResultLocal',
-           'ProxyProtocolResultUnknown', 'ProxyProtocolResult4',
-           'ProxyProtocolResult6', 'ProxyProtocolResultUnix']
+           'ProxyProtocolResultUnknown', 'ProxyProtocolResultIPv4',
+           'ProxyProtocolResultIPv6', 'ProxyProtocolResultUnix']
 
 
-@dataclass
-class ProxyProtocolResult(metaclass=ABCMeta):
-    """Base data class for PROXY protocol results.
-
-    Attributes:
-        source: The source address info for the connection.
-        dest: The destination address info for the connection.
-        protocol: The socket protocol for the connection.
-
-    """
-
-    source: Any
-    dest: Any
-    protocol: Optional[SocketKind] = None
-
-    @property
-    def family(self) -> AddressFamily:
-        """The socket address family."""
-        return socket.AF_UNSPEC
-
-    @property
-    def is_local(self) -> bool:
-        """True if the connection should be treated as if it is not proxied."""
-        return False
-
-    @property
-    def is_unknown(self) -> bool:
-        """True if the source of the connection is unknown."""
-        return False
-
-
-@dataclass
 class ProxyProtocolResultLocal(ProxyProtocolResult):
     """Indicates that the connection should be treated as if it is not proxied.
     The real socket :meth:`~socket.socket.getpeername` and
@@ -54,70 +22,188 @@ class ProxyProtocolResultLocal(ProxyProtocolResult):
 
     """
 
-    source: None = None
-    dest: None = None
+    __slots__: Sequence[str] = []
 
     @property
-    def is_local(self) -> Literal[True]:
+    def source(self) -> None:
+        return None
+
+    @property
+    def dest(self) -> None:
+        return None
+
+    @property
+    def use_socket(self) -> Literal[True]:
         return True
 
 
-@dataclass
 class ProxyProtocolResultUnknown(ProxyProtocolResult):
     """Indicates that the source of the connection is unknown."""
 
-    source: None = None
-    dest: None = None
+    __slots__ = ['_exception']
+
+    def __init__(self, exception: Optional[Exception] = None) -> None:
+        super().__init__()
+        self._exception = exception
 
     @property
-    def is_unknown(self) -> Literal[True]:
-        return True
+    def exception(self) -> Optional[Exception]:
+        """An exception that occurred during reading or parsing the PROXY
+        protocol header.
+
+        """
+        return self._exception
+
+    @property
+    def source(self) -> None:
+        return None
+
+    @property
+    def dest(self) -> None:
+        return None
 
 
-@dataclass
-class ProxyProtocolResult4(ProxyProtocolResult):
+class ProxyProtocolResultIPv4(ProxyProtocolResult):
     """The original connection was made with an IPv4 socket. The
     :attr:`.source` and :attr:`.dest` properties will contain a tuple of an
-    :class:`~ipaddress.IPv4Address` a port number.
+    :class:`~ipaddress.IPv4Address` and a port number.
 
     """
 
-    source: Tuple[IPv4Address, int]
-    dest: Tuple[IPv4Address, int]
+    __slots__ = ['_source', '_dest', '_protocol']
+
+    def __init__(self, source: Tuple[IPv4Address, int],
+                 dest: Tuple[IPv4Address, int], *,
+                 protocol: Optional[SocketKind] = None) -> None:
+        super().__init__()
+        self._source = source
+        self._dest = dest
+        self._protocol = protocol
+
+    @property
+    def source(self) -> Tuple[IPv4Address, int]:
+        return self._source
+
+    @property
+    def dest(self) -> Tuple[IPv4Address, int]:
+        return self._dest
 
     @property
     def family(self) -> AddressFamily:
-        """Contains :attr:`~socket.AF_INET`."""
         return socket.AF_INET
 
+    @property
+    def protocol(self) -> Optional[SocketKind]:
+        return self._protocol
 
-@dataclass
-class ProxyProtocolResult6(ProxyProtocolResult):
+    @property
+    def _sockname(self) -> Tuple[str, int]:
+        return str(self.source[0]), self.source[1]
+
+    @property
+    def _peername(self) -> Tuple[str, int]:
+        return str(self.dest[0]), self.dest[1]
+
+    def __str__(self) -> str:
+        if self.protocol is None:
+            return f'ProxyProtocolResultIPv4({self.source!r}, {self.dest!r})'
+        else:
+            return f'ProxyProtocolResultIPv4({self.source!r}, {self.dest!r},' \
+                f' protocol=socket.{self.protocol.name})'
+
+
+class ProxyProtocolResultIPv6(ProxyProtocolResult):
     """The original connection was made with an IPv6 socket. The
     :attr:`.source` and :attr:`.dest` properties will contain a tuple of an
-    :class:`~ipaddress.IPv6Address` a port number.
+    :class:`~ipaddress.IPv6Address` and a port number.
 
     """
-    source: Tuple[IPv6Address, int]
-    dest: Tuple[IPv6Address, int]
+
+    __slots__ = ['_source', '_dest', '_protocol']
+
+    def __init__(self, source: Tuple[IPv6Address, int],
+                 dest: Tuple[IPv6Address, int], *,
+                 protocol: Optional[SocketKind] = None) -> None:
+        super().__init__()
+        self._source = source
+        self._dest = dest
+        self._protocol = protocol
+
+    @property
+    def source(self) -> Tuple[IPv6Address, int]:
+        return self._source
+
+    @property
+    def dest(self) -> Tuple[IPv6Address, int]:
+        return self._dest
 
     @property
     def family(self) -> AddressFamily:
-        """Contains :attr:`~socket.AF_INET6`."""
         return socket.AF_INET6
 
+    @property
+    def protocol(self) -> Optional[SocketKind]:
+        return self._protocol
 
-@dataclass
+    @property
+    def _sockname(self) -> Tuple[str, int, int, int]:
+        return str(self.source[0]), self.source[1], 0, 0
+
+    @property
+    def _peername(self) -> Tuple[str, int, int, int]:
+        return str(self.dest[0]), self.dest[1], 0, 0
+
+    def __str__(self) -> str:
+        if self.protocol is None:
+            return f'ProxyProtocolResultIPv6({self.source!r}, {self.dest!r})'
+        else:
+            return f'ProxyProtocolResultIPv6({self.source!r}, {self.dest!r},' \
+                f' protocol=socket.{self.protocol.name})'
+
+
 class ProxyProtocolResultUnix(ProxyProtocolResult):
     """The original connection was made with a UNIX socket. The :attr:`.source`
     and :attr:`.dest` properties will contain a the full path to the socket
     file.
 
     """
-    source: str
-    dest: str
+
+    __slots__ = ['_source', '_dest', '_protocol']
+
+    def __init__(self, source: str, dest: str, *,
+                 protocol: Optional[SocketKind] = None) -> None:
+        super().__init__()
+        self._source = source
+        self._dest = dest
+        self._protocol = protocol
+
+    @property
+    def source(self) -> str:
+        return self._source
+
+    @property
+    def dest(self) -> str:
+        return self._dest
 
     @property
     def family(self) -> AddressFamily:
-        """Contains :attr:`~socket.AF_UNIX`."""
         return socket.AF_UNIX
+
+    @property
+    def protocol(self) -> Optional[SocketKind]:
+        return self._protocol
+
+    @property
+    def _sockname(self) -> str:
+        return self.source
+
+    @property
+    def _peername(self) -> str:
+        return self.dest
+
+    def __str__(self) -> str:
+        if self.protocol is None:
+            return f'ProxyProtocolResultUnix({self.source!r}, {self.dest!r})'
+        else:
+            return f'ProxyProtocolResultUnix({self.source!r}, {self.dest!r},' \
+                f' protocol=socket.{self.protocol.name})'

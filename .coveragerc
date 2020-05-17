@@ -2,4 +2,5 @@
 omit = */echo.py
 exclude_lines =
     pragma: no cover
+    NotImplementedError
     ^\s*...\s*$
