@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import socket
 import pkg_resources
 from abc import abstractmethod, ABCMeta
@@ -36,6 +34,15 @@ class ProxyProtocolResult(metaclass=ABCMeta):
 
     @property
     @abstractmethod
+    def proxied(self) -> bool:
+        """True if the result should override the information in the underlying
+        socket.
+
+        """
+        ...
+
+    @property
+    @abstractmethod
     def source(self) -> Any:
         """The original source address info for the connection."""
         ...
@@ -55,14 +62,6 @@ class ProxyProtocolResult(metaclass=ABCMeta):
     def protocol(self) -> Optional[SocketKind]:
         """The original socket protocol."""
         return None
-
-    @property
-    def use_socket(self) -> bool:
-        """True if the result should be ignored in favor of the underlying
-        socket information.
-
-        """
-        return False
 
     @property
     def _sockname(self) -> Address:
@@ -103,8 +102,6 @@ class ProxyProtocol(metaclass=ABCMeta):
             signature: Any data that has already been read from the stream.
 
         Raises:
-            :exc:`~asyncio.IncompleteReadError`: The header failed to parse due
-                to an EOF from the input stream.
             :exc:`ProxyProtocolError`: The header failed to parse due to a
                 syntax error or unsupported format.
             :exc:`ValueError`: Malformed or out-of-range data was encountered

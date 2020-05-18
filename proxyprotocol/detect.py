@@ -1,7 +1,6 @@
 
-from __future__ import annotations
-
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
+from .result import ProxyProtocolResultUnknown
 from .typing import StreamReaderProtocol
 from .v1 import ProxyProtocolV1
 from .v2 import ProxyProtocolV2
@@ -31,7 +30,10 @@ class ProxyProtocolDetect(ProxyProtocol):
     async def read(self, reader: StreamReaderProtocol, *,
                    signature: bytes = b'') \
             -> ProxyProtocolResult:  # pragma: no cover
-        signature += await reader.readexactly(8 - len(signature))
+        try:
+            signature += await reader.readexactly(8 - len(signature))
+        except (EOFError, ConnectionResetError) as exc:
+            return ProxyProtocolResultUnknown(exc)
         pp = self.choose_version(signature)
         return await pp.read(reader, signature=signature)
 

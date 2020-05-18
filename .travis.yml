@@ -1,5 +1,6 @@
 language: python
 python:
+  - "3.6"
   - "3.7"
   - "3.8"
 dist: bionic     # https://docs.travis-ci.com/user/languages/python/#python-37-and-higher
@@ -10,7 +11,7 @@ install:
   - travis_retry pip install -e .
 script:
   - py.test --cov=proxyprotocol
-  - mypy --strict proxyprotocol test
+  - mypy proxyprotocol test
   - flake8 proxyprotocol test
 after_success:
   - coveralls

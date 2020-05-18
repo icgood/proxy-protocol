@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import socket
 import struct
 from ipaddress import IPv4Address, IPv6Address

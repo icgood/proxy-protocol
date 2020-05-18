@@ -1,6 +1,4 @@
 
-from __future__ import annotations
-
 import socket
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
@@ -25,16 +23,16 @@ class ProxyProtocolResultLocal(ProxyProtocolResult):
     __slots__: Sequence[str] = []
 
     @property
+    def proxied(self) -> Literal[False]:
+        return False
+
+    @property
     def source(self) -> None:
         return None
 
     @property
     def dest(self) -> None:
         return None
-
-    @property
-    def use_socket(self) -> Literal[True]:
-        return True
 
 
 class ProxyProtocolResultUnknown(ProxyProtocolResult):
@@ -53,6 +51,10 @@ class ProxyProtocolResultUnknown(ProxyProtocolResult):
 
         """
         return self._exception
+
+    @property
+    def proxied(self) -> Literal[True]:
+        return True
 
     @property
     def source(self) -> None:
@@ -79,6 +81,10 @@ class ProxyProtocolResultIPv4(ProxyProtocolResult):
         self._source = source
         self._dest = dest
         self._protocol = protocol
+
+    @property
+    def proxied(self) -> Literal[True]:
+        return True
 
     @property
     def source(self) -> Tuple[IPv4Address, int]:
@@ -130,6 +136,10 @@ class ProxyProtocolResultIPv6(ProxyProtocolResult):
         self._protocol = protocol
 
     @property
+    def proxied(self) -> Literal[True]:
+        return True
+
+    @property
     def source(self) -> Tuple[IPv6Address, int]:
         return self._source
 
@@ -176,6 +186,10 @@ class ProxyProtocolResultUnix(ProxyProtocolResult):
         self._source = source
         self._dest = dest
         self._protocol = protocol
+
+    @property
+    def proxied(self) -> Literal[True]:
+        return True
 
     @property
     def source(self) -> str:
