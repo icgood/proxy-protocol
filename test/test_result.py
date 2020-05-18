@@ -42,8 +42,8 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(socket.AF_INET, res.family)
         self.assertIsNone(res.protocol)
         self.assertTrue(res.proxied)
-        self.assertEqual(('1.2.3.4', 10), res._sockname)
-        self.assertEqual(('5.6.7.8', 20), res._peername)
+        self.assertEqual(('1.2.3.4', 10), res._peername)
+        self.assertEqual(('5.6.7.8', 20), res._sockname)
         self.assertEqual(
             "ProxyProtocolResultIPv4((IPv4Address('1.2.3.4'), 10), "
             "(IPv4Address('5.6.7.8'), 20))", str(res))
@@ -66,8 +66,8 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(socket.AF_INET6, res.family)
         self.assertIsNone(res.protocol)
         self.assertTrue(res.proxied)
-        self.assertEqual(('::1', 10, 0, 0), res._sockname)
-        self.assertEqual(('::2', 20, 0, 0), res._peername)
+        self.assertEqual(('::1', 10, 0, 0), res._peername)
+        self.assertEqual(('::2', 20, 0, 0), res._sockname)
         self.assertEqual(
             "ProxyProtocolResultIPv6((IPv6Address('::1'), 10), "
             "(IPv6Address('::2'), 20))", str(res))
@@ -89,8 +89,8 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(socket.AF_UNIX, res.family)
         self.assertIsNone(res.protocol)
         self.assertTrue(res.proxied)
-        self.assertEqual('/source.sock', res._sockname)
-        self.assertEqual('/dest.sock', res._peername)
+        self.assertEqual('/source.sock', res._peername)
+        self.assertEqual('/dest.sock', res._sockname)
         self.assertEqual(
             "ProxyProtocolResultUnix('/source.sock', "
             "'/dest.sock')", str(res))
