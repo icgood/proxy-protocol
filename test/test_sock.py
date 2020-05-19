@@ -27,46 +27,17 @@ class TestSocketInfo(unittest.TestCase):
         self.extra['socket'] = sock = MagicMock(socket.socket)
         self.assertEqual(sock, info.socket)
 
-    def test_sockname_socket(self) -> None:
-        result = ProxyProtocolResultLocal()
-        info = SocketInfo(self.transport, result)
-        self.extra['sockname'] = ('::1', 10, 0, 0)
-        self.assertEqual(('::1', 10, 0, 0), info.sockname)
-
-    def test_sockname_override(self) -> None:
-        result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
-                                         (IPv6Address('::FFFF:1.2.3.4'), 20))
-        info = SocketInfo(self.transport, result)
-        self.assertEqual(('::1', 10, 0, 0), info.sockname)
-
-    def test_sockname_unknown(self) -> None:
-        result = ProxyProtocolResultUnknown()
-        info = SocketInfo(self.transport, result)
-        self.assertIsNone(info.sockname)
-
-    def test_sockname_ip(self) -> None:
-        info = SocketInfo(self.transport)
-        self.extra['socket'] = sock = MagicMock(socket.socket)
-        sock.family = socket.AF_UNSPEC
-        self.assertIsNone(info.sockname_ip)
-
-    def test_sockname_port(self) -> None:
-        info = SocketInfo(self.transport)
-        self.extra['socket'] = sock = MagicMock(socket.socket)
-        sock.family = socket.AF_UNSPEC
-        self.assertIsNone(info.sockname_port)
-
     def test_peername_socket(self) -> None:
         result = ProxyProtocolResultLocal()
         info = SocketInfo(self.transport, result)
-        self.extra['peername'] = ('::FFFF:1.2.3.4', 20, 0, 0)
-        self.assertEqual(('::FFFF:1.2.3.4', 20, 0, 0), info.peername)
+        self.extra['peername'] = ('::1', 10, 0, 0)
+        self.assertEqual(('::1', 10, 0, 0), info.peername)
 
     def test_peername_override(self) -> None:
         result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
                                          (IPv6Address('::FFFF:1.2.3.4'), 20))
         info = SocketInfo(self.transport, result)
-        self.assertEqual(('::ffff:102:304', 20, 0, 0), info.peername)
+        self.assertEqual(('::1', 10, 0, 0), info.peername)
 
     def test_peername_unknown(self) -> None:
         result = ProxyProtocolResultUnknown()
@@ -74,16 +45,45 @@ class TestSocketInfo(unittest.TestCase):
         self.assertIsNone(info.peername)
 
     def test_peername_ip(self) -> None:
-        result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
-                                         (IPv6Address('::FFFF:1.2.3.4'), 20))
-        info = SocketInfo(self.transport, result)
-        self.assertEqual(IPv4Address('1.2.3.4'), info.peername_ip)
+        info = SocketInfo(self.transport)
+        self.extra['socket'] = sock = MagicMock(socket.socket)
+        sock.family = socket.AF_UNSPEC
+        self.assertIsNone(info.peername_ip)
 
     def test_peername_port(self) -> None:
+        info = SocketInfo(self.transport)
+        self.extra['socket'] = sock = MagicMock(socket.socket)
+        sock.family = socket.AF_UNSPEC
+        self.assertIsNone(info.peername_port)
+
+    def test_sockname_socket(self) -> None:
+        result = ProxyProtocolResultLocal()
+        info = SocketInfo(self.transport, result)
+        self.extra['sockname'] = ('::FFFF:1.2.3.4', 20, 0, 0)
+        self.assertEqual(('::FFFF:1.2.3.4', 20, 0, 0), info.sockname)
+
+    def test_sockname_override(self) -> None:
         result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
                                          (IPv6Address('::FFFF:1.2.3.4'), 20))
         info = SocketInfo(self.transport, result)
-        self.assertEqual(20, info.peername_port)
+        self.assertEqual(('::ffff:102:304', 20, 0, 0), info.sockname)
+
+    def test_sockname_unknown(self) -> None:
+        result = ProxyProtocolResultUnknown()
+        info = SocketInfo(self.transport, result)
+        self.assertIsNone(info.sockname)
+
+    def test_sockname_ip(self) -> None:
+        result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
+                                         (IPv6Address('::FFFF:1.2.3.4'), 20))
+        info = SocketInfo(self.transport, result)
+        self.assertEqual(IPv4Address('1.2.3.4'), info.sockname_ip)
+
+    def test_sockname_port(self) -> None:
+        result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
+                                         (IPv6Address('::FFFF:1.2.3.4'), 20))
+        info = SocketInfo(self.transport, result)
+        self.assertEqual(20, info.sockname_port)
 
     def test_family_socket(self) -> None:
         result = ProxyProtocolResultLocal()
@@ -134,17 +134,17 @@ class TestSocketInfo(unittest.TestCase):
         info = SocketInfo(self.transport, result)
         self.assertFalse(info.from_localhost)
 
-    def test_from_localhost_false(self) -> None:
+    def test_from_localhost_true(self) -> None:
         result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
                                          (IPv6Address('::FFFF:1.2.3.4'), 20))
         info = SocketInfo(self.transport, result)
-        self.assertFalse(info.from_localhost)
+        self.assertTrue(info.from_localhost)
 
-    def test_from_localhost_true(self) -> None:
+    def test_from_localhost_false(self) -> None:
         result = ProxyProtocolResultIPv6((IPv6Address('::FFFF:1.2.3.4'), 10),
                                          (IPv6Address('::1'), 20))
         info = SocketInfo(self.transport, result)
-        self.assertTrue(info.from_localhost)
+        self.assertFalse(info.from_localhost)
 
     def test_getitem(self) -> None:
         info = SocketInfo(self.transport)

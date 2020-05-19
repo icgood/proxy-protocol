@@ -103,11 +103,11 @@ class ProxyProtocolResultIPv4(ProxyProtocolResult):
         return self._protocol
 
     @property
-    def _sockname(self) -> Tuple[str, int]:
+    def _peername(self) -> Tuple[str, int]:
         return str(self.source[0]), self.source[1]
 
     @property
-    def _peername(self) -> Tuple[str, int]:
+    def _sockname(self) -> Tuple[str, int]:
         return str(self.dest[0]), self.dest[1]
 
     def __str__(self) -> str:
@@ -156,11 +156,11 @@ class ProxyProtocolResultIPv6(ProxyProtocolResult):
         return self._protocol
 
     @property
-    def _sockname(self) -> Tuple[str, int, int, int]:
+    def _peername(self) -> Tuple[str, int, int, int]:
         return str(self.source[0]), self.source[1], 0, 0
 
     @property
-    def _peername(self) -> Tuple[str, int, int, int]:
+    def _sockname(self) -> Tuple[str, int, int, int]:
         return str(self.dest[0]), self.dest[1], 0, 0
 
     def __str__(self) -> str:
@@ -208,11 +208,11 @@ class ProxyProtocolResultUnix(ProxyProtocolResult):
         return self._protocol
 
     @property
-    def _sockname(self) -> str:
+    def _peername(self) -> str:
         return self.source
 
     @property
-    def _peername(self) -> str:
+    def _sockname(self) -> str:
         return self.dest
 
     def __str__(self) -> str:
