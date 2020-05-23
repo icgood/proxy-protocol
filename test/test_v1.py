@@ -1,4 +1,5 @@
 
+import socket
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
@@ -74,3 +75,30 @@ class TestProxyProtocolV1(unittest.TestCase):
             pp.parse_line(b'PROXY TCP6 ::1 ::2 ab cd\r\n')
         with self.assertRaises(ValueError):
             pp.parse_line(b'PROXY TCP6 ::1 ::2 -1 -1\r\n')
+
+    def test_build_tcp4(self) -> None:
+        pp = ProxyProtocolV1()
+        header = pp.build(('1.2.3.4', 10), ('5.6.7.8', 20),
+                          family=socket.AF_INET)
+        self.assertEqual(b'PROXY TCP4 1.2.3.4 5.6.7.8 10 20\r\n', header)
+
+    def test_build_tcp6(self) -> None:
+        pp = ProxyProtocolV1()
+        header = pp.build(('::1', 10, 0, 0), ('::2', 20, 0, 0),
+                          family=socket.AF_INET6)
+        self.assertEqual(b'PROXY TCP6 ::1 ::2 10 20\r\n', header)
+
+    def test_build_unix(self) -> None:
+        pp = ProxyProtocolV1()
+        with self.assertRaises(KeyError):
+            pp.build('source', 'dest', family=socket.AF_UNIX)
+
+    def test_build_unknown(self) -> None:
+        pp = ProxyProtocolV1()
+        header = pp.build(None, None, family=socket.AF_UNSPEC)
+        self.assertEqual(b'PROXY UNKNOWN    \r\n', header)
+
+    def test_build_not_proxied(self) -> None:
+        pp = ProxyProtocolV1()
+        with self.assertRaises(ValueError):
+            pp.build(None, None, family=socket.AF_UNSPEC, proxied=False)

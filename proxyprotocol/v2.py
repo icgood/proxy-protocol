@@ -3,13 +3,13 @@ import socket
 import struct
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from typing import Optional, Sequence
+from typing import cast, Optional, Tuple, Sequence
 from typing_extensions import Final
 
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultLocal, ProxyProtocolResultUnknown, \
     ProxyProtocolResultIPv4, ProxyProtocolResultIPv6, ProxyProtocolResultUnix
-from .typing import StreamReaderProtocol
+from .typing import Address, StreamReaderProtocol
 
 __all__ = ['ProxyProtocolV2Header', 'ProxyProtocolV2']
 
@@ -36,13 +36,21 @@ class ProxyProtocolV2(ProxyProtocol):
 
     __slots__: Sequence[str] = []
 
-    _commands = {0x00: 'local',
-                 0x01: 'proxy'}
-    _families = {0x10: socket.AF_INET,
-                 0x20: socket.AF_INET6,
-                 0x30: socket.AF_UNIX}
-    _protocols = {0x01: socket.SOCK_STREAM,
-                  0x02: socket.SOCK_DGRAM}
+    _commands = [(0x00, 'local'),
+                 (0x01, 'proxy')]
+    _families = [(0x00, socket.AF_UNSPEC),
+                 (0x10, socket.AF_INET),
+                 (0x20, socket.AF_INET6),
+                 (0x30, socket.AF_UNIX)]
+    _protocols = [(0x00, None),
+                  (0x01, socket.SOCK_STREAM),
+                  (0x02, socket.SOCK_DGRAM)]
+    _commands_l = {left: right for left, right in _commands}
+    _commands_r = {right: left for left, right in _commands}
+    _families_l = {left: right for left, right in _families}
+    _families_r = {right: left for left, right in _families}
+    _protocols_l = {left: right for left, right in _protocols}
+    _protocols_r = {right: left for left, right in _protocols}
 
     def is_valid(self, signature: bytes) -> bool:
         return signature.startswith(b'\r\n\r\n\x00\r\nQ')
@@ -73,10 +81,10 @@ class ProxyProtocolV2(ProxyProtocol):
             raise ProxyProtocolError('Invalid proxy protocol v2 signature')
         elif header[12] & 0xf0 != 0x20:
             raise ProxyProtocolError('Invalid proxy protocol version')
-        command = self._commands.get(header[12] & 0x0f)
-        family = self._families.get(header[13] & 0xf0)
-        protocol = self._protocols.get(header[13] & 0x0f)
-        addr_len: int = struct.unpack('!H', header[14:16])[0]
+        byte_12, byte_13, addr_len = struct.unpack('!BBH', header[12:16])
+        command = self._commands_l.get(byte_12 & 0x0f)
+        family = self._families_l.get(byte_13 & 0xf0)
+        protocol = self._protocols_l.get(byte_13 & 0x0f)
         return ProxyProtocolV2Header(command=command, family=family,
                                      protocol=protocol, addr_len=addr_len)
 
@@ -117,3 +125,68 @@ class ProxyProtocolV2(ProxyProtocol):
                                            protocol=header.protocol)
         else:
             return ProxyProtocolResultUnknown()
+
+    def build(self, source: Address, dest: Address, *, family: AddressFamily,
+              protocol: Optional[SocketKind] = None,
+              proxied: bool = True) -> bytes:
+        addresses = self.build_addresses(source, dest, family=family)
+        header = self.build_header(addresses, family=family, protocol=protocol,
+                                   proxied=proxied)
+        return header + addresses
+
+    def build_header(self, addresses: bytes, *,
+                     family: AddressFamily,
+                     protocol: Optional[SocketKind] = None,
+                     proxied: bool = True) -> bytes:
+        """Builds the 16-byte block that begins every PROXY protocol v2 header.
+
+        Args:
+            addresses: The addresses block, as returned by
+                :meth:`.build_addresses`.
+            family: The original socket family.
+            protocol: The original socket protocol.
+            proxied: True if the connection should not be considered proxied.
+
+        """
+        byte_12 = 0x20 + self._commands_r['proxy' if proxied else 'local']
+        byte_13 = self._families_r[family] + self._protocols_r[protocol]
+        return b'\r\n\r\n\x00\r\nQUIT\n%b' % \
+            struct.pack('!BBH', byte_12, byte_13, len(addresses))
+
+    def build_addresses(self, source: Address, dest: Address, *,
+                        family: AddressFamily) -> bytes:
+        """Builds the block of address data is contained in a PROXY protocol v2
+        header.
+
+        Args:
+            source: The original source address of the connection.
+            dest: The original destination address of the connection.
+            family: The original socket family.
+
+        """
+        if family == socket.AF_INET:
+            source = cast(Tuple[str, int], source)
+            dest = cast(Tuple[str, int], dest)
+            source_ip = IPv4Address(source[0]).packed
+            source_port = source[1]
+            dest_ip = IPv4Address(dest[0]).packed
+            dest_port = dest[1]
+            return struct.pack('!4s4sHH', source_ip, dest_ip,
+                               source_port, dest_port)
+        elif family == socket.AF_INET6:
+            source = cast(Tuple[str, int, int, int], source)
+            dest = cast(Tuple[str, int, int, int], dest)
+            source_ip = IPv6Address(source[0]).packed
+            source_port = source[1]
+            dest_ip = IPv6Address(dest[0]).packed
+            dest_port = dest[1]
+            return struct.pack('!16s16sHH', source_ip, dest_ip,
+                               source_port, dest_port)
+        elif family == socket.AF_UNIX:
+            source = cast(str, source)
+            dest = cast(str, dest)
+            source_b = source.encode('ascii')
+            dest_b = dest.encode('ascii')
+            return struct.pack('!108s108s', source_b, dest_b)
+        else:
+            return b''

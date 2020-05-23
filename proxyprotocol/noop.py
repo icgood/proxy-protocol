@@ -1,9 +1,10 @@
 
-from typing import Sequence, NoReturn
+from socket import AddressFamily, SocketKind
+from typing import Optional, Sequence, NoReturn
 
 from . import ProxyProtocol
 from .result import ProxyProtocolResultLocal
-from .typing import StreamReaderProtocol
+from .typing import Address, StreamReaderProtocol
 
 __all__ = ['ProxyProtocolNoop']
 
@@ -26,3 +27,8 @@ class ProxyProtocolNoop(ProxyProtocol):
                    signature: bytes = b'') \
             -> ProxyProtocolResultLocal:  # pragma: no cover
         return ProxyProtocolResultLocal()
+
+    def build(self, source: Address, dest: Address, *, family: AddressFamily,
+              protocol: Optional[SocketKind] = None,
+              proxied: bool = True) -> bytes:
+        return b''

@@ -1,11 +1,13 @@
 
+import socket
 from ipaddress import IPv4Address, IPv6Address
-from typing import Sequence
+from socket import AddressFamily, SocketKind
+from typing import Optional, Sequence
 
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
     ProxyProtocolResultIPv6
-from .typing import StreamReaderProtocol
+from .typing import Address, StreamReaderProtocol
 
 
 class ProxyProtocolV1(ProxyProtocol):
@@ -63,3 +65,34 @@ class ProxyProtocolV1(ProxyProtocol):
         if port_num < 0 or port_num > 65535:
             raise ValueError(port_num)
         return port_num
+
+    def build(self, source: Address, dest: Address, *, family: AddressFamily,
+              protocol: Optional[SocketKind] = None,
+              proxied: bool = True) -> bytes:
+        if not proxied:
+            raise ValueError('proxied must be True in v1')
+        family_b = self._build_family(family)
+        if source is None or isinstance(source, str):
+            source_ip: bytes = b''
+            source_port: bytes = b''
+        else:
+            source_ip = source[0].encode('ascii')
+            source_port = str(source[1]).encode('ascii')
+        if dest is None or isinstance(dest, str):
+            dest_ip: bytes = b''
+            dest_port: bytes = b''
+        else:
+            dest_ip = dest[0].encode('ascii')
+            dest_port = str(dest[1]).encode('ascii')
+        return b'PROXY %b %b %b %b %b\r\n' % \
+            (family_b, source_ip, dest_ip, source_port, dest_port)
+
+    def _build_family(self, family: AddressFamily) -> bytes:
+        if family == socket.AF_INET:
+            return b'TCP4'
+        elif family == socket.AF_INET6:
+            return b'TCP6'
+        elif family == socket.AF_UNSPEC:
+            return b'UNKNOWN'
+        else:
+            raise KeyError(family)

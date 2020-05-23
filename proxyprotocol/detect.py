@@ -1,7 +1,10 @@
 
+from socket import AddressFamily, SocketKind
+from typing import Optional
+
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown
-from .typing import StreamReaderProtocol
+from .typing import Address, StreamReaderProtocol
 from .v1 import ProxyProtocolV1
 from .v2 import ProxyProtocolV2
 
@@ -49,3 +52,15 @@ class ProxyProtocolDetect(ProxyProtocol):
                 return version
         raise ProxyProtocolError(
             'Unrecognized proxy protocol version signature')
+
+    def build(self, source: Address, dest: Address, *, family: AddressFamily,
+              protocol: Optional[SocketKind] = None,
+              proxied: bool = True) -> bytes:
+        for version in self.versions:
+            try:
+                return version.build(source, dest, family=family,
+                                     protocol=protocol, proxied=proxied)
+            except (KeyError, ValueError):
+                pass
+        else:
+            raise ValueError('Could not build PROXY protocol header')

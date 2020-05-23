@@ -1,5 +1,7 @@
 
+import socket
 import unittest
+from unittest.mock import MagicMock
 
 from proxyprotocol import ProxyProtocolError
 from proxyprotocol.version import ProxyProtocolVersion
@@ -40,3 +42,21 @@ class TestProxyProtocolDetect(unittest.TestCase):
             pp.choose_version(b'badPROXY ...')
         with self.assertRaises(ProxyProtocolError):
             pp.choose_version(b'bad\r\n\r\n\x00\r\nQUIT')
+
+    def test_build(self) -> None:
+        mock_one = MagicMock(ProxyProtocolV1)
+        mock_two = MagicMock(ProxyProtocolV1)
+        mock_three = MagicMock(ProxyProtocolV1)
+        pp = ProxyProtocolDetect(mock_one, mock_two, mock_three)
+        mock_one.build.side_effect = ValueError
+        mock_two.build.return_value = b'data'
+        mock_three.build.side_effect = AssertionError
+        self.assertEqual(
+            b'data', pp.build(None, None, family=socket.AF_UNSPEC))
+
+    def test_build_error(self) -> None:
+        mock_one = MagicMock(ProxyProtocolV1)
+        pp = ProxyProtocolDetect(mock_one)
+        mock_one.build.side_effect = ValueError
+        with self.assertRaises(ValueError):
+            pp.build(None, None, family=socket.AF_UNSPEC)

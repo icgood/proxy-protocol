@@ -15,6 +15,9 @@ PROXY protocol library with [asyncio][2] server implementation.
 ### Table of Contents
 
 * [Install and Usage](#install-and-usage)
+* [Server Usage](#server-usage)
+  * [Echo Server](#echo-server)
+  * [Proxy Server](#proxy-server)
 * [Development and Testing](#development-and-testing)
   * [Type Hinting](#type-hinting)
 
@@ -74,6 +77,35 @@ implementation. If you configure your proxy to send PROXY protocol to
 $ proxyprotocol-echo --help
 $ proxyprotocol-echo detect
 $ proxyprotocol-echo noop
+```
+
+## Server Usage
+
+Two basic server implementations are included for reference. Using the two
+together can demonstrate the process end-to-end: use `proxyprotocol-server`
+to proxy connections with a PROXY protocol header to `proxyprotocol-echo`,
+which then displays the original connection information.
+
+### Echo Server
+
+The `proxyprotocol-echo` server expects inbound connections to provide a PROXY
+protocol header indicating the original source of the connection. After the
+header, all received data will be echoed back to the client.
+
+```bash
+proxyprotocol-echo --help
+proxyprotocol-echo  # run the server
+```
+
+### Proxy Server
+
+The `proxyprotocol-server` server proxies inbound connections to another
+host/port endoint, prefixing the outbound connection with a PROXY protocol
+header to indicate the original connection information.
+
+```bash
+proxyprotocol-server --help
+proxyprotocol-server v2 --service localhost:10000 localhost:10007
 ```
 
 ## Development and Testing
