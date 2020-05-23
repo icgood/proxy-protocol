@@ -109,3 +109,27 @@ class ProxyProtocol(metaclass=ABCMeta):
 
         """
         ...
+
+    @abstractmethod
+    def build(self, source: Address, dest: Address, *, family: AddressFamily,
+              protocol: Optional[SocketKind] = None,
+              proxied: bool = True) -> bytes:
+        """Builds a PROXY protocol v1 header that may be sent at the beginning
+        of an outbound, client-side connection to indicate the original
+        information about the connection.
+
+        Args:
+            source: The original source address of the connection.
+            dest: The original destination address of the connection.
+            family: The original socket family.
+            protocol: The original socket protocol.
+            proxied: True if the connection should not be considered proxied.
+
+        Raises:
+            :exc:`KeyError`: This PROXY protocol header format does not support
+                the socket information.
+            :exc:`ValueError`: The address data could not be written to the
+                PROXY protocol header format.
+
+        """
+        ...

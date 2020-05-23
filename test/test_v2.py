@@ -110,3 +110,37 @@ class TestProxyProtocolV2(unittest.TestCase):
         self.assertEqual('defghi', res.dest)
         self.assertEqual(socket.AF_UNIX, res.family)
         self.assertEqual(socket.SOCK_STREAM, res.protocol)
+
+    def test_build_tcp4(self) -> None:
+        pp = ProxyProtocolV2()
+        header = pp.build(('0.0.0.0', 0), ('127.0.0.1', 25),
+                          family=socket.AF_INET, protocol=socket.SOCK_STREAM)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x11\x00\x0c' +
+                         b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19',
+                         header)
+
+    def test_build_tcp6(self) -> None:
+        pp = ProxyProtocolV2()
+        header = pp.build(('::1', 0, 0, 0), ('::1', 25, 0, 0),
+                          family=socket.AF_INET6, protocol=socket.SOCK_STREAM)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x21\x00\x24' +
+                         (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19',
+                         header)
+
+    def test_build_unix(self) -> None:
+        pp = ProxyProtocolV2()
+        header = pp.build('abc', 'defghi', family=socket.AF_UNIX,
+                          protocol=socket.SOCK_STREAM)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x31\x00\xd8' +
+                         b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102,
+                         header)
+
+    def test_build_unknown(self) -> None:
+        pp = ProxyProtocolV2()
+        header = pp.build(None, None, family=socket.AF_UNSPEC)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x00\x00\x00', header)
+
+    def test_build_not_proxied(self) -> None:
+        pp = ProxyProtocolV2()
+        header = pp.build(None, None, family=socket.AF_UNSPEC, proxied=False)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x20\x00\x00\x00', header)

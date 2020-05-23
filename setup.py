@@ -28,7 +28,7 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 setup(name='proxy-protocol',
-      version='0.3.0',
+      version='0.4.0',
       author='Ian Good',
       author_email='icgood@gmail.com',
       description='PROXY protocol library with asyncio server implementation',
@@ -42,14 +42,14 @@ setup(name='proxy-protocol',
           'Intended Audience :: Information Technology',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python',
-          'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: 3.8'],
-      python_requires='~=3.6',
+      python_requires='~=3.7',
       include_package_data=True,
       packages=find_packages(),
       install_requires=[
           'typing-extensions'],
       entry_points={
           'console_scripts': [
-              'proxyprotocol-echo = proxyprotocol.echo:main']})
+              'proxyprotocol-server = proxyprotocol.server.main:main',
+              'proxyprotocol-echo = proxyprotocol.server.echo:main']})
