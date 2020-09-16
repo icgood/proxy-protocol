@@ -47,6 +47,13 @@
 .. automodule:: proxyprotocol.result
    :members:
 
+``proxyprotocol.tlv``
+----------------------
+
+.. automodule:: proxyprotocol.tlv
+   :members:
+   :undoc-members:
+
 ``proxyprotocol.sock``
 ----------------------
 

@@ -18,10 +18,6 @@ class SocketInfo:
     """Provides information about the connection, from either the underlying
     :mod:`asyncio` transport layer or overridden by the PROXY protocol result.
 
-    Undocumented properties will pass through as calls to
-    :meth:`~asyncio.BaseTransport.get_extra_info` and will raise
-    :exc:`AttributeError` if there is no value available.
-
     Args:
         transport: The :class:`~asyncio.BaseTransport` or
             :class:`~asyncio.StreamWriter` for the connection.
@@ -96,7 +92,7 @@ class SocketInfo:
     @property
     def sockname_ip(self) -> Union[None, IPv4Address, IPv6Address]:
         """The IP address object from :attr:`.sockname`, for
-        :attr:`~socket.AF_INET` or :attr:`~socket.AF_INET6` connections.
+        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.
 
         """
         return self._get_ip(self.sockname)
@@ -104,7 +100,7 @@ class SocketInfo:
     @property
     def sockname_port(self) -> Optional[int]:
         """The port number from :attr:`.sockname`, for
-        :attr:`~socket.AF_INET` or :attr:`~socket.AF_INET6` connections.
+        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.
 
         """
         return self._get_port(self.sockname)
@@ -112,7 +108,7 @@ class SocketInfo:
     @property
     def sockname_str(self) -> Optional[str]:
         """The :attr:`.sockname` address as a string. For
-        :attr:`~socket.AF_INET`/:attr:`~socket.AF_INET6` families, this is
+        :data:`~socket.AF_INET`/:data:`~socket.AF_INET6` families, this is
         ``ip:port``.
 
         """
@@ -136,7 +132,7 @@ class SocketInfo:
     @property
     def peername_ip(self) -> Union[None, IPv4Address, IPv6Address]:
         """The IP address object from :attr:`.peername`, for
-        :attr:`~socket.AF_INET` or :attr:`~socket.AF_INET6` connections.
+        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.
 
         """
         return self._get_ip(self.peername)
@@ -144,7 +140,7 @@ class SocketInfo:
     @property
     def peername_port(self) -> Optional[int]:
         """The port number from :attr:`.peername`, for
-        :attr:`~socket.AF_INET` or :attr:`~socket.AF_INET6` connections.
+        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.
 
         """
         return self._get_port(self.peername)
@@ -152,7 +148,7 @@ class SocketInfo:
     @property
     def peername_str(self) -> Optional[str]:
         """The :attr:`.peername` address as a string. For
-        :attr:`~socket.AF_INET`/:attr:`~socket.AF_INET6` families, this is
+        :data:`~socket.AF_INET`/:data:`~socket.AF_INET6` families, this is
         ``ip:port``.
 
         """
@@ -254,11 +250,11 @@ class SocketInfo:
     def from_localhost(self) -> bool:
         """True for local socket connections, if:
 
-        * :attr:`.family` is :attr:`~socket.AF_UNIX`, or
+        * :attr:`.family` is :data:`~socket.AF_UNIX`, or
         * :attr:`.peername_ip` has True
           :attr:`~ipaddress.IPv4Address.is_loopback` flag.
 
-        To be specific, True for :attr:`~socket.AF_UNIX` connections and True
+        To be specific, True for :data:`~socket.AF_UNIX` connections and True
         for IPv4/IPv6 connections with True
         :attr:`~ipaddress.IPv4Address.is_loopback` flags.
 

@@ -135,7 +135,7 @@ class ProxyProtocol(metaclass=ABCMeta):
             protocol: The original socket protocol.
             ssl: The original socket SSL information.
             unique_id: The original connection unique identifier.
-            proxied: True if the connection should not be considered proxied.
+            proxied: True if the connection should be considered proxied.
 
         Raises:
             :exc:`KeyError`: This PROXY protocol header format does not support
