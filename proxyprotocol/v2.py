@@ -164,7 +164,7 @@ class ProxyProtocolV2(ProxyProtocol):
             data_len: The length of the data (addresses + TLV).
             family: The original socket family.
             protocol: The original socket protocol.
-            proxied: True if the connection should not be considered proxied.
+            proxied: True if the connection should be considered proxied.
 
         """
         byte_12 = 0x20 + self._commands_r['proxy' if proxied else 'local']

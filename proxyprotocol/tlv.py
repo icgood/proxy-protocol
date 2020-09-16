@@ -11,7 +11,7 @@ from typing import ClassVar, Any, Hashable, Optional, Union, Iterator, \
 from .typing import PeerCert
 
 __all__ = ['Type', 'SSLClient', 'TLV', 'ProxyProtocolTLV',
-           'ProxyProtocolSSLTLV']
+           'ProxyProtocolSSLTLV', 'ProxyProtocolExtTLV']
 
 
 class Type(IntEnum):
@@ -209,12 +209,7 @@ class ProxyProtocolTLV(TLV):
 
     @property
     def ext(self) -> ProxyProtocolExtTLV:
-        """The ``PP2_TYPE_NOOP`` value, possibly parsed as an extension TLV.
-
-        See Also:
-            :class:`ProxyProtocolExtTLV`
-
-        """
+        """The ``PP2_TYPE_NOOP`` value, possibly parsed as an extension TLV."""
         val = self.get(Type.PP2_TYPE_NOOP)
         if val is not None:
             return ProxyProtocolExtTLV(val)
@@ -381,6 +376,8 @@ class ProxyProtocolExtTLV(TLV):
 
     """
 
+    #: The ``PP2_TYPE_NOOP`` value must begin with this byte sequence to be
+    #: parsed as a :class:`ProxyProtocolExtTLV`.
     MAGIC_PREFIX: ClassVar[bytes] = b'\x88\x1b\x79\xc1\xce\x96\x85\xb0'
 
     _secret_bits_fmt = Struct('!H')
@@ -416,7 +413,7 @@ class ProxyProtocolExtTLV(TLV):
     @property
     def compression(self) -> Optional[str]:
         """The ``PP2_SUBTYPE_EXT_COMPRESSION`` value. This is used by the
-        :attr:`~proxyprotocol.sock.SockInfo.compression` value.
+        :attr:`~proxyprotocol.sock.SocketInfo.compression` value.
 
         """
         val = self.get(Type.PP2_SUBTYPE_EXT_COMPRESSION)
@@ -427,7 +424,7 @@ class ProxyProtocolExtTLV(TLV):
     @property
     def secret_bits(self) -> Optional[int]:
         """The ``PP2_SUBTYPE_EXT_SECRET_BITS`` value. This is used to populate
-        the third member of the: attr: `~proxyprotocol.sock.SockInfo.cipher`
+        the third member of the: attr:`~proxyprotocol.sock.SocketInfo.cipher`
         tuple.
 
         """
@@ -440,7 +437,7 @@ class ProxyProtocolExtTLV(TLV):
     @property
     def peercert(self) -> Optional[PeerCert]:
         """The ``PP2_SUBTYPE_EXT_PEERCERT`` value. This is used by the
-        :attr:`~proxyprotocol.sock.SockInfo.peercert` value.
+        :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.
 
         """
         val = self.get(Type.PP2_SUBTYPE_EXT_PEERCERT)
