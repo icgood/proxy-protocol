@@ -1,7 +1,7 @@
 language: python
 python:
-  - "3.7"
   - "3.8"
+  - "3.7"
 dist: bionic     # https://docs.travis-ci.com/user/languages/python/#python-37-and-higher
 install:
   - travis_retry pip install -U -r doc/requirements.txt
@@ -19,10 +19,14 @@ branches:
   only:
     - master
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GH_TOKEN
-  keep_history: true
-  on:
-    branch: master
-  local_dir: doc/build/html
+  - provider: pages:git
+    on:
+      tags: true
+    local_dir: doc/build/html
+    edge: true
+  - provider: pypi
+    distributions: sdist bdist_wheel
+    skip_existing: true
+    on:
+      tags: true
+    edge: true

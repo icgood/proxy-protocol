@@ -2,22 +2,19 @@
 import socket
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from ssl import SSLContext
-from typing import Any, Union, Optional, Container, Mapping
+from typing import Union, Optional
 from typing_extensions import Final
 
 from . import ProxyProtocolResult
 from .result import ProxyProtocolResultLocal
-from .typing import Address, TransportProtocol
+from .typing import Address, Cipher, PeerCert, TransportProtocol
 
 __all__ = ['SocketInfo']
 
-_missing = object()
-_PeerCert = Mapping[str, Any]  # e.g. {'issuer': ...}
 _IP = Union[None, IPv4Address, IPv6Address]
 
 
-class SocketInfo(Container[str]):
+class SocketInfo:
     """Provides information about the connection, from either the underlying
     :mod:`asyncio` transport layer or overridden by the PROXY protocol result.
 
@@ -29,16 +26,20 @@ class SocketInfo(Container[str]):
         transport: The :class:`~asyncio.BaseTransport` or
             :class:`~asyncio.StreamWriter` for the connection.
         result: The PROXY protocol result.
+        unique_id: A unique ID to associate with the connection, unless
+            overridden by the PROXY protocol result.
 
     """
 
-    __slots__ = ['_transport', 'pp_result']
+    __slots__ = ['transport', 'pp_result', '_unique_id']
 
     def __init__(self, transport: TransportProtocol,
-                 result: Optional[ProxyProtocolResult] = None) -> None:
+                 result: Optional[ProxyProtocolResult] = None, *,
+                 unique_id: bytes = b'') -> None:
         super().__init__()
-        self._transport = transport
+        self.transport: Final = transport
         self.pp_result: Final = result or ProxyProtocolResultLocal()
+        self._unique_id = unique_id
 
     @property
     def socket(self) -> socket.socket:
@@ -48,7 +49,7 @@ class SocketInfo(Container[str]):
             :meth:`~asyncio.BaseTransport.get_extra_info`
 
         """
-        ret: socket.socket = self._transport.get_extra_info('socket')
+        ret: socket.socket = self.transport.get_extra_info('socket')
         return ret
 
     def _get_ip(self, addr: Address) -> _IP:
@@ -89,7 +90,7 @@ class SocketInfo(Container[str]):
         if self.pp_result.proxied:
             return self.pp_result._sockname
         else:
-            ret: Address = self._transport.get_extra_info('sockname')
+            ret: Address = self.transport.get_extra_info('sockname')
             return ret
 
     @property
@@ -129,7 +130,7 @@ class SocketInfo(Container[str]):
         if self.pp_result.proxied:
             return self.pp_result._peername
         else:
-            ret: Address = self._transport.get_extra_info('peername')
+            ret: Address = self.transport.get_extra_info('peername')
             return ret
 
     @property
@@ -169,7 +170,7 @@ class SocketInfo(Container[str]):
         if self.pp_result.proxied:
             return self.pp_result.family
         else:
-            return self.socket.family  # type: ignore
+            return AddressFamily(self.socket.family)
 
     @property
     def protocol(self) -> Optional[SocketKind]:
@@ -182,30 +183,72 @@ class SocketInfo(Container[str]):
         if self.pp_result.proxied:
             return self.pp_result.protocol
         else:
-            return self.socket.proto  # type: ignore
+            return SocketKind(self.socket.proto)
 
     @property
-    def peercert(self) -> Optional[_PeerCert]:
-        """The peer certificate for the socket, if encrypted.
+    def compression(self) -> Optional[str]:
+        """The :meth:`~ssl.SSLSocket.compression` value for encrypted
+        connections.
 
-        See Also:
-            :meth:`~asyncio.BaseTransport.get_extra_info`
+        Note:
+            For proxied connections, this data may be unavailable, depending on
+            the server implementation and PROXY protocol version.
 
         """
-        ret: Optional[_PeerCert] = self._transport.get_extra_info('peercert')
-        return ret
+        if self.pp_result.proxied:
+            return self.pp_result.tlv.ext.compression
+        else:
+            ret: Optional[str] = self.transport.get_extra_info('compression')
+            return ret
 
     @property
-    def ssl_context(self) -> Optional[SSLContext]:
-        """The SSL context for the socket, if encrypted.
+    def cipher(self) -> Optional[Cipher]:
+        """The :meth:`~ssl.SSLSocket.cipher` value for encrypted connections.
 
-        See Also:
-            :meth:`~asyncio.BaseTransport.get_extra_info`
+        Note:
+            For proxied connections, this data may be unavailable or partially
+            available, depending on the server implementation and PROXY
+            protocol version.
 
         """
-        ret: Optional[SSLContext] = \
-            self._transport.get_extra_info('sslcontext')
-        return ret
+        if self.pp_result.proxied:
+            if self.pp_result.tlv.ssl.has_ssl:
+                cipher = self.pp_result.tlv.ssl.cipher or ''
+                version = self.pp_result.tlv.ssl.version or ''
+                secret_bits = self.pp_result.tlv.ext.secret_bits or None
+                return (cipher, version, secret_bits)
+            else:
+                return None
+        else:
+            ret: Optional[Cipher] = self.transport.get_extra_info('cipher')
+            return ret
+
+    @property
+    def peercert(self) -> Optional[PeerCert]:
+        """The :meth:`~ssl.SSLSocket.peercert` value for encrypted connections.
+
+        Note:
+            For proxied connections, this data may be unavailable, depending on
+            the server implementation and PROXY protocol version.
+
+        """
+        if self.pp_result.proxied:
+            return self.pp_result.tlv.ext.peercert
+        else:
+            ret: Optional[PeerCert] = self.transport.get_extra_info('peercert')
+            return ret
+
+    @property
+    def unique_id(self) -> bytes:
+        """A unique identifier for the connection. For proxied connections, the
+        unique ID from the header (if any) is returned, otherwise returns the
+        value passed in to the constructor.
+
+        """
+        if self.pp_result.proxied:
+            return self.pp_result.tlv.unique_id
+        else:
+            return self._unique_id
 
     @property
     def from_localhost(self) -> bool:
@@ -227,41 +270,7 @@ class SocketInfo(Container[str]):
             return False
         return ip.is_loopback
 
-    def __contains__(self, name: object) -> bool:
-        if not isinstance(name, str):
-            return False
-        try:
-            self[name]
-        except KeyError:
-            return False
-        else:
-            return True
-
-    def __getitem__(self, name: str) -> Any:
-        ret = self._transport.get_extra_info(name, _missing)
-        if ret is _missing:
-            raise KeyError(name)
-        return ret
-
-    def get(self, name: str, default: Any = None) -> Any:
-        """Return the :meth:`~asyncio.BaseTransport.get_extra_info` data
-        indicated by *name*, returning *default* if the data is not available.
-
-        Note:
-            This object also implements :meth:`~object.__getitem__`, which will
-            throw :exc:`KeyError` if the data is not available.
-
-        Args:
-            name: The data name, e.g. ``cipher``.
-            default: The object to return if the data is not available.
-
-        """
-        try:
-            return self[name]
-        except KeyError:
-            return default
-
     def __str__(self) -> str:
         proxied = ' proxied=True' if self.pp_result.proxied else ''
-        return '<SocketInfo peername=%r sockname=%r peercert=%r%s>' \
-            % (self.peername_str, self.sockname_str, self.peercert, proxied)
+        return '<SocketInfo peername=%r sockname=%r%s>' \
+            % (self.peername_str, self.sockname_str, proxied)

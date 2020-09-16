@@ -1,6 +1,7 @@
 
 from socket import AddressFamily, SocketKind
-from typing import Optional
+from ssl import SSLSocket, SSLObject
+from typing import Union, Optional
 
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown
@@ -25,7 +26,7 @@ class ProxyProtocolDetect(ProxyProtocol):
 
     def __init__(self, *versions: ProxyProtocol) -> None:
         super().__init__()
-        self.versions = versions or [ProxyProtocolV1(), ProxyProtocolV2()]
+        self.versions = versions or [ProxyProtocolV2(), ProxyProtocolV1()]
 
     def is_valid(self, signature: bytes) -> bool:
         return any(v.is_valid(signature) for v in self.versions)
@@ -55,11 +56,14 @@ class ProxyProtocolDetect(ProxyProtocol):
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,
               protocol: Optional[SocketKind] = None,
+              ssl: Union[None, SSLSocket, SSLObject] = None,
+              unique_id: Optional[bytes] = None,
               proxied: bool = True) -> bytes:
         for version in self.versions:
             try:
                 return version.build(source, dest, family=family,
-                                     protocol=protocol, proxied=proxied)
+                                     protocol=protocol, ssl=ssl,
+                                     unique_id=unique_id, proxied=proxied)
             except (KeyError, ValueError):
                 pass
         else:

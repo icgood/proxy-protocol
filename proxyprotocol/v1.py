@@ -2,7 +2,8 @@
 import socket
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from typing import Optional, Sequence
+from ssl import SSLSocket, SSLObject
+from typing import Union, Optional, Sequence
 
 from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
@@ -68,6 +69,8 @@ class ProxyProtocolV1(ProxyProtocol):
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,
               protocol: Optional[SocketKind] = None,
+              ssl: Union[None, SSLSocket, SSLObject] = None,
+              unique_id: Optional[bytes] = None,
               proxied: bool = True) -> bytes:
         if not proxied:
             raise ValueError('proxied must be True in v1')

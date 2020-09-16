@@ -20,6 +20,7 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertIsNone(res._sockname)
         self.assertIsNone(res._peername)
         self.assertEqual('ProxyProtocolResultLocal()', str(res))
+        self.assertEqual(0, len(res.tlv))
 
     def test_result_unknown(self) -> None:
         exc = RuntimeError('test')
@@ -33,6 +34,7 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertIsNone(res._sockname)
         self.assertIsNone(res._peername)
         self.assertEqual('ProxyProtocolResultUnknown()', str(res))
+        self.assertEqual(0, len(res.tlv))
 
     def test_result_ipv4(self) -> None:
         res = ProxyProtocolResultIPv4((IPv4Address('1.2.3.4'), 10),
@@ -47,6 +49,7 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(
             "ProxyProtocolResultIPv4((IPv4Address('1.2.3.4'), 10), "
             "(IPv4Address('5.6.7.8'), 20))", str(res))
+        self.assertEqual(0, len(res.tlv))
 
     def test_result_ipv4_protocol(self) -> None:
         res = ProxyProtocolResultIPv4((IPv4Address('1.2.3.4'), 10),
@@ -71,6 +74,7 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(
             "ProxyProtocolResultIPv6((IPv6Address('::1'), 10), "
             "(IPv6Address('::2'), 20))", str(res))
+        self.assertEqual(0, len(res.tlv))
 
     def test_result_ipv6_protocol(self) -> None:
         res = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
@@ -94,6 +98,7 @@ class TestProxyProtocolResult(unittest.TestCase):
         self.assertEqual(
             "ProxyProtocolResultUnix('/source.sock', "
             "'/dest.sock')", str(res))
+        self.assertEqual(0, len(res.tlv))
 
     def test_result_unix_protocol(self) -> None:
         res = ProxyProtocolResultUnix('/source.sock', '/dest.sock',
