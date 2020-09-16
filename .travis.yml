@@ -24,12 +24,12 @@ deploy:
     local_dir: doc/build/html
     on:
       tags: true
-      condition: $TRAVIS_JOB_NUMBER =~ \\.1$
+      condition: $TRAVIS_JOB_NUMBER =~ \.1$
     edge: true
   - provider: pypi
     distributions: sdist bdist_wheel
     skip_existing: true
     on:
       tags: true
-      condition: $TRAVIS_JOB_NUMBER =~ \\.1$
+      condition: $TRAVIS_JOB_NUMBER =~ \.1$
     edge: true
