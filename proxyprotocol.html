@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol &#8212; proxy-protocol 0.5.3 documentation</title>
+    <title>proxyprotocol &#8212; proxy-protocol 0.5.4 documentation</title>
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -53,7 +53,7 @@
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.5.3 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.5.4 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -147,7 +147,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,7 +214,7 @@ information about the connection.</p>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
 <li><p><strong>ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLObject" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLSocket</span></code></a>]) – The original socket SSL information.</p></li>
 <li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – The original connection unique identifier.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -390,7 +390,7 @@ information about the connection.</p>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
 <li><p><strong>ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLObject" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLSocket</span></code></a>]) – The original socket SSL information.</p></li>
 <li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – The original connection unique identifier.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -493,7 +493,7 @@ information about the connection.</p>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
 <li><p><strong>ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLObject" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLSocket</span></code></a>]) – The original socket SSL information.</p></li>
 <li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – The original connection unique identifier.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -589,7 +589,7 @@ information about the connection.</p>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
 <li><p><strong>ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLObject" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLSocket</span></code></a>]) – The original socket SSL information.</p></li>
 <li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – The original connection unique identifier.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -710,7 +710,7 @@ information about the connection.</p>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
 <li><p><strong>ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLObject" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLObject</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ssl.html#ssl.SSLSocket" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SSLSocket</span></code></a>]) – The original socket SSL information.</p></li>
 <li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – The original connection unique identifier.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -737,7 +737,7 @@ information about the connection.</p>
 <li><p><strong>data_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – The length of the data (addresses + TLV).</p></li>
 <li><p><strong>family</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">AddressFamily</span></code>) – The original socket family.</p></li>
 <li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The original socket protocol.</p></li>
-<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should not be considered proxied.</p></li>
+<li><p><strong>proxied</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – True if the connection should be considered proxied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -854,7 +854,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -908,7 +908,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -971,7 +971,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1046,7 +1046,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1121,7 +1121,7 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1196,7 +1196,439 @@ socket.</p>
 <dd><p>Additional information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></p>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-proxyprotocol.tlv">
+<span id="proxyprotocol-tlv"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.tlv</span></code><a class="headerlink" href="#module-proxyprotocol.tlv" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.tlv.Type">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">Type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The PROXY protocol TLV type values.</p>
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_ALPN">
+<code class="sig-name descname">PP2_TYPE_ALPN</code><em class="property"> = 1</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_ALPN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_AUTHORITY">
+<code class="sig-name descname">PP2_TYPE_AUTHORITY</code><em class="property"> = 2</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_AUTHORITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_CRC32C">
+<code class="sig-name descname">PP2_TYPE_CRC32C</code><em class="property"> = 3</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_CRC32C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_NOOP">
+<code class="sig-name descname">PP2_TYPE_NOOP</code><em class="property"> = 4</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_NOOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_UNIQUE_ID">
+<code class="sig-name descname">PP2_TYPE_UNIQUE_ID</code><em class="property"> = 5</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_UNIQUE_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_SSL">
+<code class="sig-name descname">PP2_TYPE_SSL</code><em class="property"> = 32</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_SSL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_NETNS">
+<code class="sig-name descname">PP2_TYPE_NETNS</code><em class="property"> = 48</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_NETNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_VERSION">
+<code class="sig-name descname">PP2_SUBTYPE_SSL_VERSION</code><em class="property"> = 33</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_VERSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CN">
+<code class="sig-name descname">PP2_SUBTYPE_SSL_CN</code><em class="property"> = 34</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CIPHER">
+<code class="sig-name descname">PP2_SUBTYPE_SSL_CIPHER</code><em class="property"> = 35</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CIPHER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_SIG_ALG">
+<code class="sig-name descname">PP2_SUBTYPE_SSL_SIG_ALG</code><em class="property"> = 36</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_SIG_ALG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_KEY_ALG">
+<code class="sig-name descname">PP2_SUBTYPE_SSL_KEY_ALG</code><em class="property"> = 37</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_KEY_ALG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MIN_CUSTOM">
+<code class="sig-name descname">PP2_TYPE_MIN_CUSTOM</code><em class="property"> = 224</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MIN_CUSTOM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MAX_CUSTOM">
+<code class="sig-name descname">PP2_TYPE_MAX_CUSTOM</code><em class="property"> = 239</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MAX_CUSTOM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MIN_EXPERIMENT">
+<code class="sig-name descname">PP2_TYPE_MIN_EXPERIMENT</code><em class="property"> = 240</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MIN_EXPERIMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MAX_EXPERIMENT">
+<code class="sig-name descname">PP2_TYPE_MAX_EXPERIMENT</code><em class="property"> = 247</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MAX_EXPERIMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MIN_FUTURE">
+<code class="sig-name descname">PP2_TYPE_MIN_FUTURE</code><em class="property"> = 248</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MIN_FUTURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_TYPE_MAX_FUTURE">
+<code class="sig-name descname">PP2_TYPE_MAX_FUTURE</code><em class="property"> = 255</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MAX_FUTURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_COMPRESSION">
+<code class="sig-name descname">PP2_SUBTYPE_EXT_COMPRESSION</code><em class="property"> = 1</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_COMPRESSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_SECRET_BITS">
+<code class="sig-name descname">PP2_SUBTYPE_EXT_SECRET_BITS</code><em class="property"> = 2</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_SECRET_BITS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_PEERCERT">
+<code class="sig-name descname">PP2_SUBTYPE_EXT_PEERCERT</code><em class="property"> = 3</em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_PEERCERT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.tlv.SSLClient">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">SSLClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.SSLClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>The PROXY protocol <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_SSL</span></code> client flags.</p>
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.SSLClient.PP2_CLIENT_SSL">
+<code class="sig-name descname">PP2_CLIENT_SSL</code><em class="property"> = 1</em><a class="headerlink" href="#proxyprotocol.tlv.SSLClient.PP2_CLIENT_SSL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_CONN">
+<code class="sig-name descname">PP2_CLIENT_CERT_CONN</code><em class="property"> = 2</em><a class="headerlink" href="#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_CONN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_SESS">
+<code class="sig-name descname">PP2_CLIENT_CERT_SESS</code><em class="property"> = 4</em><a class="headerlink" href="#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_SESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.tlv.TLV">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">TLV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">raw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.TLV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the basic parsing and structure of a PROXY protocol TLV vector.
+The unpacked TLV values are available as dict-style keys of this object,
+e.g. <code class="docutils literal notranslate"><span class="pre">tlv[0xE2]</span></code>. To serialize back to a bytestring, use <code class="docutils literal notranslate"><span class="pre">bytes(tlv)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">ProxyProtocolTLV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">b''</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">raw</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">alpn</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">authority</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">crc32c</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">unique_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ssl</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">netns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ext</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the TLV values that may be appended to a PROXY protocol header.
+These values can provide additional information not stored in the address
+data. Refer to the PROXY protocol spec for more information about each TLV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.alpn">
+<em class="property">property </em><code class="sig-name descname">alpn</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.alpn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_ALPN</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.authority">
+<em class="property">property </em><code class="sig-name descname">authority</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.authority" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_AUTHORITY</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.crc32c">
+<em class="property">property </em><code class="sig-name descname">crc32c</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.crc32c" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_CRC32C</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.unique_id">
+<em class="property">property </em><code class="sig-name descname">unique_id</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.unique_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_UNIQUE_ID</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.ssl">
+<em class="property">property </em><code class="sig-name descname">ssl</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.ssl" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_SSL</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV" title="proxyprotocol.tlv.ProxyProtocolSSLTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolSSLTLV</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.netns">
+<em class="property">property </em><code class="sig-name descname">netns</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.netns" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_NETNS</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolTLV.ext">
+<em class="property">property </em><code class="sig-name descname">ext</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.ext" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_NOOP</span></code> value, possibly parsed as an extension TLV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolExtTLV" title="proxyprotocol.tlv.ProxyProtocolExtTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolExtTLV</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">ProxyProtocolSSLTLV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">b''</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">raw</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">has_ssl</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">has_cert_conn</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">has_cert_sess</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verify</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cn</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cipher</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sig_alg</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_alg</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_SSL</span></code> TLV, which is prefixed with a struct containing
+<em>client</em> and <em>verify</em> values, then follows with <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_*</span></code> TLVs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.client">
+<em class="property">property </em><code class="sig-name descname">client</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.client" title="Permalink to this definition">¶</a></dt>
+<dd><p>The client field in the <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_SSL</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.verify">
+<em class="property">property </em><code class="sig-name descname">verify</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.verify" title="Permalink to this definition">¶</a></dt>
+<dd><p>The verify field in the <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_SSL</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.has_ssl">
+<em class="property">property </em><code class="sig-name descname">has_ssl</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_ssl" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the <code class="docutils literal notranslate"><span class="pre">PP2_CLIENT_SSL</span></code> flag was set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_conn">
+<em class="property">property </em><code class="sig-name descname">has_cert_conn</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_conn" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the <code class="docutils literal notranslate"><span class="pre">PP2_CLIENT_CERT_CONN</span></code> flag was set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_sess">
+<em class="property">property </em><code class="sig-name descname">has_cert_sess</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_sess" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the <code class="docutils literal notranslate"><span class="pre">PP2_CLIENT_CERT_SESS</span></code> flag was set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.verified">
+<em class="property">property </em><code class="sig-name descname">verified</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.verified" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the client provided a certificate that was successfully
+verified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.version">
+<em class="property">property </em><code class="sig-name descname">version</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_VERSION</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.cn">
+<em class="property">property </em><code class="sig-name descname">cn</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.cn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_CN</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.cipher">
+<em class="property">property </em><code class="sig-name descname">cipher</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.cipher" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_CIPHER</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.sig_alg">
+<em class="property">property </em><code class="sig-name descname">sig_alg</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.sig_alg" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_SIG_ALG</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolSSLTLV.key_alg">
+<em class="property">property </em><code class="sig-name descname">key_alg</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolSSLTLV.key_alg" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_SSL_KEY_ALG</span></code> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="proxyprotocol.tlv.ProxyProtocolExtTLV">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.tlv.</code><code class="sig-name descname">ProxyProtocolExtTLV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">b''</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">raw</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">compression</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">secret_bits</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">peercert</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-standard extension TLV, which is hidden inside a <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_NOOP</span></code>
+and must start with <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX" title="proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX"><code class="xref py py-attr docutils literal notranslate"><span class="pre">MAGIC_PREFIX</span></code></a>.</p>
+<dl class="py attribute">
+<dt id="proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX">
+<code class="sig-name descname">MAGIC_PREFIX</code><em class="property">: ClassVar<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)">bytes</a><span class="p">]</span></em><em class="property"> = b'\x88\x1by\xc1\xce\x96\x85\xb0'</em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_NOOP</span></code> value must begin with this byte sequence to be
+parsed as a <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolExtTLV" title="proxyprotocol.tlv.ProxyProtocolExtTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolExtTLV</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolExtTLV.compression">
+<em class="property">property </em><code class="sig-name descname">compression</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.compression" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_COMPRESSION</span></code> value. This is used by the
+<a class="reference internal" href="#proxyprotocol.sock.SocketInfo.compression" title="proxyprotocol.sock.SocketInfo.compression"><code class="xref py py-attr docutils literal notranslate"><span class="pre">compression</span></code></a> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits">
+<em class="property">property </em><code class="sig-name descname">secret_bits</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_SECRET_BITS</span></code> value. This is used to populate
+the third member of the: attr:<cite>~proxyprotocol.sock.SocketInfo.cipher</cite>
+tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="proxyprotocol.tlv.ProxyProtocolExtTLV.peercert">
+<em class="property">property </em><code class="sig-name descname">peercert</code><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.peercert" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_PEERCERT</span></code> value. This is used by the
+<a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peercert" title="proxyprotocol.sock.SocketInfo.peercert"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peercert</span></code></a> value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1211,9 +1643,6 @@ socket.</p>
 <em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.sock.</code><code class="sig-name descname">SocketInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transport</span></em>, <em class="sig-param"><span class="n">result</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">unique_id</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.sock.SocketInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides information about the connection, from either the underlying
 <a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a> transport layer or overridden by the PROXY protocol result.</p>
-<p>Undocumented properties will pass through as calls to
-<a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport.get_extra_info" title="(in Python v3.8)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_extra_info()</span></code></a> and will raise
-<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.8)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">AttributeError</span></code></a> if there is no value available.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1259,7 +1688,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.sockname_ip">
 <em class="property">property </em><code class="sig-name descname">sockname_ip</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname_ip" title="Permalink to this definition">¶</a></dt>
 <dd><p>The IP address object from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.sockname" title="proxyprotocol.sock.SocketInfo.sockname"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sockname</span></code></a>, for
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> connections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>]</p>
@@ -1271,7 +1700,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.sockname_port">
 <em class="property">property </em><code class="sig-name descname">sockname_port</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname_port" title="Permalink to this definition">¶</a></dt>
 <dd><p>The port number from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.sockname" title="proxyprotocol.sock.SocketInfo.sockname"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sockname</span></code></a>, for
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> connections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
@@ -1283,7 +1712,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.sockname_str">
 <em class="property">property </em><code class="sig-name descname">sockname_str</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.sockname_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.sockname" title="proxyprotocol.sock.SocketInfo.sockname"><code class="xref py py-attr docutils literal notranslate"><span class="pre">sockname</span></code></a> address as a string. For
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code>/<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> families, this is
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a>/<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> families, this is
 <code class="docutils literal notranslate"><span class="pre">ip:port</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1311,7 +1740,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.peername_ip">
 <em class="property">property </em><code class="sig-name descname">peername_ip</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername_ip" title="Permalink to this definition">¶</a></dt>
 <dd><p>The IP address object from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername" title="proxyprotocol.sock.SocketInfo.peername"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername</span></code></a>, for
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> connections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>]</p>
@@ -1323,7 +1752,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.peername_port">
 <em class="property">property </em><code class="sig-name descname">peername_port</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername_port" title="Permalink to this definition">¶</a></dt>
 <dd><p>The port number from <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername" title="proxyprotocol.sock.SocketInfo.peername"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername</span></code></a>, for
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> connections.</p>
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> connections.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
@@ -1335,7 +1764,7 @@ overridden by the PROXY protocol result.</p></li>
 <dt id="proxyprotocol.sock.SocketInfo.peername_str">
 <em class="property">property </em><code class="sig-name descname">peername_str</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.peername_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername" title="proxyprotocol.sock.SocketInfo.peername"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername</span></code></a> address as a string. For
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET</span></code>/<code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_INET6</span></code> families, this is
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET</span></code></a>/<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_INET6" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_INET6</span></code></a> families, this is
 <code class="docutils literal notranslate"><span class="pre">ip:port</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1442,11 +1871,11 @@ value passed in to the constructor.</p>
 <em class="property">property </em><code class="sig-name descname">from_localhost</code><a class="headerlink" href="#proxyprotocol.sock.SocketInfo.from_localhost" title="Permalink to this definition">¶</a></dt>
 <dd><p>True for local socket connections, if:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.sock.SocketInfo.family" title="proxyprotocol.sock.SocketInfo.family"><code class="xref py py-attr docutils literal notranslate"><span class="pre">family</span></code></a> is <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_UNIX</span></code>, or</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.sock.SocketInfo.family" title="proxyprotocol.sock.SocketInfo.family"><code class="xref py py-attr docutils literal notranslate"><span class="pre">family</span></code></a> is <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_UNIX" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_UNIX</span></code></a>, or</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peername_ip" title="proxyprotocol.sock.SocketInfo.peername_ip"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peername_ip</span></code></a> has True
 <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_loopback" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_loopback</span></code></a> flag.</p></li>
 </ul>
-<p>To be specific, True for <code class="xref py py-attr docutils literal notranslate"><span class="pre">AF_UNIX</span></code> connections and True
+<p>To be specific, True for <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_UNIX" title="(in Python v3.8)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_UNIX</span></code></a> connections and True
 for IPv4/IPv6 connections with True
 <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_loopback" title="(in Python v3.8)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_loopback</span></code></a> flags.</p>
 <dl class="field-list simple">
@@ -1478,6 +1907,7 @@ for IPv4/IPv6 connections with True
 <li><a class="reference internal" href="#module-proxyprotocol.v1"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v1</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.v2"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v2</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.result"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.tlv"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.tlv</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.sock"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a></li>
 </ul>
 </li>
@@ -1541,7 +1971,7 @@ for IPv4/IPv6 connections with True
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.5.3 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.5.4 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
