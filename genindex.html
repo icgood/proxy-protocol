@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; proxy-protocol 0.4.0 documentation</title>
+    <title>Index &#8212; proxy-protocol 0.5.1 documentation</title>
     <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.4.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.5.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
@@ -80,6 +80,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  
 </div>
@@ -112,6 +113,8 @@
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build_header">build_header() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
 </li>
+      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build_tlv">build_tlv() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -119,6 +122,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect.choose_version">choose_version() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
+</li>
+      <li><a href="proxyprotocol.html#proxyprotocol.typing.Cipher">Cipher (in module proxyprotocol.typing)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.cipher">cipher() (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.compression">compression() (proxyprotocol.sock.SocketInfo property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -184,12 +195,8 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.get">get() (proxyprotocol.sock.SocketInfo method)</a>
-
-      <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.get">(proxyprotocol.version.ProxyProtocolVersion class method)</a>
+      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.get">get() (proxyprotocol.version.ProxyProtocolVersion class method)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -251,11 +258,13 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse_addresses">parse_addresses() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse_data">parse_data() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse_header">parse_header() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1.parse_line">parse_line() (proxyprotocol.v1.ProxyProtocolV1 method)</a>
+</li>
+      <li><a href="proxyprotocol.html#proxyprotocol.typing.PeerCert">PeerCert (in module proxyprotocol.typing)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peercert">peercert() (proxyprotocol.sock.SocketInfo property)</a>
 </li>
@@ -313,6 +322,8 @@
         <li><a href="proxyprotocol.html#module-proxyprotocol.detect">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     proxyprotocol.noop
 
@@ -320,8 +331,6 @@
         <li><a href="proxyprotocol.html#module-proxyprotocol.noop">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     proxyprotocol.result
 
@@ -448,8 +457,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.ssl_context">ssl_context() (proxyprotocol.sock.SocketInfo property)</a>
-</li>
       <li><a href="proxyprotocol.html#proxyprotocol.typing.StreamReaderProtocol">StreamReaderProtocol (class in proxyprotocol.typing)</a>
 </li>
   </ul></td>
@@ -458,7 +465,33 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.tlv">tlv() (proxyprotocol.ProxyProtocolResult property)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.tlv">(proxyprotocol.result.ProxyProtocolResult property)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.tlv">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.tlv">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal.tlv">(proxyprotocol.result.ProxyProtocolResultLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.tlv">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.tlv">(proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.html#proxyprotocol.typing.TransportProtocol">TransportProtocol (class in proxyprotocol.typing)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.unique_id">unique_id() (proxyprotocol.sock.SocketInfo property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -525,7 +558,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.4.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.5.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
