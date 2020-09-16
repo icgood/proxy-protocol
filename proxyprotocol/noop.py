@@ -1,6 +1,7 @@
 
 from socket import AddressFamily, SocketKind
-from typing import Optional, Sequence, NoReturn
+from ssl import SSLSocket, SSLObject
+from typing import Union, Optional, Sequence, NoReturn
 
 from . import ProxyProtocol
 from .result import ProxyProtocolResultLocal
@@ -30,5 +31,7 @@ class ProxyProtocolNoop(ProxyProtocol):
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,
               protocol: Optional[SocketKind] = None,
+              ssl: Union[None, SSLSocket, SSLObject] = None,
+              unique_id: Optional[bytes] = None,
               proxied: bool = True) -> bytes:
         return b''

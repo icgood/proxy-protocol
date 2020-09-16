@@ -3,8 +3,10 @@ import socket
 import pkg_resources
 from abc import abstractmethod, ABCMeta
 from socket import AddressFamily, SocketKind
-from typing import Any, Optional, Sequence
+from ssl import SSLSocket, SSLObject
+from typing import Any, Union, Optional, Sequence
 
+from .tlv import ProxyProtocolTLV
 from .typing import Address, StreamReaderProtocol
 
 __all__ = ['__version__', 'ProxyProtocolError', 'ProxyProtocolResult',
@@ -64,6 +66,12 @@ class ProxyProtocolResult(metaclass=ABCMeta):
         return None
 
     @property
+    @abstractmethod
+    def tlv(self) -> ProxyProtocolTLV:
+        """Additional information about the connection."""
+        ...
+
+    @property
     def _sockname(self) -> Address:
         return None
 
@@ -113,6 +121,8 @@ class ProxyProtocol(metaclass=ABCMeta):
     @abstractmethod
     def build(self, source: Address, dest: Address, *, family: AddressFamily,
               protocol: Optional[SocketKind] = None,
+              ssl: Union[None, SSLObject, SSLSocket] = None,
+              unique_id: Optional[bytes] = None,
               proxied: bool = True) -> bytes:
         """Builds a PROXY protocol v1 header that may be sent at the beginning
         of an outbound, client-side connection to indicate the original
@@ -123,6 +133,8 @@ class ProxyProtocol(metaclass=ABCMeta):
             dest: The original destination address of the connection.
             family: The original socket family.
             protocol: The original socket protocol.
+            ssl: The original socket SSL information.
+            unique_id: The original connection unique identifier.
             proxied: True if the connection should not be considered proxied.
 
         Raises:

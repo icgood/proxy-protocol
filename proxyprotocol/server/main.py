@@ -13,33 +13,25 @@ from argparse import Namespace, ArgumentParser, ArgumentDefaultsHelpFormatter
 from asyncio import CancelledError
 from contextlib import AsyncExitStack
 from functools import partial
-from typing import Tuple, Sequence
 
 from .. import ProxyProtocol
 from ..version import ProxyProtocolVersion
-from . import Server
+from . import Address
+from .protocol import DownstreamProtocol, UpstreamProtocol
 
 __all__ = ['main']
-
-_Address = Tuple[str, int]
-_Service = Tuple[_Address, _Address]
-
-
-def address(addr: str) -> _Address:
-    host, _, port = addr.rpartition(':')
-    return host, int(port)
 
 
 def main() -> int:
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument('--service', nargs=2, metavar='HOST:PORT', default=[],
-                        action='append', dest='services', type=address,
+                        action='append', dest='services',
                         help='source and destination of a service')
     parser.add_argument('--buf-len', metavar='BYTES', default=262144, type=int,
                         help='size of the read buffer')
     parser.add_argument('-q', '--quiet', action='store_true',
-                        help='only output downstream connection errors')
+                        help='show only upstream connection errors')
     parser.add_argument('type', default='detect', nargs='?',
                         choices=[v.name.lower() for v in ProxyProtocolVersion],
                         help='the PROXY protocol version')
@@ -58,13 +50,16 @@ def main() -> int:
 
 async def run(pp: ProxyProtocol, args: Namespace) -> int:
     loop = asyncio.get_running_loop()
-    services: Sequence[_Service] = args.services
+    services = [(Address(source, server=True), Address(dest, server=False))
+                for (source, dest) in args.services]
     buf_len: int = args.buf_len
-    new_server = partial(Server, pp, loop, buf_len)
+    new_server = partial(DownstreamProtocol, UpstreamProtocol,
+                         pp, loop, buf_len)
     servers = [
-        await loop.create_server(
-            partial(new_server, dest_host, dest_port), host, port)
-        for [(host, port), (dest_host, dest_port)] in services]
+        await loop.create_server(partial(new_server, dest),
+                                 source.host, source.port or 0,
+                                 ssl=source.ssl)
+        for source, dest in services]
     async with AsyncExitStack() as stack:
         for server in servers:
             await stack.enter_async_context(server)

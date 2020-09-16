@@ -6,6 +6,7 @@ from typing import Optional, Tuple, Sequence
 from typing_extensions import Literal
 
 from . import ProxyProtocolResult
+from .tlv import ProxyProtocolTLV
 
 __all__ = ['ProxyProtocolResult', 'ProxyProtocolResultLocal',
            'ProxyProtocolResultUnknown', 'ProxyProtocolResultIPv4',
@@ -33,6 +34,10 @@ class ProxyProtocolResultLocal(ProxyProtocolResult):
     @property
     def dest(self) -> None:
         return None
+
+    @property
+    def tlv(self) -> ProxyProtocolTLV:
+        return ProxyProtocolTLV()
 
 
 class ProxyProtocolResultUnknown(ProxyProtocolResult):
@@ -64,6 +69,10 @@ class ProxyProtocolResultUnknown(ProxyProtocolResult):
     def dest(self) -> None:
         return None
 
+    @property
+    def tlv(self) -> ProxyProtocolTLV:
+        return ProxyProtocolTLV()
+
 
 class ProxyProtocolResultIPv4(ProxyProtocolResult):
     """The original connection was made with an IPv4 socket. The
@@ -72,15 +81,17 @@ class ProxyProtocolResultIPv4(ProxyProtocolResult):
 
     """
 
-    __slots__ = ['_source', '_dest', '_protocol']
+    __slots__ = ['_source', '_dest', '_protocol', '_tlv']
 
     def __init__(self, source: Tuple[IPv4Address, int],
                  dest: Tuple[IPv4Address, int], *,
-                 protocol: Optional[SocketKind] = None) -> None:
+                 protocol: Optional[SocketKind] = None,
+                 tlv: ProxyProtocolTLV = ProxyProtocolTLV()) -> None:
         super().__init__()
         self._source = source
         self._dest = dest
         self._protocol = protocol
+        self._tlv = tlv
 
     @property
     def proxied(self) -> Literal[True]:
@@ -101,6 +112,10 @@ class ProxyProtocolResultIPv4(ProxyProtocolResult):
     @property
     def protocol(self) -> Optional[SocketKind]:
         return self._protocol
+
+    @property
+    def tlv(self) -> ProxyProtocolTLV:
+        return self._tlv
 
     @property
     def _peername(self) -> Tuple[str, int]:
@@ -125,15 +140,17 @@ class ProxyProtocolResultIPv6(ProxyProtocolResult):
 
     """
 
-    __slots__ = ['_source', '_dest', '_protocol']
+    __slots__ = ['_source', '_dest', '_protocol', '_tlv']
 
     def __init__(self, source: Tuple[IPv6Address, int],
                  dest: Tuple[IPv6Address, int], *,
-                 protocol: Optional[SocketKind] = None) -> None:
+                 protocol: Optional[SocketKind] = None,
+                 tlv: ProxyProtocolTLV = ProxyProtocolTLV()) -> None:
         super().__init__()
         self._source = source
         self._dest = dest
         self._protocol = protocol
+        self._tlv = tlv
 
     @property
     def proxied(self) -> Literal[True]:
@@ -154,6 +171,10 @@ class ProxyProtocolResultIPv6(ProxyProtocolResult):
     @property
     def protocol(self) -> Optional[SocketKind]:
         return self._protocol
+
+    @property
+    def tlv(self) -> ProxyProtocolTLV:
+        return self._tlv
 
     @property
     def _peername(self) -> Tuple[str, int, int, int]:
@@ -178,14 +199,16 @@ class ProxyProtocolResultUnix(ProxyProtocolResult):
 
     """
 
-    __slots__ = ['_source', '_dest', '_protocol']
+    __slots__ = ['_source', '_dest', '_protocol', '_tlv']
 
     def __init__(self, source: str, dest: str, *,
-                 protocol: Optional[SocketKind] = None) -> None:
+                 protocol: Optional[SocketKind] = None,
+                 tlv: ProxyProtocolTLV = ProxyProtocolTLV()) -> None:
         super().__init__()
         self._source = source
         self._dest = dest
         self._protocol = protocol
+        self._tlv = tlv
 
     @property
     def proxied(self) -> Literal[True]:
@@ -206,6 +229,10 @@ class ProxyProtocolResultUnix(ProxyProtocolResult):
     @property
     def protocol(self) -> Optional[SocketKind]:
         return self._protocol
+
+    @property
+    def tlv(self) -> ProxyProtocolTLV:
+        return self._tlv
 
     @property
     def _peername(self) -> str:

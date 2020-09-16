@@ -1,13 +1,20 @@
 
 from abc import abstractmethod
-from typing import Any, Union, Tuple
+from typing import Any, Union, Optional, Tuple, Mapping
 from typing_extensions import Protocol
 
-__all__ = ['Address', 'StreamReaderProtocol', 'TransportProtocol']
+__all__ = ['Address', 'PeerCert', 'Cipher',
+           'StreamReaderProtocol', 'TransportProtocol']
 
 #: The types that can be retured by :meth:`~socket.socket.getsockname` and
 #: :meth:`~socket.socket.getpeername`.
 Address = Union[None, str, Tuple[str, int], Tuple[str, int, int, int]]
+
+#: The type returned by :meth:`ssl.SSLSocket.cipher`.
+Cipher = Tuple[str, str, Optional[int]]
+
+#: The type returned by :meth:`ssl.SSLSocket.getpeercert`.
+PeerCert = Mapping[str, Any]
 
 
 class StreamReaderProtocol(Protocol):

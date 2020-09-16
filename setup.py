@@ -1,4 +1,4 @@
-# Copyright (c) 20120 Ian C. Good
+# Copyright (c) 2020 Ian C. Good
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 setup(name='proxy-protocol',
-      version='0.4.0',
+      version='0.5.0',
       author='Ian Good',
-      author_email='icgood@gmail.com',
+      author_email='ian@icgood.net',
       description='PROXY protocol library with asyncio server implementation',
       long_description=readme + license,
       long_description_content_type='text/markdown',
