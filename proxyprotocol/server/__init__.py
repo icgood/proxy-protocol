@@ -22,7 +22,7 @@ class Address:
 
     """
 
-    def __init__(self, addr: str, *, server: bool) -> None:
+    def __init__(self, addr: str, *, server: bool = False) -> None:
         super().__init__()
         url = urlsplit(addr)
         if not url.scheme and not url.netloc:
@@ -39,7 +39,7 @@ class Address:
     @property
     def host(self) -> str:
         """The hostname parsed from the address."""
-        return self.url.hostname or 'localhost'
+        return self.url.hostname or ''
 
     @property
     def port(self) -> Optional[int]:

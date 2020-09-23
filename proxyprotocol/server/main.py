@@ -50,7 +50,7 @@ def main() -> int:
 
 async def run(pp: ProxyProtocol, args: Namespace) -> int:
     loop = asyncio.get_running_loop()
-    services = [(Address(source, server=True), Address(dest, server=False))
+    services = [(Address(source, server=True), Address(dest))
                 for (source, dest) in args.services]
     buf_len: int = args.buf_len
     new_server = partial(DownstreamProtocol, UpstreamProtocol,

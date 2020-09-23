@@ -28,7 +28,7 @@ def main() -> int:
                         help='the PROXY protocol version')
     parser.add_argument('address', metavar='HOST:PORT',
                         type=partial(Address, server=True),
-                        nargs='?', default='localhost:10007',
+                        nargs='?', default=':10007',
                         help='the listener address')
     args = parser.parse_args()
 
@@ -44,7 +44,7 @@ async def run(pp: ProxyProtocol, address: Address) -> int:
     loop = asyncio.get_event_loop()
     callback = partial(run_conn, pp)
     server = await asyncio.start_server(
-        callback, address.host, address.port or 10007, ssl=address.ssl)
+        callback, address.host, address.port or 0, ssl=address.ssl)
     async with server:
         forever = asyncio.create_task(server.serve_forever())
         loop.add_signal_handler(signal.SIGINT, forever.cancel)
