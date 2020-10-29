@@ -26,9 +26,8 @@ _Connect = Tuple[BaseTransport, BaseProtocol]
 
 class _Base(BufferedProtocol, metaclass=ABCMeta):
 
-    def __init__(self, pp: ProxyProtocol, buf_len: int) -> None:
+    def __init__(self, buf_len: int) -> None:
         super().__init__()
-        self.pp: Final = pp
         self._paused = False
         self._buf: bytearray = bytearray(buf_len)
         self._queue: Deque[bytes] = deque()
@@ -94,16 +93,17 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
 class DownstreamProtocol(_Base):
 
     def __init__(self, upstream_protocol: Type[UpstreamProtocol],
-                 pp: ProxyProtocol, loop: AbstractEventLoop,
-                 buf_len: int, upstream: Address) -> None:
-        super().__init__(pp, buf_len)
+                 loop: AbstractEventLoop, buf_len: int,
+                 upstream: Address) -> None:
+        super().__init__(buf_len)
         self.loop: Final = loop
         self.upstream: Final = upstream
         self.id: Final = uuid4().bytes
         self._waiting: Deque[memoryview] = deque()
         self._connect: Optional[Task[Any]] = None
         self._upstream: Optional[UpstreamProtocol] = None
-        self._upstream_factory = partial(upstream_protocol, self)
+        self._upstream_factory = partial(upstream_protocol, self, buf_len,
+                                         upstream.pp)
 
     def close(self) -> None:
         super().close()
@@ -158,8 +158,10 @@ class DownstreamProtocol(_Base):
 
 class UpstreamProtocol(_Base):
 
-    def __init__(self, downstream: DownstreamProtocol) -> None:
-        super().__init__(downstream.pp, len(downstream._buf))
+    def __init__(self, downstream: DownstreamProtocol, buf_len: int,
+                 pp: ProxyProtocol) -> None:
+        super().__init__(buf_len)
+        self.pp: Final = pp
         self.downstream: Final = downstream
 
     def close(self) -> None:

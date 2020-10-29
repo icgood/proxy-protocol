@@ -4,6 +4,9 @@ from ssl import SSLContext, Purpose, VerifyMode, create_default_context
 from typing import Optional
 from typing_extensions import Final
 
+from .. import ProxyProtocol
+from ..version import ProxyProtocolVersion
+
 __all__ = ['Address']
 
 
@@ -12,6 +15,7 @@ class Address:
 
     * ``HOST``
     * ``HOST:PORT``
+    * ``HOST:PORT?pp=v1``
     * ``ssl://HOST:PORT`` (outbound addresses only)
     * ``ssl://HOST:PORT?cert=/path/to/cert.pem``
     * ``ssl://HOST:PORT?cert=cert.pem&key=privkey.pem&verify=CERT_REQUIRED``
@@ -25,7 +29,7 @@ class Address:
     def __init__(self, addr: str, *, server: bool = False) -> None:
         super().__init__()
         url = urlsplit(addr)
-        if not url.scheme and not url.netloc:
+        if not url.scheme or not url.netloc:
             url = urlsplit('//' + addr)
         if url.query:
             query = parse_qs(url.query)
@@ -47,8 +51,14 @@ class Address:
         return self.url.port or None
 
     @property
+    def pp(self) -> ProxyProtocol:
+        """The PROXY protocol implementation."""
+        pp_version = self.query.get('pp', [''])[-1] or 'detect'
+        return ProxyProtocolVersion.get(pp_version)
+
+    @property
     def ssl(self) -> Optional[SSLContext]:
-        """The :class:`~ssl.SSLContext` to use on the address."""
+        """The: class:`~ssl.SSLContext` to use on the address."""
         if self.url.scheme == 'ssl':
             if self._ssl is None:
                 if self.server:

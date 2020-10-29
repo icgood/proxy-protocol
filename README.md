@@ -87,6 +87,10 @@ together can demonstrate the process end-to-end: use `proxyprotocol-server`
 to proxy connections with a PROXY protocol header to `proxyprotocol-echo`,
 which then displays the original connection information.
 
+The `hostname:port` arguments used by both types of servers are parsed by the
+[`Address`][8] class, which allows for customization of SSL/TLS and PROXY
+protocol versions.
+
 ### Echo Server
 
 The `proxyprotocol-echo` server expects inbound connections to provide a PROXY
@@ -106,7 +110,7 @@ header to indicate the original connection information.
 
 ```bash
 proxyprotocol-server --help
-proxyprotocol-server v2 --service localhost:10000 localhost:10007
+proxyprotocol-server --service localhost:10000 localhost:10007
 ```
 
 ## Development and Testing
@@ -157,3 +161,4 @@ hinting to the extent possible and common in the rest of the codebase.
 [5]: https://docs.python.org/3/library/venv.html
 [6]: https://www.python.org/dev/peps/pep-0484/
 [7]: http://mypy-lang.org/
+[8]: https://icgood.github.io/proxy-protocol/proxyprotocol.html#proxyprotocol.server.Address

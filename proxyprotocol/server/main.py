@@ -14,8 +14,6 @@ from asyncio import CancelledError
 from contextlib import AsyncExitStack
 from functools import partial
 
-from .. import ProxyProtocol
-from ..version import ProxyProtocolVersion
 from . import Address
 from .protocol import DownstreamProtocol, UpstreamProtocol
 
@@ -25,16 +23,14 @@ __all__ = ['main']
 def main() -> int:
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--service', nargs=2, metavar='HOST:PORT', default=[],
+    parser.add_argument('--service', nargs=2, default=[],
+                        metavar=('SOURCE:PORT', 'DEST:PORT'),
                         action='append', dest='services',
                         help='source and destination of a service')
     parser.add_argument('--buf-len', metavar='BYTES', default=262144, type=int,
                         help='size of the read buffer')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='show only upstream connection errors')
-    parser.add_argument('type', default='detect', nargs='?',
-                        choices=[v.name.lower() for v in ProxyProtocolVersion],
-                        help='the PROXY protocol version')
     args = parser.parse_args()
 
     if not args.services:
@@ -44,17 +40,16 @@ def main() -> int:
         level=logging.ERROR if args.quiet else logging.INFO,
         format='%(asctime)-15s %(name)s %(message)s')
 
-    pp = ProxyProtocolVersion.get(args.type)
-    return asyncio.run(run(pp, args))
+    return asyncio.run(run(args))
 
 
-async def run(pp: ProxyProtocol, args: Namespace) -> int:
+async def run(args: Namespace) -> int:
     loop = asyncio.get_running_loop()
     services = [(Address(source, server=True), Address(dest))
                 for (source, dest) in args.services]
     buf_len: int = args.buf_len
     new_server = partial(DownstreamProtocol, UpstreamProtocol,
-                         pp, loop, buf_len)
+                         loop, buf_len)
     servers = [
         await loop.create_server(partial(new_server, dest),
                                  source.host, source.port or 0,
