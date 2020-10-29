@@ -59,3 +59,9 @@
 
 .. automodule:: proxyprotocol.sock
    :members:
+
+``proxyprotocol.server``
+------------------------
+
+.. automodule:: proxyprotocol.server
+   :members:
