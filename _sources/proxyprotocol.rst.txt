@@ -60,6 +60,12 @@
 .. automodule:: proxyprotocol.sock
    :members:
 
+``proxyprotocol.reader``
+------------------------
+
+.. automodule:: proxyprotocol.reader
+   :members:
+
 ``proxyprotocol.server``
 ------------------------
 

@@ -7,16 +7,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol &#8212; proxy-protocol 0.5.7 documentation</title>
-    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <title>proxyprotocol &#8212; proxy-protocol 0.6.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
 
     
     
@@ -53,7 +52,7 @@
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.5.7 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.6.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -79,6 +78,23 @@ a syntax issue in the header, not simply bad data.</p>
 from the stream before failure. The stream should be considered invalid
 and closed.</p>
 </div>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="proxyprotocol.ProxyProtocolWantRead">
+<em class="property">exception </em><code class="sig-prename descclassname">proxyprotocol.</code><code class="sig-name descname">ProxyProtocolWantRead</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">want_bytes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">want_line</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocolWantRead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thrown when the PROXY protocol header cannot be parsed because the
+provided data is not enough to be parsed. Additional data must be read
+before parsing can succeed or fail.</p>
+<p>Either <em>want_bytes</em> or <em>want_line</em> must be given, but not both.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>want_bytes</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Number of bytes needed before parsing may proceed.</p></li>
+<li><p><strong>want_line</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Additional data should be read until the end of a line.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -174,19 +190,18 @@ the PROXY protocol header.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="proxyprotocol.ProxyProtocol.read">
-<em class="property">abstract async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocol.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a PROXY protocol header from the given stream and return
+<dt id="proxyprotocol.ProxyProtocol.parse">
+<em class="property">abstract </em><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocol.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
-<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
+    be extended with additional bytes or lines to finish parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
     syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
@@ -312,14 +327,14 @@ returned.</p>
 
 <dl class="py class">
 <dt id="proxyprotocol.typing.StreamReaderProtocol">
-<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">StreamReaderProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.StreamReaderProtocol" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">StreamReaderProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.StreamReaderProtocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>A typing abstraction intended to be compatible with
 <a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.StreamReader" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReader</span></code></a>..</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="proxyprotocol.typing.TransportProtocol">
-<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">TransportProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.TransportProtocol" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.typing.</code><code class="sig-name descname">TransportProtocol</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.typing.TransportProtocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>A typing abstraction intended to be compatible with both
 <a class="reference external" href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio.BaseTransport" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransport</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.StreamWriter" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamWriter</span></code></a>.</p>
 </dd></dl>
@@ -350,19 +365,18 @@ the PROXY protocol header.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="proxyprotocol.noop.ProxyProtocolNoop.read">
-<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.noop.ProxyProtocolNoop.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a PROXY protocol header from the given stream and return
+<dt id="proxyprotocol.noop.ProxyProtocolNoop.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.noop.ProxyProtocolNoop.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
-<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
+    be extended with additional bytes or lines to finish parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
     syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
@@ -439,19 +453,18 @@ the PROXY protocol header.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="proxyprotocol.detect.ProxyProtocolDetect.read">
-<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a PROXY protocol header from the given stream and return
+<dt id="proxyprotocol.detect.ProxyProtocolDetect.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
-<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
+    be extended with additional bytes or lines to finish parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
     syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
@@ -535,19 +548,18 @@ the PROXY protocol header.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="proxyprotocol.v1.ProxyProtocolV1.read">
-<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a PROXY protocol header from the given stream and return
+<dt id="proxyprotocol.v1.ProxyProtocolV1.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
-<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
+    be extended with additional bytes or lines to finish parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
     syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
@@ -562,11 +574,11 @@ information about the original connection.</p>
 
 <dl class="py method">
 <dt id="proxyprotocol.v1.ProxyProtocolV1.parse_line">
-<code class="sig-name descname">parse_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.parse_line" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v1.ProxyProtocolV1.parse_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the PROXY protocol v1 header line.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>line</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The line bytestring to parse.</p>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring to parse.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
@@ -638,19 +650,18 @@ the PROXY protocol header.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="proxyprotocol.v2.ProxyProtocolV2.read">
-<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">signature</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a PROXY protocol header from the given stream and return
+<dt id="proxyprotocol.v2.ProxyProtocolV2.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p></li>
-<li><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – Any data that has already been read from the stream.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
+    be extended with additional bytes or lines to finish parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
     syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
@@ -1348,7 +1359,7 @@ e.g. <code class="docutils literal notranslate"><span class="pre">tlv[0xE2]</spa
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
-<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1364,7 +1375,7 @@ data. Refer to the PROXY protocol spec for more information about each TLV.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
-<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1456,7 +1467,7 @@ data. Refer to the PROXY protocol spec for more information about each TLV.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – TLV data to parse.</p></li>
-<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#memoryview" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
+<li><p><strong>raw</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – A raw mapping of types to values to initialize the TLV.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1888,6 +1899,35 @@ for IPv4/IPv6 connections with True
 </dd></dl>
 
 </div>
+<div class="section" id="module-proxyprotocol.reader">
+<span id="proxyprotocol-reader"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code><a class="headerlink" href="#module-proxyprotocol.reader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="proxyprotocol.reader.ProxyProtocolReader">
+<em class="property">class </em><code class="sig-prename descclassname">proxyprotocol.reader.</code><code class="sig-name descname">ProxyProtocolReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a PROXY protocol header from a stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pp</strong> (<a class="reference internal" href="#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a>) – The PROXY protocol implementation.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="proxyprotocol.reader.ProxyProtocolReader.read">
+<em class="property">async </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a complete PROXY protocol header from the input stream and
+return the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reader</strong> (<a class="reference internal" href="#proxyprotocol.typing.StreamReaderProtocol" title="proxyprotocol.typing.StreamReaderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a>) – The input stream.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-proxyprotocol.server">
 <span id="proxyprotocol-server"></span><h2><code class="docutils literal notranslate"><span class="pre">proxyprotocol.server</span></code><a class="headerlink" href="#module-proxyprotocol.server" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
@@ -1981,6 +2021,7 @@ for IPv4/IPv6 connections with True
 <li><a class="reference internal" href="#module-proxyprotocol.result"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.tlv"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.tlv</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.sock"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a></li>
+<li><a class="reference internal" href="#module-proxyprotocol.reader"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code></a></li>
 <li><a class="reference internal" href="#module-proxyprotocol.server"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.server</span></code></a></li>
 </ul>
 </li>
@@ -2044,7 +2085,7 @@ for IPv4/IPv6 connections with True
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.5.7 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.6.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -2053,7 +2094,7 @@ for IPv4/IPv6 connections with True
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2020, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
