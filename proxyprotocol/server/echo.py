@@ -12,6 +12,7 @@ from contextlib import closing
 from functools import partial
 
 from .. import ProxyProtocol
+from ..reader import ProxyProtocolReader
 from ..sock import SocketInfo
 from . import Address
 
@@ -54,8 +55,9 @@ async def run(address: Address) -> int:
 
 async def run_conn(pp: ProxyProtocol, reader: StreamReader,
                    writer: StreamWriter) -> None:
+    pp_reader = ProxyProtocolReader(pp)
     with closing(writer):
-        result = await pp.read(reader)
+        result = await pp_reader.read(reader)
         sock_info = SocketInfo(writer, result)
         _log.info('[%s] Connection received: %s',
                   sock_info.unique_id.hex(), sock_info)

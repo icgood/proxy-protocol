@@ -37,18 +37,20 @@ from functools import partial
 
 from proxyprotocol.base import ProxyProtocol
 from proxyprotocol.detect import ProxyProtocolDetect
+from proxyprotocol.reader import ProxyProtocolReader
 from proxyprotocol.socket import SocketInfo
 
 async def run(host: str, port: int) -> None:
-    pp = ProxyProtocolDetect()
-    callback = partial(on_connection, pp)
+    pp_detect = ProxyProtocolDetect()
+    pp_reader = ProxyProtocolReader(pp_detect)
+    callback = partial(on_connection, pp_reader)
     server = await asyncio.start_server(callback, host, port)
     async with server:
         await server.serve_forever()
 
-async def on_connection(pp: ProxyProtocolDetect,
+async def on_connection(pp_reader: ProxyProtocolReader,
                         reader: StreamReader, writer: StreamWriter) -> None:
-    result = await pp.read(reader)
+    result = await pp_reader.read(reader)
     info = SocketInfo(writer, result)
     print(info.family, info.peername)
     # ... continue using connection
@@ -138,10 +140,6 @@ $ py.test
 $ mypy --strict proxyprotocol test
 $ flake8 proxyprotocol test
 ```
-
-A py.test run executes both unit and integration tests. The integration tests
-use mocked sockets to simulate the sending and receiving of commands and
-responses, and are kept in the `test/server/` subdirectory.
 
 ### Type Hinting
 

@@ -5,10 +5,11 @@ from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Union, Optional, Sequence
 
-from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
+from . import ProxyProtocolError, ProxyProtocolWantRead, \
+    ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
     ProxyProtocolResultIPv6
-from .typing import Address, StreamReaderProtocol
+from .typing import Address
 
 
 class ProxyProtocolV1(ProxyProtocol):
@@ -17,27 +18,23 @@ class ProxyProtocolV1(ProxyProtocol):
     __slots__: Sequence[str] = []
 
     def is_valid(self, signature: bytes) -> bool:
-        return signature.startswith(b'PROXY ')
+        return signature[0:6] == b'PROXY '
 
-    async def read(self, reader: StreamReaderProtocol, *,
-                   signature: bytes = b'') \
-            -> ProxyProtocolResult:  # pragma: no cover
-        try:
-            line = signature + await reader.readuntil(b'\r\n')
-        except (EOFError, ConnectionResetError) as exc:
-            return ProxyProtocolResultUnknown(exc)
-        return self.parse_line(line)
+    def parse(self, data: bytes) -> ProxyProtocolResult:
+        if data[-1:] != b'\n':
+            raise ProxyProtocolWantRead(want_line=True)
+        return self.parse_line(data)
 
-    def parse_line(self, line: bytes) -> ProxyProtocolResult:
+    def parse_line(self, data: bytes) -> ProxyProtocolResult:
         """Parse the PROXY protocol v1 header line.
 
         Args:
-            line: The line bytestring to parse.
+            data: The bytestring to parse.
 
         """
-        if not line.startswith(b'PROXY ') or not line.endswith(b'\r\n'):
+        if data[0:6] != b'PROXY ' or data[-2:] != b'\r\n':
             raise ProxyProtocolError('Invalid proxy protocol v1 signature')
-        line = line[6:-2]
+        line = bytes(data[6:-2])
         parts = line.split(b' ')
         family_string = parts[0]
         if family_string == b'UNKNOWN':

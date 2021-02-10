@@ -7,11 +7,12 @@ from struct import Struct
 from typing import cast, Union, Optional, Tuple, Sequence
 from typing_extensions import Final
 
-from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
+from . import ProxyProtocolError, ProxyProtocolWantRead, \
+    ProxyProtocolResult, ProxyProtocol
 from .result import ProxyProtocolResultLocal, ProxyProtocolResultUnknown, \
     ProxyProtocolResultIPv4, ProxyProtocolResultIPv6, ProxyProtocolResultUnix
 from .tlv import ProxyProtocolTLV, ProxyProtocolSSLTLV, ProxyProtocolExtTLV
-from .typing import Address, PeerCert, StreamReaderProtocol
+from .typing import Address, PeerCert
 
 __all__ = ['ProxyProtocolV2Header', 'ProxyProtocolV2']
 
@@ -61,22 +62,15 @@ class ProxyProtocolV2(ProxyProtocol):
     _tlv_format = Struct('!BH')
 
     def is_valid(self, signature: bytes) -> bool:
-        return signature.startswith(b'\r\n\r\n\x00\r\nQ')
+        return signature[0:8] == b'\r\n\r\n\x00\r\nQ'
 
-    async def read(self, reader: StreamReaderProtocol, *,
-                   signature: bytes = b'') \
-            -> ProxyProtocolResult:  # pragma: no cover
-        read_len = 16 - len(signature)
-        try:
-            header_b = signature + await reader.readexactly(read_len)
-        except (EOFError, ConnectionResetError) as exc:
-            return ProxyProtocolResultUnknown(exc)
-        header = self.parse_header(header_b)
-        try:
-            data = await reader.readexactly(header.data_len)
-        except (EOFError, ConnectionResetError) as exc:
-            return ProxyProtocolResultUnknown(exc)
-        return self.parse_data(header, memoryview(data))
+    def parse(self, data: bytes) -> ProxyProtocolResult:
+        if len(data) < 16:
+            raise ProxyProtocolWantRead(16 - len(data))
+        header = self.parse_header(data[0:16])
+        if len(data) < 16 + header.data_len:
+            raise ProxyProtocolWantRead((16 + header.data_len) - len(data))
+        return self.parse_data(header, data[16:])
 
     def parse_header(self, header: bytes) -> ProxyProtocolV2Header:
         """Parse the PROXY protocol v2 header.
@@ -85,7 +79,7 @@ class ProxyProtocolV2(ProxyProtocol):
             header: The header bytestring to parse.
 
         """
-        if not header.startswith(b'\r\n\r\n\x00\r\nQUIT\n'):
+        if header[0:12] != b'\r\n\r\n\x00\r\nQUIT\n':
             raise ProxyProtocolError('Invalid proxy protocol v2 signature')
         elif header[12] & 0xf0 != 0x20:
             raise ProxyProtocolError('Invalid proxy protocol version')

@@ -50,7 +50,7 @@ class SSLClient(IntFlag):
     PP2_CLIENT_CERT_SESS = 0x04
 
 
-class TLV(Mapping[int, memoryview], Hashable):
+class TLV(Mapping[int, bytes], Hashable):
     """Defines the basic parsing and structure of a PROXY protocol TLV vector.
     The unpacked TLV values are available as dict-style keys of this object,
     e.g. ``tlv[0xE2]``. To serialize back to a bytestring, use ``bytes(tlv)``.
@@ -63,17 +63,21 @@ class TLV(Mapping[int, memoryview], Hashable):
 
     _fmt = Struct('!BH')
 
-    def __init__(self, data: bytes, raw: Mapping[int, memoryview]) -> None:
+    def __init__(self, data: bytes, raw: Mapping[int, bytes]) -> None:
         super().__init__()
         self._tlv = self._unpack(data)
         self._tlv.update(raw)
-        self._frozen = frozenset(self._tlv.items())
+        self._frozen = self._freeze()
 
-    def _unpack(self, data: bytes) -> Dict[int, memoryview]:
+    def _freeze(self) -> Hashable:
+        return frozenset((key, zlib.adler32(val))
+                         for key, val in self._tlv.items())
+
+    def _unpack(self, data: bytes) -> Dict[int, bytes]:
         view = memoryview(data)
         index = 0
         fmt = self._fmt
-        results: Dict[int, memoryview] = {}
+        results: Dict[int, bytes] = {}
         while len(data) >= index + fmt.size:
             type_num, size = fmt.unpack_from(view, index)
             index += fmt.size
@@ -94,7 +98,7 @@ class TLV(Mapping[int, memoryview], Hashable):
     def __bytes__(self) -> bytes:
         return self._pack()
 
-    def __getitem__(self, type_num: int) -> memoryview:
+    def __getitem__(self, type_num: int) -> bytes:
         return self._tlv[type_num]
 
     def __iter__(self) -> Iterator[int]:
@@ -131,7 +135,7 @@ class ProxyProtocolTLV(TLV):
     _crc32c_fmt = Struct('!L')
 
     def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, memoryview] = {},
+                 raw: Mapping[int, bytes] = {},
                  alpn: Optional[bytes] = None,
                  authority: Optional[str] = None,
                  crc32c: Optional[int] = None,
@@ -141,21 +145,19 @@ class ProxyProtocolTLV(TLV):
                  ext: Optional[ProxyProtocolExtTLV] = None) -> None:
         results = dict(raw)
         if alpn is not None:
-            results[Type.PP2_TYPE_ALPN] = memoryview(alpn)
+            results[Type.PP2_TYPE_ALPN] = alpn
         if authority is not None:
-            results[Type.PP2_TYPE_AUTHORITY] = \
-                memoryview(authority.encode('utf-8'))
+            results[Type.PP2_TYPE_AUTHORITY] = authority.encode('utf-8')
         if crc32c is not None:
-            results[Type.PP2_TYPE_CRC32C] = \
-                memoryview(self._crc32c_fmt.pack(crc32c))
+            results[Type.PP2_TYPE_CRC32C] = self._crc32c_fmt.pack(crc32c)
         if unique_id is not None:
-            results[Type.PP2_TYPE_UNIQUE_ID] = memoryview(unique_id)
+            results[Type.PP2_TYPE_UNIQUE_ID] = unique_id
         if ssl is not None:
-            results[Type.PP2_TYPE_SSL] = memoryview(bytes(ssl))
+            results[Type.PP2_TYPE_SSL] = bytes(ssl)
         if netns is not None:
-            results[Type.PP2_TYPE_NETNS] = memoryview(netns.encode('ascii'))
+            results[Type.PP2_TYPE_NETNS] = netns.encode('ascii')
         if ext is not None:
-            results[Type.PP2_TYPE_NOOP] = memoryview(bytes(ext))
+            results[Type.PP2_TYPE_NOOP] = bytes(ext)
         super().__init__(data, results)
 
     @property
@@ -229,7 +231,7 @@ class ProxyProtocolSSLTLV(TLV):
     _prefix_fmt = Struct('!BL')
 
     def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, memoryview] = {},
+                 raw: Mapping[int, bytes] = {},
                  has_ssl: Optional[bool] = None,
                  has_cert_conn: Optional[bool] = None,
                  has_cert_sess: Optional[bool] = None,
@@ -243,20 +245,15 @@ class ProxyProtocolSSLTLV(TLV):
         self._verify = 1
         results = dict(raw)
         if version is not None:
-            results[Type.PP2_SUBTYPE_SSL_VERSION] = \
-                memoryview(version.encode('ascii'))
+            results[Type.PP2_SUBTYPE_SSL_VERSION] = version.encode('ascii')
         if cn is not None:
-            results[Type.PP2_SUBTYPE_SSL_CN] = \
-                memoryview(cn.encode('utf-8'))
+            results[Type.PP2_SUBTYPE_SSL_CN] = cn.encode('utf-8')
         if cipher is not None:
-            results[Type.PP2_SUBTYPE_SSL_CIPHER] = \
-                memoryview(cipher.encode('ascii'))
+            results[Type.PP2_SUBTYPE_SSL_CIPHER] = cipher.encode('ascii')
         if sig_alg is not None:
-            results[Type.PP2_SUBTYPE_SSL_SIG_ALG] = \
-                memoryview(sig_alg.encode('ascii'))
+            results[Type.PP2_SUBTYPE_SSL_SIG_ALG] = sig_alg.encode('ascii')
         if key_alg is not None:
-            results[Type.PP2_SUBTYPE_SSL_KEY_ALG] = \
-                memoryview(key_alg.encode('ascii'))
+            results[Type.PP2_SUBTYPE_SSL_KEY_ALG] = key_alg.encode('ascii')
         super().__init__(data, results)
         if has_ssl is True:
             self._client |= SSLClient.PP2_CLIENT_SSL
@@ -273,7 +270,7 @@ class ProxyProtocolSSLTLV(TLV):
         if verify is not None:
             self._verify = int(verify)
 
-    def _unpack(self, data: bytes) -> Dict[int, memoryview]:
+    def _unpack(self, data: bytes) -> Dict[int, bytes]:
         view = memoryview(data)
         try:
             self._client, self._verify = self._prefix_fmt.unpack_from(data, 0)
@@ -383,23 +380,23 @@ class ProxyProtocolExtTLV(TLV):
     _secret_bits_fmt = Struct('!H')
 
     def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, memoryview] = {},
+                 raw: Mapping[int, bytes] = {},
                  compression: Optional[str] = None,
                  secret_bits: Optional[int] = None,
                  peercert: Optional[PeerCert] = None) -> None:
         results = dict(raw)
         if compression is not None:
-            results[Type.PP2_SUBTYPE_EXT_COMPRESSION] = \
-                memoryview(compression.encode('ascii'))
+            val = compression.encode('ascii')
+            results[Type.PP2_SUBTYPE_EXT_COMPRESSION] = val
         if secret_bits is not None:
-            results[Type.PP2_SUBTYPE_EXT_SECRET_BITS] = \
-                memoryview(self._secret_bits_fmt.pack(secret_bits))
+            val = self._secret_bits_fmt.pack(secret_bits)
+            results[Type.PP2_SUBTYPE_EXT_SECRET_BITS] = val
         if peercert is not None:
             val = zlib.compress(json.dumps(peercert).encode('ascii'))
-            results[Type.PP2_SUBTYPE_EXT_PEERCERT] = memoryview(val)
+            results[Type.PP2_SUBTYPE_EXT_PEERCERT] = val
         super().__init__(data, results)
 
-    def _unpack(self, data: bytes) -> Dict[int, memoryview]:
+    def _unpack(self, data: bytes) -> Dict[int, bytes]:
         view = memoryview(data)
         magic_prefix = self.MAGIC_PREFIX
         if view[0:len(magic_prefix)] != magic_prefix:
