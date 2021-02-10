@@ -5,7 +5,7 @@ from typing import Union, Optional, Sequence, NoReturn
 
 from . import ProxyProtocol
 from .result import ProxyProtocolResultLocal
-from .typing import Address, StreamReaderProtocol
+from .typing import Address
 
 __all__ = ['ProxyProtocolNoop']
 
@@ -24,9 +24,7 @@ class ProxyProtocolNoop(ProxyProtocol):
         # This implementation may not be detected
         raise NotImplementedError()
 
-    async def read(self, reader: StreamReaderProtocol, *,
-                   signature: bytes = b'') \
-            -> ProxyProtocolResultLocal:  # pragma: no cover
+    def parse(self, data: bytes) -> ProxyProtocolResultLocal:
         return ProxyProtocolResultLocal()
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,

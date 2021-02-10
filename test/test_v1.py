@@ -3,7 +3,7 @@ import socket
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
-from proxyprotocol import ProxyProtocolError
+from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultUnknown, \
     ProxyProtocolResultIPv4, ProxyProtocolResultIPv6
@@ -16,9 +16,16 @@ class TestProxyProtocolV1(unittest.TestCase):
         pp = ProxyProtocolVersion.get('V1')
         self.assertIsInstance(pp, ProxyProtocolV1)
 
-    def test_parse_line_unknown(self) -> None:
+    def test_parse_incomplete(self) -> None:
         pp = ProxyProtocolV1()
-        res = pp.parse_line(b'PROXY UNKNOWN ...\r\n')
+        with self.assertRaises(ProxyProtocolWantRead) as raised:
+            pp.parse(b'PROXY')
+        self.assertIsNone(raised.exception.want_bytes)
+        self.assertTrue(raised.exception.want_line)
+
+    def test_parse(self) -> None:
+        pp = ProxyProtocolV1()
+        res = pp.parse(b'PROXY UNKNOWN ...\r\n')
         self.assertIsInstance(res, ProxyProtocolResultUnknown)
 
     def test_parse_line_bad(self) -> None:

@@ -3,9 +3,9 @@ from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Union, Optional
 
-from . import ProxyProtocolError, ProxyProtocolResult, ProxyProtocol
-from .result import ProxyProtocolResultUnknown
-from .typing import Address, StreamReaderProtocol
+from . import ProxyProtocolError, ProxyProtocolWantRead, \
+    ProxyProtocolResult, ProxyProtocol
+from .typing import Address
 from .v1 import ProxyProtocolV1
 from .v2 import ProxyProtocolV2
 
@@ -31,15 +31,11 @@ class ProxyProtocolDetect(ProxyProtocol):
     def is_valid(self, signature: bytes) -> bool:
         return any(v.is_valid(signature) for v in self.versions)
 
-    async def read(self, reader: StreamReaderProtocol, *,
-                   signature: bytes = b'') \
-            -> ProxyProtocolResult:  # pragma: no cover
-        try:
-            signature += await reader.readexactly(8 - len(signature))
-        except (EOFError, ConnectionResetError) as exc:
-            return ProxyProtocolResultUnknown(exc)
-        pp = self.choose_version(signature)
-        return await pp.read(reader, signature=signature)
+    def parse(self, data: bytes) -> ProxyProtocolResult:
+        if len(data) < 8:
+            raise ProxyProtocolWantRead(8 - len(data))
+        pp = self.choose_version(data[0:8])
+        return pp.parse(data)
 
     def choose_version(self, signature: bytes) -> ProxyProtocol:
         """Choose the PROXY protocol version based on the 8-byte signature.

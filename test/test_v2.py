@@ -5,7 +5,7 @@ from ipaddress import IPv4Address, IPv6Address
 from ssl import SSLObject
 from unittest.mock import MagicMock
 
-from proxyprotocol import ProxyProtocolError
+from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultLocal, \
     ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
@@ -18,6 +18,22 @@ class TestProxyProtocolV2(unittest.TestCase):
     def test_version(self) -> None:
         pp = ProxyProtocolVersion.get('V2')
         self.assertIsInstance(pp, ProxyProtocolV2)
+
+    def test_parse_incomplete(self) -> None:
+        pp = ProxyProtocolV2()
+        with self.assertRaises(ProxyProtocolWantRead) as raised:
+            pp.parse(b'')
+        self.assertEqual(16, raised.exception.want_bytes)
+        self.assertFalse(raised.exception.want_line)
+        with self.assertRaises(ProxyProtocolWantRead) as raised:
+            pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x21\x21\xf0\xf0')
+        self.assertEqual(61680, raised.exception.want_bytes)
+        self.assertFalse(raised.exception.want_line)
+
+    def test_parse(self) -> None:
+        pp = ProxyProtocolV2()
+        res = pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x21\x00\x00\x00')
+        self.assertIsInstance(res, ProxyProtocolResultUnknown)
 
     def test_parse_header(self) -> None:
         pp = ProxyProtocolV2()

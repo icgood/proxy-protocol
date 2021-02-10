@@ -3,8 +3,9 @@ import socket
 import unittest
 from unittest.mock import MagicMock
 
-from proxyprotocol import ProxyProtocolError
+from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
 from proxyprotocol.version import ProxyProtocolVersion
+from proxyprotocol.result import ProxyProtocolResultUnknown
 from proxyprotocol.detect import ProxyProtocolDetect
 from proxyprotocol.v1 import ProxyProtocolV1
 from proxyprotocol.v2 import ProxyProtocolV2
@@ -21,6 +22,24 @@ class TestProxyProtocolDetect(unittest.TestCase):
         self.assertTrue(pp.is_valid(b'PROXY ...'))
         self.assertTrue(pp.is_valid(b'\r\n\r\n\x00\r\nQ'))
         self.assertFalse(pp.is_valid(b'bad'))
+
+    def test_parse_incomplete(self) -> None:
+        pp = ProxyProtocolDetect()
+        with self.assertRaises(ProxyProtocolWantRead) as raised:
+            pp.parse(b'')
+        self.assertEqual(8, raised.exception.want_bytes)
+        self.assertFalse(raised.exception.want_line)
+
+    def test_parse(self) -> None:
+        mock_one = MagicMock(ProxyProtocolV1)
+        mock_two = MagicMock(ProxyProtocolV1)
+        pp = ProxyProtocolDetect(mock_one, mock_two)
+        mock_one.is_valid.return_value = False
+        mock_one.parse.side_effect = ValueError
+        mock_two.is_valid.return_value = True
+        mock_two.parse.return_value = ProxyProtocolResultUnknown()
+        res = pp.parse(b'12345678')
+        self.assertIsInstance(res, ProxyProtocolResultUnknown)
 
     def test_choose_version_v1(self) -> None:
         pp = ProxyProtocolDetect()

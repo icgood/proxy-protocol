@@ -4,6 +4,7 @@ import unittest
 
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.noop import ProxyProtocolNoop
+from proxyprotocol.result import ProxyProtocolResultLocal
 
 
 class TestProxyProtocolNoop(unittest.TestCase):
@@ -15,6 +16,11 @@ class TestProxyProtocolNoop(unittest.TestCase):
         self.assertIsInstance(pp, ProxyProtocolNoop)
         pp = ProxyProtocolVersion.get('NOOP')
         self.assertIsInstance(pp, ProxyProtocolNoop)
+
+    def test_parse(self) -> None:
+        pp = ProxyProtocolNoop()
+        pp_result = pp.parse(b'')
+        self.assertIsInstance(pp_result, ProxyProtocolResultLocal)
 
     def test_build(self) -> None:
         pp = ProxyProtocolNoop()

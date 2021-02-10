@@ -5,12 +5,13 @@ from abc import abstractmethod, ABCMeta
 from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Any, Union, Optional, Sequence
+from typing_extensions import Final
 
 from .tlv import ProxyProtocolTLV
-from .typing import Address, StreamReaderProtocol
+from .typing import Address
 
-__all__ = ['__version__', 'ProxyProtocolError', 'ProxyProtocolResult',
-           'ProxyProtocol']
+__all__ = ['__version__', 'ProxyProtocolError', 'ProxyProtocolWantRead',
+           'ProxyProtocolResult', 'ProxyProtocol']
 
 #: The package version string.
 __version__: str = pkg_resources.require('proxy-protocol')[0].version
@@ -26,7 +27,30 @@ class ProxyProtocolError(ValueError):
         and closed.
 
     """
-    pass
+
+    __slots__: Sequence[str] = []
+
+
+class ProxyProtocolWantRead(Exception):
+    """Thrown when the PROXY protocol header cannot be parsed because the
+    provided data is not enough to be parsed. Additional data must be read
+    before parsing can succeed or fail.
+
+    Either *want_bytes* or *want_line* must be given, but not both.
+
+    Args:
+        want_bytes: Number of bytes needed before parsing may proceed.
+        want_line: Additional data should be read until the end of a line.
+
+    """
+
+    __slots__ = ['want_bytes', 'want_line']
+
+    def __init__(self, want_bytes: Optional[int] = None, *,
+                 want_line: bool = False) -> None:
+        super().__init__('Additional data needed')
+        self.want_bytes: Final = want_bytes
+        self.want_line: Final = want_line
 
 
 class ProxyProtocolResult(metaclass=ABCMeta):
@@ -100,16 +124,16 @@ class ProxyProtocol(metaclass=ABCMeta):
         ...
 
     @abstractmethod
-    async def read(self, reader: StreamReaderProtocol, *,
-                   signature: bytes = b'') -> ProxyProtocolResult:
-        """Read a PROXY protocol header from the given stream and return
+    def parse(self, data: bytes) -> ProxyProtocolResult:
+        """Parse a PROXY protocol header from the given bytestring and return
         information about the original connection.
 
         Args:
-            reader: The input stream.
-            signature: Any data that has already been read from the stream.
+            data: The bytestring read for the header thus far.
 
         Raises:
+            :exc:`ProxyProtocolWantRead`: The header was incomplete and must
+                be extended with additional bytes or lines to finish parsing.
             :exc:`ProxyProtocolError`: The header failed to parse due to a
                 syntax error or unsupported format.
             :exc:`ValueError`: Malformed or out-of-range data was encountered

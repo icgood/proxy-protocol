@@ -28,7 +28,7 @@ class StreamReaderProtocol(Protocol):
         ...
 
     @abstractmethod
-    async def readuntil(self, separator: bytes) -> bytes:
+    async def readline(self) -> bytes:
         ...
 
 
