@@ -25,12 +25,12 @@ deploy:
     local_dir: doc/build/html
     on:
       tags: true
-      python: "3.8"
+      python: "3.9"
     edge: true
   - provider: pypi
     distributions: sdist bdist_wheel
     skip_existing: true
     on:
       tags: true
-      python: "3.8"
+      python: "3.9"
     edge: true
