@@ -4,8 +4,8 @@ import unittest
 import zlib
 from struct import pack
 
-from proxyprotocol.tlv import Type, ProxyProtocolTLV, ProxyProtocolSSLTLV, \
-    ProxyProtocolExtTLV
+from proxyprotocol.tlv import Type, TLV, ProxyProtocolTLV, \
+    ProxyProtocolSSLTLV, ProxyProtocolExtTLV
 
 peercert = zlib.compress(json.dumps({'test': 'peercert'}).encode('ascii'))
 ssl_data = \
@@ -160,7 +160,8 @@ class TestProxyProtocolTLV(unittest.TestCase):
                                       peercert={'test': 'peercert'})
         custom_type = Type.PP2_TYPE_MIN_CUSTOM + 2
         unique_id = b'\x00\x00\x00\x12W\xbb\x1d3\x00\x00\x00\x009\xe9\xdbv'
-        tlv = ProxyProtocolTLV(raw={custom_type: memoryview(b'test4')},
+        init_tlv = TLV(init={custom_type: memoryview(b'test4')})
+        tlv = ProxyProtocolTLV(init=init_tlv,
                                alpn=b'test1', authority='test②',
                                crc32c=389237127, ext=ext_tlv,
                                unique_id=unique_id, ssl=ssl_tlv,

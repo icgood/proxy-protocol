@@ -57,16 +57,18 @@ class TLV(Mapping[int, bytes], Hashable):
 
     Args:
         data: TLV data to parse.
-        raw: A raw mapping of types to values to initialize the TLV.
+        init: A mapping of types to values to initialize the TLV, such as
+            another :class:`TLV`.
 
     """
 
     _fmt = Struct('!BH')
 
-    def __init__(self, data: bytes, raw: Mapping[int, bytes]) -> None:
+    def __init__(self, data: bytes = b'',
+                 init: Mapping[int, bytes] = {}) -> None:
         super().__init__()
         self._tlv = self._unpack(data)
-        self._tlv.update(raw)
+        self._tlv.update(init)
         self._frozen = self._freeze()
 
     def _freeze(self) -> Hashable:
@@ -126,7 +128,8 @@ class ProxyProtocolTLV(TLV):
 
     Args:
         data: TLV data to parse.
-        raw: A raw mapping of types to values to initialize the TLV.
+        init: A mapping of types to values to initialize the TLV, such as
+            another :class:`TLV`.
 
     """
 
@@ -134,8 +137,7 @@ class ProxyProtocolTLV(TLV):
 
     _crc32c_fmt = Struct('!L')
 
-    def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, bytes] = {},
+    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
                  alpn: Optional[bytes] = None,
                  authority: Optional[str] = None,
                  crc32c: Optional[int] = None,
@@ -143,7 +145,7 @@ class ProxyProtocolTLV(TLV):
                  ssl: Optional[ProxyProtocolSSLTLV] = None,
                  netns: Optional[str] = None,
                  ext: Optional[ProxyProtocolExtTLV] = None) -> None:
-        results = dict(raw)
+        results = dict(init)
         if alpn is not None:
             results[Type.PP2_TYPE_ALPN] = alpn
         if authority is not None:
@@ -224,14 +226,14 @@ class ProxyProtocolSSLTLV(TLV):
 
     Args:
         data: TLV data to parse.
-        raw: A raw mapping of types to values to initialize the TLV.
+        init: A mapping of types to values to initialize the TLV, such as
+            another :class:`TLV`.
 
     """
 
     _prefix_fmt = Struct('!BL')
 
-    def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, bytes] = {},
+    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
                  has_ssl: Optional[bool] = None,
                  has_cert_conn: Optional[bool] = None,
                  has_cert_sess: Optional[bool] = None,
@@ -243,7 +245,7 @@ class ProxyProtocolSSLTLV(TLV):
                  key_alg: Optional[str] = None) -> None:
         self._client = 0
         self._verify = 1
-        results = dict(raw)
+        results = dict(init)
         if version is not None:
             results[Type.PP2_SUBTYPE_SSL_VERSION] = version.encode('ascii')
         if cn is not None:
@@ -371,6 +373,11 @@ class ProxyProtocolExtTLV(TLV):
     """Non-standard extension TLV, which is hidden inside a ``PP2_TYPE_NOOP``
     and must start with :attr:`.MAGIC_PREFIX`.
 
+    Args:
+        data: TLV data to parse.
+        init: A mapping of types to values to initialize the TLV, such as
+            another :class:`TLV`.
+
     """
 
     #: The ``PP2_TYPE_NOOP`` value must begin with this byte sequence to be
@@ -379,12 +386,11 @@ class ProxyProtocolExtTLV(TLV):
 
     _secret_bits_fmt = Struct('!H')
 
-    def __init__(self, data: bytes = b'', *,
-                 raw: Mapping[int, bytes] = {},
+    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
                  compression: Optional[str] = None,
                  secret_bits: Optional[int] = None,
                  peercert: Optional[PeerCert] = None) -> None:
-        results = dict(raw)
+        results = dict(init)
         if compression is not None:
             val = compression.encode('ascii')
             results[Type.PP2_SUBTYPE_EXT_COMPRESSION] = val
