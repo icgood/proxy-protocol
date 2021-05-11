@@ -4,3 +4,6 @@ autopep8
 pytest
 pytest-asyncio
 pytest-cov
+rope
+
+-r requirements-all.txt

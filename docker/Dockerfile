@@ -1,11 +1,13 @@
 FROM python:3.9-alpine
 
+WORKDIR /src
+COPY . .
+
 RUN pip install -U pip wheel setuptools typing-extensions
 
-ARG install_arg="proxy-protocol"
-ARG install_source=""
 RUN apk --update add --virtual build-dependencies python3-dev build-base \
-  && pip install "${install_arg}${install_source}" \
+  && pip install -r requirements-all.txt \
   && apk del build-dependencies
 
 ENTRYPOINT ["proxyprotocol-server"]
+CMD ["--help"]
