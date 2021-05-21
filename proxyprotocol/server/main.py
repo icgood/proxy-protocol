@@ -9,13 +9,15 @@ import asyncio
 import logging
 import signal
 import sys
-from argparse import Namespace, ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import Namespace, ArgumentParser, \
+    ArgumentDefaultsHelpFormatter, SUPPRESS
 from asyncio import CancelledError
 from contextlib import AsyncExitStack
 from functools import partial
 
 from . import Address
 from .protocol import DownstreamProtocol, UpstreamProtocol
+from ..dnsbl import Dnsbl
 
 __all__ = ['main']
 
@@ -31,6 +33,9 @@ def main() -> int:
                         help='size of the read buffer')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help='show only upstream connection errors')
+    parser.add_argument('--dnsbl', metavar='HOST', default=None,
+                        help='the DNSBL lookup hostname')
+    parser.add_argument('--dnsbl-timeout', type=float, help=SUPPRESS)
     args = parser.parse_args()
 
     if not args.services:
@@ -48,8 +53,9 @@ async def run(args: Namespace) -> int:
     services = [(Address(source, server=True), Address(dest))
                 for (source, dest) in args.services]
     buf_len: int = args.buf_len
+    dnsbl = Dnsbl.load(args.dnsbl, timeout=args.dnsbl_timeout)
     new_server = partial(DownstreamProtocol, UpstreamProtocol,
-                         loop, buf_len)
+                         loop, buf_len, dnsbl)
     servers = [
         await loop.create_server(partial(new_server, dest),
                                  source.host, source.port or 0,

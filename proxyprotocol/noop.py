@@ -31,5 +31,6 @@ class ProxyProtocolNoop(ProxyProtocol):
               protocol: Optional[SocketKind] = None,
               ssl: Union[None, SSLSocket, SSLObject] = None,
               unique_id: Optional[bytes] = None,
-              proxied: bool = True) -> bytes:
+              proxied: bool = True,
+              dnsbl: Optional[str] = None) -> bytes:
         return b''

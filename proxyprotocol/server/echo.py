@@ -61,6 +61,10 @@ async def run_conn(pp: ProxyProtocol, reader: StreamReader,
         sock_info = SocketInfo(writer, result)
         _log.info('[%s] Connection received: %s',
                   sock_info.unique_id.hex(), sock_info)
+        if sock_info.dnsbl is not None:
+            _log.error('[%s] Connection rejected: %s',
+                       sock_info.unique_id.hex(), sock_info.dnsbl)
+            return
         try:
             while True:
                 line = await reader.readline()

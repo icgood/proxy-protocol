@@ -40,6 +40,7 @@ class Type(IntEnum):
     PP2_SUBTYPE_EXT_COMPRESSION = 0x01
     PP2_SUBTYPE_EXT_SECRET_BITS = 0x02
     PP2_SUBTYPE_EXT_PEERCERT = 0x03
+    PP2_SUBTYPE_EXT_DNSBL = 0x04
 
 
 class SSLClient(IntFlag):
@@ -65,10 +66,11 @@ class TLV(Mapping[int, bytes], Hashable):
     _fmt = Struct('!BH')
 
     def __init__(self, data: bytes = b'',
-                 init: Mapping[int, bytes] = {}) -> None:
+                 init: Optional[Mapping[int, bytes]] = None) -> None:
         super().__init__()
         self._tlv = self._unpack(data)
-        self._tlv.update(init)
+        if init is not None:
+            self._tlv.update(init)
         self._frozen = self._freeze()
 
     def _freeze(self) -> Hashable:
@@ -137,7 +139,8 @@ class ProxyProtocolTLV(TLV):
 
     _crc32c_fmt = Struct('!L')
 
-    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
+    def __init__(self, data: bytes = b'',
+                 init: Optional[Mapping[int, bytes]] = None, *,
                  alpn: Optional[bytes] = None,
                  authority: Optional[str] = None,
                  crc32c: Optional[int] = None,
@@ -145,7 +148,7 @@ class ProxyProtocolTLV(TLV):
                  ssl: Optional[ProxyProtocolSSLTLV] = None,
                  netns: Optional[str] = None,
                  ext: Optional[ProxyProtocolExtTLV] = None) -> None:
-        results = dict(init)
+        results = dict(init or {})
         if alpn is not None:
             results[Type.PP2_TYPE_ALPN] = alpn
         if authority is not None:
@@ -233,7 +236,8 @@ class ProxyProtocolSSLTLV(TLV):
 
     _prefix_fmt = Struct('!BL')
 
-    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
+    def __init__(self, data: bytes = b'',
+                 init: Optional[Mapping[int, bytes]] = None, *,
                  has_ssl: Optional[bool] = None,
                  has_cert_conn: Optional[bool] = None,
                  has_cert_sess: Optional[bool] = None,
@@ -245,7 +249,7 @@ class ProxyProtocolSSLTLV(TLV):
                  key_alg: Optional[str] = None) -> None:
         self._client = 0
         self._verify = 1
-        results = dict(init)
+        results = dict(init or {})
         if version is not None:
             results[Type.PP2_SUBTYPE_SSL_VERSION] = version.encode('ascii')
         if cn is not None:
@@ -386,11 +390,13 @@ class ProxyProtocolExtTLV(TLV):
 
     _secret_bits_fmt = Struct('!H')
 
-    def __init__(self, data: bytes = b'', init: Mapping[int, bytes] = {}, *,
+    def __init__(self, data: bytes = b'',
+                 init: Optional[Mapping[int, bytes]] = None, *,
                  compression: Optional[str] = None,
                  secret_bits: Optional[int] = None,
-                 peercert: Optional[PeerCert] = None) -> None:
-        results = dict(init)
+                 peercert: Optional[PeerCert] = None,
+                 dnsbl: Optional[str] = None) -> None:
+        results = dict(init or {})
         if compression is not None:
             val = compression.encode('ascii')
             results[Type.PP2_SUBTYPE_EXT_COMPRESSION] = val
@@ -400,6 +406,9 @@ class ProxyProtocolExtTLV(TLV):
         if peercert is not None:
             val = zlib.compress(json.dumps(peercert).encode('ascii'))
             results[Type.PP2_SUBTYPE_EXT_PEERCERT] = val
+        if dnsbl is not None:
+            val = dnsbl.encode('utf-8')
+            results[Type.PP2_SUBTYPE_EXT_DNSBL] = val
         super().__init__(data, results)
 
     def _unpack(self, data: bytes) -> Dict[int, bytes]:
@@ -448,4 +457,16 @@ class ProxyProtocolExtTLV(TLV):
             decompressed = zlib.decompress(val)
             ret: PeerCert = json.loads(decompressed)
             return ret
+        return None
+
+    @property
+    def dnsbl(self) -> Optional[str]:
+        """The ``PP2_SUBTYPE_EXT_DNSBL`` value. This is the hostname or other
+        identifier that reports a status or reputation of the connecting IP
+        address.
+
+        """
+        val = self.get(Type.PP2_SUBTYPE_EXT_DNSBL)
+        if val is not None:
+            return str(val, 'utf-8')
         return None

@@ -147,7 +147,8 @@ class ProxyProtocol(metaclass=ABCMeta):
               protocol: Optional[SocketKind] = None,
               ssl: Union[None, SSLObject, SSLSocket] = None,
               unique_id: Optional[bytes] = None,
-              proxied: bool = True) -> bytes:
+              proxied: bool = True,
+              dnsbl: Optional[str] = None) -> bytes:
         """Builds a PROXY protocol v1 header that may be sent at the beginning
         of an outbound, client-side connection to indicate the original
         information about the connection.
@@ -160,6 +161,7 @@ class ProxyProtocol(metaclass=ABCMeta):
             ssl: The original socket SSL information.
             unique_id: The original connection unique identifier.
             proxied: True if the connection should be considered proxied.
+            dnsbl: The DNSBL lookup result, if any.
 
         Raises:
             :exc:`KeyError`: This PROXY protocol header format does not support

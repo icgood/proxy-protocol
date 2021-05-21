@@ -167,6 +167,19 @@ class TestSocketInfo(unittest.TestCase):
         info = SocketInfo(self.transport, result)
         self.assertEqual({'subject': 'test'}, info.peercert)
 
+    def test_dnsbl_socket(self) -> None:
+        result = ProxyProtocolResultLocal()
+        info = SocketInfo(self.transport, result, dnsbl='abc')
+        self.assertEqual('abc', info.dnsbl)
+
+    def test_dnsbl_override(self) -> None:
+        tlv = ProxyProtocolTLV(ext=ProxyProtocolExtTLV(dnsbl='test_dnsbl'))
+        result = ProxyProtocolResultIPv6((IPv6Address('::1'), 10),
+                                         (IPv6Address('::FFFF:1.2.3.4'), 20),
+                                         tlv=tlv)
+        info = SocketInfo(self.transport, result, dnsbl='abc')
+        self.assertEqual('test_dnsbl', info.dnsbl)
+
     def test_unique_id_socket(self) -> None:
         result = ProxyProtocolResultLocal()
         info = SocketInfo(self.transport, result, unique_id=b'abc')
