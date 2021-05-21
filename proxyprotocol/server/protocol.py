@@ -193,8 +193,9 @@ class UpstreamProtocol(_Base):
         self.dnsbl_task.add_done_callback(self._write_header)
 
     def _write_header(self, task: Task[Any]) -> None:
-        header = self.build_pp_header()
-        self.write(memoryview(header))
+        if not task.cancelled():
+            header = self.build_pp_header()
+            self.write(memoryview(header))
 
     def proxy_data(self, data: memoryview) -> None:
         self.downstream.write(data)
