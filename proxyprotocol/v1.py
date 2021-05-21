@@ -68,7 +68,8 @@ class ProxyProtocolV1(ProxyProtocol):
               protocol: Optional[SocketKind] = None,
               ssl: Union[None, SSLSocket, SSLObject] = None,
               unique_id: Optional[bytes] = None,
-              proxied: bool = True) -> bytes:
+              proxied: bool = True,
+              dnsbl: Optional[str] = None) -> bytes:
         if not proxied:
             raise ValueError('proxied must be True in v1')
         family_b = self._build_family(family)

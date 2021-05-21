@@ -24,18 +24,20 @@ class SocketInfo:
         result: The PROXY protocol result.
         unique_id: A unique ID to associate with the connection, unless
             overridden by the PROXY protocol result.
+        dnsbl: The DNSBL lookup result, if any.
 
     """
 
-    __slots__ = ['transport', 'pp_result', '_unique_id']
+    __slots__ = ['transport', 'pp_result', '_unique_id', '_dnsbl']
 
     def __init__(self, transport: TransportProtocol,
                  result: Optional[ProxyProtocolResult] = None, *,
-                 unique_id: bytes = b'') -> None:
+                 unique_id: bytes = b'', dnsbl: Optional[str] = None) -> None:
         super().__init__()
         self.transport: Final = transport
         self.pp_result: Final = result or ProxyProtocolResultLocal()
         self._unique_id = unique_id
+        self._dnsbl = dnsbl
 
     @property
     def socket(self) -> socket.socket:
@@ -265,6 +267,19 @@ class SocketInfo:
         if ip is None:
             return False
         return ip.is_loopback
+
+    @property
+    def dnsbl(self) -> Optional[str]:
+        """The DNSBL lookup result of the connecting IP address, if any.
+
+        This value is contextual to the DNSBL in use, but generally any value
+        here other than ``None`` indicates the IP address should be blocked.
+
+        """
+        if self.pp_result.proxied:
+            return self.pp_result.tlv.ext.dnsbl
+        else:
+            return self._dnsbl
 
     def __str__(self) -> str:
         proxied = ' proxied=True' if self.pp_result.proxied else ''

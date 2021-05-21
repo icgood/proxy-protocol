@@ -9,13 +9,14 @@ from asyncio.transports import Transport, BaseTransport
 from collections import deque
 from functools import partial
 from socket import AddressFamily, SocketKind
-from typing import Any, Type, Optional, Tuple, Deque
+from typing import Any, Type, Optional, Tuple, Deque, Set
 from typing_extensions import Final
 from uuid import uuid4
 
-from .. import ProxyProtocol
-from ..sock import SocketInfo
 from . import Address
+from .. import ProxyProtocol
+from ..dnsbl import Dnsbl
+from ..sock import SocketInfo
 
 __all__ = ['DownstreamProtocol', 'UpstreamProtocol']
 
@@ -93,32 +94,31 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
 class DownstreamProtocol(_Base):
 
     def __init__(self, upstream_protocol: Type[UpstreamProtocol],
-                 loop: AbstractEventLoop, buf_len: int,
+                 loop: AbstractEventLoop, buf_len: int, dnsbl: Dnsbl,
                  upstream: Address) -> None:
         super().__init__(buf_len)
         self.loop: Final = loop
+        self.dnsbl: Final = dnsbl
         self.upstream: Final = upstream
         self.id: Final = uuid4().bytes
         self._waiting: Deque[memoryview] = deque()
-        self._connect: Optional[Task[Any]] = None
+        self._tasks: Set[Task[Any]] = set()
         self._upstream: Optional[UpstreamProtocol] = None
         self._upstream_factory = partial(upstream_protocol, self, buf_len,
                                          upstream.pp)
 
     def close(self) -> None:
         super().close()
-        if self._connect is not None:
-            self._connect.cancel()
-            self._connect = None
+        for task in self._tasks:
+            task.cancel()
         if self._upstream is not None:
             upstream = self._upstream
             self._upstream = None
             upstream.close()
 
-    def _set_client(self, connect: Task[_Connect]) -> None:
-        self._connect = None
+    def _set_client(self, connect_task: Task[_Connect]) -> None:
         try:
-            _, upstream = connect.result()
+            _, upstream = connect_task.result()
         except CancelledError:
             pass  # Connection was never established
         except OSError:
@@ -138,11 +138,16 @@ class DownstreamProtocol(_Base):
         _log.info('[%s] Downstream connection received: %s',
                   self.id.hex(), self.sock_info)
         loop = self.loop
-        self._connect = connect = loop.create_task(
-            loop.create_connection(self._upstream_factory,
+        dnsbl_task = loop.create_task(self.dnsbl.lookup(self.sock_info))
+        self._tasks.add(dnsbl_task)
+        dnsbl_task.add_done_callback(self._tasks.discard)
+        connect_task = loop.create_task(
+            loop.create_connection(partial(self._upstream_factory, dnsbl_task),
                                    self.upstream.host, self.upstream.port or 0,
                                    ssl=self.upstream.ssl))
-        connect.add_done_callback(self._set_client)
+        self._tasks.add(connect_task)
+        connect_task.add_done_callback(self._tasks.discard)
+        connect_task.add_done_callback(self._set_client)
 
     def connection_lost(self, exc: Optional[Exception]) -> None:
         super().connection_lost(exc)
@@ -159,10 +164,11 @@ class DownstreamProtocol(_Base):
 class UpstreamProtocol(_Base):
 
     def __init__(self, downstream: DownstreamProtocol, buf_len: int,
-                 pp: ProxyProtocol) -> None:
+                 pp: ProxyProtocol, dnsbl_task: Task[Optional[str]]) -> None:
         super().__init__(buf_len)
         self.pp: Final = pp
         self.downstream: Final = downstream
+        self.dnsbl_task: Final = dnsbl_task
 
     def close(self) -> None:
         super().close()
@@ -176,13 +182,17 @@ class UpstreamProtocol(_Base):
             protocol: Optional[SocketKind] = SocketKind(sock.proto)
         except ValueError:
             protocol = None
+        dnsbl = self.dnsbl_task.result()
         return self.pp.build(sock.getpeername(), sock.getsockname(),
                              family=AddressFamily(sock.family),
                              protocol=protocol, unique_id=self.downstream.id,
-                             ssl=ssl_object)
+                             ssl=ssl_object, dnsbl=dnsbl)
 
     def connection_made(self, transport: BaseTransport) -> None:
         super().connection_made(transport)
+        self.dnsbl_task.add_done_callback(self._write_header)
+
+    def _write_header(self, task: Task[Any]) -> None:
         header = self.build_pp_header()
         self.write(memoryview(header))
 

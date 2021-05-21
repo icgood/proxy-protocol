@@ -19,7 +19,8 @@ ssl_data = \
 ext_data = ProxyProtocolExtTLV.MAGIC_PREFIX + \
     pack('!BH', Type.PP2_SUBTYPE_EXT_COMPRESSION, 16) + b'test_compression' + \
     pack('!BHH', Type.PP2_SUBTYPE_EXT_SECRET_BITS, 2, 2048) + \
-    pack('!BH', Type.PP2_SUBTYPE_EXT_PEERCERT, len(peercert)) + peercert
+    pack('!BH', Type.PP2_SUBTYPE_EXT_PEERCERT, len(peercert)) + peercert + \
+    pack('!BH', Type.PP2_SUBTYPE_EXT_DNSBL, 10) + b'test_dnsbl'
 tlv_data = \
     pack('!BH', Type.PP2_TYPE_ALPN, 5) + b'test1' + \
     pack('!BH', Type.PP2_TYPE_AUTHORITY, 7) + b'test\xe2\x91\xa1' + \
@@ -116,6 +117,10 @@ class TestProxyProtocolTLV(unittest.TestCase):
         self.assertIsNone(self.empty.ext.peercert)
         self.assertEqual({'test': 'peercert'}, self.tlv.ext.peercert)
 
+    def test_ext_dnsbl(self) -> None:
+        self.assertIsNone(self.empty.ext.dnsbl)
+        self.assertEqual('test_dnsbl', self.tlv.ext.dnsbl)
+
     def test_iter(self) -> None:
         self.assertEqual({Type.PP2_TYPE_ALPN, Type.PP2_TYPE_AUTHORITY,
                           Type.PP2_TYPE_CRC32C, Type.PP2_TYPE_NOOP,
@@ -157,7 +162,8 @@ class TestProxyProtocolTLV(unittest.TestCase):
                                       key_alg='test_key_alg')
         ext_tlv = ProxyProtocolExtTLV(compression='test_compression',
                                       secret_bits=2048,
-                                      peercert={'test': 'peercert'})
+                                      peercert={'test': 'peercert'},
+                                      dnsbl='test_dnsbl')
         custom_type = Type.PP2_TYPE_MIN_CUSTOM + 2
         unique_id = b'\x00\x00\x00\x12W\xbb\x1d3\x00\x00\x00\x009\xe9\xdbv'
         init_tlv = TLV(init={custom_type: memoryview(b'test4')})

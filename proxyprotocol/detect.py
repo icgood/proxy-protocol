@@ -54,12 +54,14 @@ class ProxyProtocolDetect(ProxyProtocol):
               protocol: Optional[SocketKind] = None,
               ssl: Union[None, SSLSocket, SSLObject] = None,
               unique_id: Optional[bytes] = None,
-              proxied: bool = True) -> bytes:
+              proxied: bool = True,
+              dnsbl: Optional[str] = None) -> bytes:
         for version in self.versions:
             try:
                 return version.build(source, dest, family=family,
                                      protocol=protocol, ssl=ssl,
-                                     unique_id=unique_id, proxied=proxied)
+                                     unique_id=unique_id, proxied=proxied,
+                                     dnsbl=dnsbl)
             except (KeyError, ValueError):
                 pass
         else:

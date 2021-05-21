@@ -181,10 +181,13 @@ class TestProxyProtocolV2(unittest.TestCase):
         ssl_object.cipher.return_value = ('cipher_name', 'ssl_version', 123)
         ssl_object.getpeercert.return_value = None
         header = pp.build(None, None, family=socket.AF_UNSPEC,
-                          ssl=ssl_object, unique_id=b'connection_id')
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!\x00\x00W'
-                         b'\x04\x00 \x88\x1by\xc1\xce\x96\x85\xb0\x01\x00\x10'
-                         b'compression_name\x02\x00\x02\x00{\x05\x00\r'
+                          ssl=ssl_object, unique_id=b'connection_id',
+                          dnsbl='dnsbl_result')
+        print(repr(header))
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!\x00\x00f'
+                         b'\x04\x00/\x88\x1by\xc1\xce\x96\x85\xb0\x01\x00\x10'
+                         b'compression_name\x02\x00\x02\x00{\x04\x00\x0c'
+                         b'dnsbl_result\x05\x00\r'
                          b'connection_id \x00!\x01\x00\x00\x00\x01!\x00\x0b'
                          b'ssl_version#\x00\x0bcipher_name',
                          header)

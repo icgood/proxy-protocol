@@ -140,9 +140,10 @@ class ProxyProtocolV2(ProxyProtocol):
               protocol: Optional[SocketKind] = None,
               ssl: Union[None, SSLSocket, SSLObject] = None,
               unique_id: Optional[bytes] = None,
-              proxied: bool = True) -> bytes:
+              proxied: bool = True,
+              dnsbl: Optional[str] = None) -> bytes:
         addresses = self.build_addresses(source, dest, family=family)
-        tlv = self.build_tlv(ssl, unique_id)
+        tlv = self.build_tlv(ssl, unique_id, dnsbl)
         data_len = len(addresses) + len(tlv)
         header = self.build_header(data_len, family=family, protocol=protocol,
                                    proxied=proxied)
@@ -205,27 +206,29 @@ class ProxyProtocolV2(ProxyProtocol):
             return b''
 
     def build_tlv(self, ssl: Union[None, SSLSocket, SSLObject],
-                  unique_id: Optional[bytes]) -> bytes:
+                  unique_id: Optional[bytes], dnsbl: Optional[str]) -> bytes:
         """Builds the TLV data written after the PROXY protocol v2 address
         data.
 
         Args:
             ssl: The SSL information for the connection.
             unique_id: The unique ID of the connection.
+            dnsbl: The DNSBL lookup result, if any.
 
         """
+        ssl_tlv: Optional[ProxyProtocolSSLTLV] = None
+        ext_tlv: Optional[ProxyProtocolExtTLV] = None
+        if dnsbl is not None:
+            ext_tlv = ProxyProtocolExtTLV(init=ext_tlv, dnsbl=dnsbl)
         if ssl is not None:
             cipher, version, secret_bits = ssl.cipher() or (None, None, None)
             peercert: Optional[PeerCert] = ssl.getpeercert()
-            ssl_tlv: Optional[ProxyProtocolSSLTLV] = ProxyProtocolSSLTLV(
+            ssl_tlv = ProxyProtocolSSLTLV(
                 has_ssl=True, verify=True,
                 has_cert_conn=(peercert is not None),
                 cipher=cipher, version=version)
-            ext_tlv: Optional[ProxyProtocolExtTLV] = ProxyProtocolExtTLV(
-                compression=ssl.compression(),
-                secret_bits=secret_bits, peercert=peercert)
-        else:
-            ssl_tlv = None
-            ext_tlv = None
+            ext_tlv = ProxyProtocolExtTLV(
+                init=ext_tlv, compression=ssl.compression(),
+                secret_bits=secret_bits, peercert=peercert, dnsbl=dnsbl)
         tlv = ProxyProtocolTLV(unique_id=unique_id, ssl=ssl_tlv, ext=ext_tlv)
         return bytes(tlv)
