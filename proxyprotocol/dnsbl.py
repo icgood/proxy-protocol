@@ -131,10 +131,11 @@ class SpamhausDnsbl(BasicDnsbl):
 
     __slots__: Sequence[str] = []
 
-    _mapping = [(IPv4Network('127.0.0.2/32'), 'sbl.spamhaus.org'),
-                (IPv4Network('127.0.0.3/32'), 'css.spamhaus.org'),
-                (IPv4Network('127.0.0.4/30'), 'xbl.spamhaus.org'),
-                (IPv4Network('127.0.0.10/31'), 'pbl.spamhaus.org')]
+    _mapping = [(IPv4Network('127.0.0.2/32'), 'https://www.spamhaus.org/sbl/'),
+                (IPv4Network('127.0.0.3/32'), 'https://www.spamhaus.org/css/'),
+                (IPv4Network('127.0.0.4/30'), 'https://www.spamhaus.org/xbl/'),
+                (IPv4Network('127.0.0.10/31'),
+                 'https://www.spamhaus.org/pbl/')]
 
     def map_results(self, addresses: Sequence[IPv4Address]) -> Optional[str]:
         if not addresses:

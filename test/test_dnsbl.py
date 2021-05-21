@@ -82,7 +82,7 @@ class TestDnsbl(IsolatedAsyncioTestCase):
         loop.getaddrinfo = AsyncMock(return_value=[
             (None, None, None, None, ('127.0.0.4', 0))])
         result = await dnsbl.lookup(sock_info, loop=loop)
-        self.assertEqual('xbl.spamhaus.org', result)
+        self.assertEqual('https://www.spamhaus.org/xbl/', result)
 
     async def test_spamhaus_lookup_unmapped(self) -> None:
         dnsbl = SpamhausDnsbl('test.spamhaus.org', None)
