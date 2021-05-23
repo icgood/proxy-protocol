@@ -41,6 +41,10 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
         assert sock_info is not None
         return sock_info
 
+    @property
+    def is_open(self) -> bool:
+        return self._sock_info is not None
+
     def close(self) -> None:
         if self._transport is not None:
             self._transport.close()
@@ -193,7 +197,7 @@ class UpstreamProtocol(_Base):
         self.dnsbl_task.add_done_callback(self._write_header)
 
     def _write_header(self, task: Task[Any]) -> None:
-        if not task.cancelled():
+        if self.downstream.is_open:
             header = self.build_pp_header()
             self.write(memoryview(header))
 
