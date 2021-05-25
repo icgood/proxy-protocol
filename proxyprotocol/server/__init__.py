@@ -26,6 +26,8 @@ class Address:
 
     """
 
+    __slots__ = ['url', 'query', 'server', '_ssl']
+
     def __init__(self, addr: str, *, server: bool = False) -> None:
         super().__init__()
         url = urlsplit(addr)
