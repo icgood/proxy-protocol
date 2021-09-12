@@ -155,7 +155,7 @@ hinting to the extent possible and common in the rest of the codebase.
 
 [2]: https://docs.python.org/3/library/asyncio.html
 [3]: https://docs.python.org/3/library/asyncio-stream.html#asyncio.start_server
-[4]: https://github.com/icgood/proxy-protocol/blob/master/proxyprotocol/echo.py
+[4]: https://github.com/icgood/proxy-protocol/blob/main/proxyprotocol/echo.py
 [5]: https://docs.python.org/3/library/venv.html
 [6]: https://www.python.org/dev/peps/pep-0484/
 [7]: http://mypy-lang.org/
