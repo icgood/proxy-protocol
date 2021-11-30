@@ -185,7 +185,7 @@ class UpstreamProtocol(_Base):
         sock = sock_info.socket
         ssl_object = sock_info.transport.get_extra_info('ssl_object')
         try:
-            protocol: Optional[SocketKind] = SocketKind(sock.proto)
+            protocol: Optional[SocketKind] = SocketKind(sock.type)
         except ValueError:
             protocol = None
         return self.pp.build(sock_info.peername, sock_info.sockname,
