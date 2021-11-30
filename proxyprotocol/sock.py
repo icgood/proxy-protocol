@@ -52,7 +52,8 @@ class SocketInfo:
 
     def _get_ip(self, addr: Address) -> _IP:
         if self.family in (socket.AF_INET, socket.AF_INET6):
-            ip_str: str = addr[0]  # type: ignore
+            assert isinstance(addr, tuple)
+            ip_str: str = addr[0]
             ip: Union[IPv4Address, IPv6Address] = ip_address(ip_str)
             if isinstance(ip, IPv6Address) and ip.ipv4_mapped is not None:
                 ip = ip_address(ip.ipv4_mapped)
@@ -61,7 +62,8 @@ class SocketInfo:
 
     def _get_port(self, addr: Address) -> Optional[int]:
         if self.family in (socket.AF_INET, socket.AF_INET6):
-            port: int = addr[1]  # type: ignore
+            assert isinstance(addr, tuple)
+            port: int = addr[1]
             return port
         return None
 
@@ -70,8 +72,8 @@ class SocketInfo:
         if self.family in (socket.AF_INET, socket.AF_INET6):
             return f'[{ip!s}]:{port!s}'
         elif self.family == socket.AF_UNIX:
-            addr_str: str = addr  # type: ignore
-            return addr_str
+            assert isinstance(addr, str)
+            return addr
         elif self.family == socket.AF_UNSPEC:
             return None
         else:  # pragma: no cover
@@ -175,13 +177,13 @@ class SocketInfo:
         """The socket protocol.
 
         See Also:
-            :attr:`socket.socket.proto`
+            :attr:`socket.socket.type`
 
         """
         if self.pp_result.proxied:
             return self.pp_result.protocol
         else:
-            return SocketKind(self.socket.proto)
+            return SocketKind(self.socket.type)
 
     @property
     def compression(self) -> Optional[str]:

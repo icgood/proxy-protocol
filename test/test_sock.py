@@ -103,7 +103,7 @@ class TestSocketInfo(unittest.TestCase):
         result = ProxyProtocolResultLocal()
         info = SocketInfo(self.transport, result)
         self.extra['socket'] = sock = MagicMock(socket.socket)
-        sock.proto = socket.SOCK_STREAM
+        sock.type = socket.SOCK_STREAM
         self.assertEqual(socket.SOCK_STREAM, info.protocol)
 
     def test_protocol_override(self) -> None:

@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 #
 
-from setuptools import setup, find_packages  # type: ignore
+from setuptools import setup, find_packages
 
 with open('README.md') as f:
     readme = f.read()
@@ -28,7 +28,7 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 setup(name='proxy-protocol',
-      version='0.7.4',
+      version='0.7.5',
       author='Ian Good',
       author_email='ian@icgood.net',
       description='PROXY protocol library with asyncio server implementation',
