@@ -1,4 +1,6 @@
 
+from __future__ import annotations
+
 import socket
 import pkg_resources
 from abc import abstractmethod, ABCMeta
@@ -10,14 +12,15 @@ from typing_extensions import Final
 from .tlv import ProxyProtocolTLV
 from .typing import Address
 
-__all__ = ['__version__', 'ProxyProtocolError', 'ProxyProtocolWantRead',
-           'ProxyProtocolResult', 'ProxyProtocol']
+__all__ = ['__version__', 'ProxyProtocolSyntaxError',
+           'ProxyProtocolChecksumError', 'ProxyProtocolIncompleteError',
+           'ProxyProtocolWantRead', 'ProxyProtocolResult', 'ProxyProtocol']
 
 #: The package version string.
 __version__: str = pkg_resources.require('proxy-protocol')[0].version
 
 
-class ProxyProtocolError(ValueError):
+class ProxyProtocolSyntaxError(ValueError):
     """Indicates a failure in parsing the PROXY protocol header. This indicates
     a syntax issue in the header, not simply bad data.
 
@@ -31,12 +34,43 @@ class ProxyProtocolError(ValueError):
     __slots__: Sequence[str] = []
 
 
-class ProxyProtocolWantRead(Exception):
-    """Thrown when the PROXY protocol header cannot be parsed because the
-    provided data is not enough to be parsed. Additional data must be read
-    before parsing can succeed or fail.
+class ProxyProtocolChecksumError(ValueError):
+    """The PROXY protocol header was parsed but contained a CRC32C checksum
+    that did not match the expected value.
 
-    Either *want_bytes* or *want_line* must be given, but not both.
+    Args:
+        result: The PROXY protocol result.
+
+    """
+
+    __slots__ = ['result']
+
+    def __init__(self, result: ProxyProtocolResult) -> None:
+        super().__init__()
+        self.result: Final = result
+
+
+class ProxyProtocolIncompleteError(Exception):
+    """Thrown when the PROXY protocol header cannot be parsed because the
+    provided data is not enough to be parsed. The *want_read* conditions should
+    be satisfied before trying to parse again.
+
+    Args:
+        want_read: Specifies what data is needed for parsing to continue.
+
+    """
+
+    __slots__ = ['want_read']
+
+    def __init__(self, want_read: ProxyProtocolWantRead) -> None:
+        super().__init__('Additional data needed')
+        self.want_read: Final = want_read
+
+
+class ProxyProtocolWantRead:
+    """Specifies how much additional data must be read before PROXY protocol
+    header parsing may be completed. Either *want_bytes* or *want_line* must be
+    given, but not both.
 
     Args:
         want_bytes: Number of bytes needed before parsing may proceed.
@@ -48,7 +82,7 @@ class ProxyProtocolWantRead(Exception):
 
     def __init__(self, want_bytes: Optional[int] = None, *,
                  want_line: bool = False) -> None:
-        super().__init__('Additional data needed')
+        super().__init__()
         self.want_bytes: Final = want_bytes
         self.want_line: Final = want_line
 
@@ -132,10 +166,11 @@ class ProxyProtocol(metaclass=ABCMeta):
             data: The bytestring read for the header thus far.
 
         Raises:
-            :exc:`ProxyProtocolWantRead`: The header was incomplete and must
-                be extended with additional bytes or lines to finish parsing.
-            :exc:`ProxyProtocolError`: The header failed to parse due to a
-                syntax error or unsupported format.
+            :exc:`ProxyProtocolIncompleteError`: The header was incomplete and
+                must be extended with additional bytes or lines to finish
+                parsing.
+            :exc:`ProxyProtocolSyntaxError`: The header failed to parse due to
+                a syntax error or unsupported format.
             :exc:`ValueError`: Malformed or out-of-range data was encountered
                 in the header.
 

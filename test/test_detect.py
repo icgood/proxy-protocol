@@ -3,7 +3,8 @@ import socket
 import unittest
 from unittest.mock import MagicMock
 
-from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
+from proxyprotocol import ProxyProtocolSyntaxError, \
+    ProxyProtocolIncompleteError
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultUnknown
 from proxyprotocol.detect import ProxyProtocolDetect
@@ -25,10 +26,10 @@ class TestProxyProtocolDetect(unittest.TestCase):
 
     def test_parse_incomplete(self) -> None:
         pp = ProxyProtocolDetect()
-        with self.assertRaises(ProxyProtocolWantRead) as raised:
+        with self.assertRaises(ProxyProtocolIncompleteError) as raised:
             pp.parse(b'')
-        self.assertEqual(8, raised.exception.want_bytes)
-        self.assertFalse(raised.exception.want_line)
+        self.assertEqual(8, raised.exception.want_read.want_bytes)
+        self.assertFalse(raised.exception.want_read.want_line)
 
     def test_parse(self) -> None:
         mock_one = MagicMock(ProxyProtocolV1)
@@ -53,13 +54,13 @@ class TestProxyProtocolDetect(unittest.TestCase):
 
     def test_choose_version_bad(self) -> None:
         pp = ProxyProtocolDetect()
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.choose_version(b'PROXY')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.choose_version(b'\r\n\r\n\x00\r\n')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.choose_version(b'badPROXY ...')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.choose_version(b'bad\r\n\r\n\x00\r\nQUIT')
 
     def test_build(self) -> None:

@@ -1,12 +1,14 @@
 
+from __future__ import annotations
+
 import socket
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Union, Optional, Sequence
 
-from . import ProxyProtocolError, ProxyProtocolWantRead, \
-    ProxyProtocolResult, ProxyProtocol
+from . import ProxyProtocolWantRead, ProxyProtocolResult, ProxyProtocol, \
+    ProxyProtocolSyntaxError, ProxyProtocolIncompleteError
 from .result import ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
     ProxyProtocolResultIPv6
 from .typing import Address
@@ -22,7 +24,8 @@ class ProxyProtocolV1(ProxyProtocol):
 
     def parse(self, data: bytes) -> ProxyProtocolResult:
         if data[-1:] != b'\n':
-            raise ProxyProtocolWantRead(want_line=True)
+            want_read = ProxyProtocolWantRead(want_line=True)
+            raise ProxyProtocolIncompleteError(want_read)
         return self.parse_line(data)
 
     def parse_line(self, data: bytes) -> ProxyProtocolResult:
@@ -33,14 +36,16 @@ class ProxyProtocolV1(ProxyProtocol):
 
         """
         if data[0:6] != b'PROXY ' or data[-2:] != b'\r\n':
-            raise ProxyProtocolError('Invalid proxy protocol v1 signature')
+            raise ProxyProtocolSyntaxError(
+                'Invalid proxy protocol v1 signature')
         line = bytes(data[6:-2])
         parts = line.split(b' ')
         family_string = parts[0]
         if family_string == b'UNKNOWN':
             return ProxyProtocolResultUnknown()
         elif len(parts) != 5:
-            raise ProxyProtocolError('Invalid proxy protocol header format')
+            raise ProxyProtocolSyntaxError(
+                'Invalid proxy protocol header format')
         elif family_string == b'TCP4':
             source_addr4 = (self._get_ip4(parts[1]), self._get_port(parts[3]))
             dest_addr4 = (self._get_ip4(parts[2]), self._get_port(parts[4]))
@@ -50,7 +55,8 @@ class ProxyProtocolV1(ProxyProtocol):
             dest_addr6 = (self._get_ip6(parts[2]), self._get_port(parts[4]))
             return ProxyProtocolResultIPv6(source_addr6, dest_addr6)
         else:
-            raise ProxyProtocolError('Invalid proxy protocol address family')
+            raise ProxyProtocolSyntaxError(
+                'Invalid proxy protocol address family')
 
     def _get_ip4(self, ip_string: bytes) -> IPv4Address:
         return IPv4Address(ip_string.decode('ascii'))

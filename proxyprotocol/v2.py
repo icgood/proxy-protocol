@@ -1,4 +1,6 @@
 
+from __future__ import annotations
+
 import socket
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
@@ -7,8 +9,9 @@ from struct import Struct
 from typing import cast, Union, Optional, Tuple, Sequence
 from typing_extensions import Final
 
-from . import ProxyProtocolError, ProxyProtocolWantRead, \
-    ProxyProtocolResult, ProxyProtocol
+from . import ProxyProtocolWantRead, ProxyProtocolResult, ProxyProtocol, \
+    ProxyProtocolSyntaxError, ProxyProtocolChecksumError, \
+    ProxyProtocolIncompleteError
 from .result import ProxyProtocolResultLocal, ProxyProtocolResultUnknown, \
     ProxyProtocolResultIPv4, ProxyProtocolResultIPv6, ProxyProtocolResultUnix
 from .tlv import ProxyProtocolTLV, ProxyProtocolSSLTLV, ProxyProtocolExtTLV
@@ -66,75 +69,91 @@ class ProxyProtocolV2(ProxyProtocol):
 
     def parse(self, data: bytes) -> ProxyProtocolResult:
         if len(data) < 16:
-            raise ProxyProtocolWantRead(16 - len(data))
-        header = self.parse_header(data[0:16])
-        if len(data) < 16 + header.data_len:
-            raise ProxyProtocolWantRead((16 + header.data_len) - len(data))
-        return self.parse_data(header, data[16:])
+            want_read = ProxyProtocolWantRead(16 - len(data))
+            raise ProxyProtocolIncompleteError(want_read)
+        header_data, data = data[0:16], data[16:]
+        header = self.parse_header(header_data)
+        if len(data) < header.data_len:
+            want_read = ProxyProtocolWantRead(header.data_len - len(data))
+            raise ProxyProtocolIncompleteError(want_read)
+        return self.parse_data(header, header_data, data)
 
-    def parse_header(self, header: bytes) -> ProxyProtocolV2Header:
+    def parse_header(self, header_data: bytes) -> ProxyProtocolV2Header:
         """Parse the PROXY protocol v2 header.
 
         Args:
             header: The header bytestring to parse.
 
         """
-        if header[0:12] != b'\r\n\r\n\x00\r\nQUIT\n':
-            raise ProxyProtocolError('Invalid proxy protocol v2 signature')
-        elif header[12] & 0xf0 != 0x20:
-            raise ProxyProtocolError('Invalid proxy protocol version')
-        byte_12, byte_13, data_len = self._header_format.unpack(header[12:16])
+        if header_data[0:12] != b'\r\n\r\n\x00\r\nQUIT\n':
+            raise ProxyProtocolSyntaxError(
+                'Invalid proxy protocol v2 signature')
+        elif header_data[12] & 0xf0 != 0x20:
+            raise ProxyProtocolSyntaxError('Invalid proxy protocol version')
+        byte_12, byte_13, data_len = self._header_format.unpack_from(
+            header_data, 12)
         command = self._commands_l.get(byte_12 & 0x0f)
         family = self._families_l.get(byte_13 & 0xf0)
         protocol = self._protocols_l.get(byte_13 & 0x0f)
         return ProxyProtocolV2Header(command=command, family=family,
                                      protocol=protocol, data_len=data_len)
 
-    def parse_data(self, header: ProxyProtocolV2Header, data: bytes) \
+    def parse_data(self, header: ProxyProtocolV2Header,
+                   header_data: bytes, data: bytes) \
             -> ProxyProtocolResult:
         """Parse the address information read from the stream after the v2
         header.
 
         Args:
-            addresses: The addresses bytestring to parse.
             header: The version 2 header info.
+            header_data: The header bytestring.
+            data: The addresses bytestring to parse.
+
+        Raises:
+            :exc:`~proxyprotocol.ProxyProtocolChecksumError`
 
         """
+        if header.command not in ('local', 'proxy'):
+            raise ProxyProtocolSyntaxError('Invalid proxy protocol command')
+        result: ProxyProtocolResult
         if header.command == 'local':
-            return ProxyProtocolResultLocal()
-        elif header.command != 'proxy':
-            raise ProxyProtocolError('Invalid proxy protocol command')
-        if header.family == socket.AF_INET:
+            addr_data, tlv_data = b'', data
+            tlv = ProxyProtocolTLV(tlv_data)
+            result = ProxyProtocolResultLocal(tlv)
+        elif header.family == socket.AF_INET:
             addr_len = self._ipv4_format.size
-            addr_b, tlv_b = data[:addr_len], data[addr_len:]
+            addr_data, tlv_data = data[:addr_len], data[addr_len:]
             source_ip, dest_ip, source_port, dest_port = \
-                self._ipv4_format.unpack(addr_b)
+                self._ipv4_format.unpack(addr_data)
             source_addr4 = (IPv4Address(source_ip), source_port)
             dest_addr4 = (IPv4Address(dest_ip), dest_port)
-            tlv = ProxyProtocolTLV(tlv_b)
-            return ProxyProtocolResultIPv4(source_addr4, dest_addr4,
-                                           protocol=header.protocol, tlv=tlv)
+            tlv = ProxyProtocolTLV(tlv_data)
+            result = ProxyProtocolResultIPv4(source_addr4, dest_addr4,
+                                             protocol=header.protocol, tlv=tlv)
         elif header.family == socket.AF_INET6:
             addr_len = self._ipv6_format.size
-            addr_b, tlv_b = data[:addr_len], data[addr_len:]
+            addr_data, tlv_data = data[:addr_len], data[addr_len:]
             source_ip, dest_ip, source_port, dest_port = \
-                self._ipv6_format.unpack(addr_b)
+                self._ipv6_format.unpack(addr_data)
             source_addr6 = (IPv6Address(source_ip), source_port)
             dest_addr6 = (IPv6Address(dest_ip), dest_port)
-            tlv = ProxyProtocolTLV(tlv_b)
-            return ProxyProtocolResultIPv6(source_addr6, dest_addr6,
-                                           protocol=header.protocol, tlv=tlv)
+            tlv = ProxyProtocolTLV(tlv_data)
+            result = ProxyProtocolResultIPv6(source_addr6, dest_addr6,
+                                             protocol=header.protocol, tlv=tlv)
         elif header.family == socket.AF_UNIX:
             addr_len = self._unix_format.size
-            addr_b, tlv_b = data[:addr_len], data[addr_len:]
-            source_addr_b, dest_addr_b = self._unix_format.unpack(addr_b)
+            addr_data, tlv_data = data[:addr_len], data[addr_len:]
+            source_addr_b, dest_addr_b = self._unix_format.unpack(addr_data)
             source_addru = source_addr_b.rstrip(b'\x00').decode('ascii')
             dest_addru = dest_addr_b.rstrip(b'\x00').decode('ascii')
-            tlv = ProxyProtocolTLV(tlv_b)
-            return ProxyProtocolResultUnix(source_addru, dest_addru,
-                                           protocol=header.protocol, tlv=tlv)
+            tlv = ProxyProtocolTLV(tlv_data)
+            result = ProxyProtocolResultUnix(source_addru, dest_addru,
+                                             protocol=header.protocol, tlv=tlv)
         else:
             return ProxyProtocolResultUnknown()
+        if not tlv.verify_checksum(header_data, addr_data):
+            raise ProxyProtocolChecksumError(result)
+        return result
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,
               protocol: Optional[SocketKind] = None,
@@ -144,10 +163,11 @@ class ProxyProtocolV2(ProxyProtocol):
               dnsbl: Optional[str] = None) -> bytes:
         addresses = self.build_addresses(source, dest, family=family)
         tlv = self.build_tlv(ssl, unique_id, dnsbl)
-        data_len = len(addresses) + len(tlv)
+        data_len = len(addresses) + tlv.size
         header = self.build_header(data_len, family=family, protocol=protocol,
                                    proxied=proxied)
-        return header + addresses + tlv
+        tlv = tlv.with_checksum(header, addresses)
+        return header + addresses + bytes(tlv)
 
     def build_header(self, data_len: int, *,
                      family: AddressFamily,
@@ -206,7 +226,8 @@ class ProxyProtocolV2(ProxyProtocol):
             return b''
 
     def build_tlv(self, ssl: Union[None, SSLSocket, SSLObject],
-                  unique_id: Optional[bytes], dnsbl: Optional[str]) -> bytes:
+                  unique_id: Optional[bytes], dnsbl: Optional[str]) \
+            -> ProxyProtocolTLV:
         """Builds the TLV data written after the PROXY protocol v2 address
         data.
 
@@ -230,5 +251,5 @@ class ProxyProtocolV2(ProxyProtocol):
             ext_tlv = ProxyProtocolExtTLV(
                 init=ext_tlv, compression=ssl.compression(),
                 secret_bits=secret_bits, peercert=peercert, dnsbl=dnsbl)
-        tlv = ProxyProtocolTLV(unique_id=unique_id, ssl=ssl_tlv, ext=ext_tlv)
-        return bytes(tlv)
+        return ProxyProtocolTLV(unique_id=unique_id, ssl=ssl_tlv, ext=ext_tlv,
+                                auto_crc32c=True)
