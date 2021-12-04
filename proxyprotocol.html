@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>proxyprotocol &#8212; proxy-protocol 0.7.5 documentation</title>
+    <title>proxyprotocol &#8212; proxy-protocol 0.8.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -53,7 +53,7 @@
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.7.5 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.8.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -69,8 +69,8 @@
   <section id="module-proxyprotocol">
 <span id="proxyprotocol"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code><a class="headerlink" href="#module-proxyprotocol" title="Permalink to this headline">¶</a></h1>
 <dl class="py exception">
-<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolError</span></span><a class="headerlink" href="#proxyprotocol.ProxyProtocolError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolSyntaxError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolSyntaxError</span></span><a class="headerlink" href="#proxyprotocol.ProxyProtocolSyntaxError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates a failure in parsing the PROXY protocol header. This indicates
 a syntax issue in the header, not simply bad data.</p>
 <div class="admonition warning">
@@ -82,12 +82,36 @@ and closed.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolWantRead">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolWantRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">want_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocolWantRead" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolChecksumError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolChecksumError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocolChecksumError" title="Permalink to this definition">¶</a></dt>
+<dd><p>The PROXY protocol header was parsed but contained a CRC32C checksum
+that did not match the expected value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a>) – The PROXY protocol result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolIncompleteError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolIncompleteError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_read</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocolIncompleteError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thrown when the PROXY protocol header cannot be parsed because the
-provided data is not enough to be parsed. Additional data must be read
-before parsing can succeed or fail.</p>
-<p>Either <em>want_bytes</em> or <em>want_line</em> must be given, but not both.</p>
+provided data is not enough to be parsed. The <em>want_read</em> conditions should
+be satisfied before trying to parse again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>want_read</strong> (<a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolWantRead</span></code></a>) – Specifies what data is needed for parsing to continue.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolWantRead">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolWantRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">want_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.ProxyProtocolWantRead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies how much additional data must be read before PROXY protocol
+header parsing may be completed. Either <em>want_bytes</em> or <em>want_line</em> must be
+given, but not both.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -201,10 +225,11 @@ information about the original connection.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
-    be extended with additional bytes or lines to finish parsing.</p></li>
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
-    syntax error or unsupported format.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolIncompleteError" title="proxyprotocol.ProxyProtocolIncompleteError"><strong>ProxyProtocolIncompleteError</strong></a> – The header was incomplete and
+    must be extended with additional bytes or lines to finish
+    parsing.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
+    a syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
@@ -377,10 +402,11 @@ information about the original connection.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
-    be extended with additional bytes or lines to finish parsing.</p></li>
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
-    syntax error or unsupported format.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolIncompleteError" title="proxyprotocol.ProxyProtocolIncompleteError"><strong>ProxyProtocolIncompleteError</strong></a> – The header was incomplete and
+    must be extended with additional bytes or lines to finish
+    parsing.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
+    a syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
@@ -466,10 +492,11 @@ information about the original connection.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
-    be extended with additional bytes or lines to finish parsing.</p></li>
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
-    syntax error or unsupported format.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolIncompleteError" title="proxyprotocol.ProxyProtocolIncompleteError"><strong>ProxyProtocolIncompleteError</strong></a> – The header was incomplete and
+    must be extended with additional bytes or lines to finish
+    parsing.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
+    a syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
@@ -562,10 +589,11 @@ information about the original connection.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
-    be extended with additional bytes or lines to finish parsing.</p></li>
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
-    syntax error or unsupported format.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolIncompleteError" title="proxyprotocol.ProxyProtocolIncompleteError"><strong>ProxyProtocolIncompleteError</strong></a> – The header was incomplete and
+    must be extended with additional bytes or lines to finish
+    parsing.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
+    a syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
@@ -665,10 +693,11 @@ information about the original connection.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolWantRead" title="proxyprotocol.ProxyProtocolWantRead"><strong>ProxyProtocolWantRead</strong></a> – The header was incomplete and must
-    be extended with additional bytes or lines to finish parsing.</p></li>
-<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolError" title="proxyprotocol.ProxyProtocolError"><strong>ProxyProtocolError</strong></a> – The header failed to parse due to a
-    syntax error or unsupported format.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolIncompleteError" title="proxyprotocol.ProxyProtocolIncompleteError"><strong>ProxyProtocolIncompleteError</strong></a> – The header was incomplete and
+    must be extended with additional bytes or lines to finish
+    parsing.</p></li>
+<li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
+    a syntax error or unsupported format.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
@@ -681,11 +710,11 @@ information about the original connection.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.v2.ProxyProtocolV2.parse_header">
-<span class="sig-name descname"><span class="pre">parse_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_header" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the PROXY protocol v2 header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>header</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The header bytestring to parse.</p>
+<dd class="field-odd"><p><strong>header</strong> – The header bytestring to parse.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.v2.ProxyProtocolV2Header" title="proxyprotocol.v2.ProxyProtocolV2Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolV2Header</span></code></a></p>
@@ -695,18 +724,22 @@ information about the original connection.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.v2.ProxyProtocolV2.parse_data">
-<span class="sig-name descname"><span class="pre">parse_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.v2.ProxyProtocolV2.parse_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the address information read from the stream after the v2
 header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>addresses</strong> – The addresses bytestring to parse.</p></li>
 <li><p><strong>header</strong> (<a class="reference internal" href="#proxyprotocol.v2.ProxyProtocolV2Header" title="proxyprotocol.v2.ProxyProtocolV2Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolV2Header</span></code></a>) – The version 2 header info.</p></li>
+<li><p><strong>header_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The header bytestring.</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The addresses bytestring to parse.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolChecksumError" title="proxyprotocol.ProxyProtocolChecksumError"><strong>ProxyProtocolChecksumError</strong></a> – </p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolResult" title="proxyprotocol.ProxyProtocolResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolResult</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -796,7 +829,7 @@ data.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -881,7 +914,7 @@ socket.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyProtocolResultLocal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolResultLocal</span></span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolResultLocal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV(b'')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyProtocolResultLocal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates that the connection should be treated as if it is not proxied.
 The real socket <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getpeername" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getpeername()</span></code></a> and
 <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getsockname" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getsockname()</span></code></a> will provide the correct address
@@ -1227,7 +1260,7 @@ socket.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.tlv.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.Type" title="Permalink to this definition">¶</a></dt>
-<dd><p>The PROXY protocol TLV type values.</p>
+<dd><p>The PROXY protocol TLV standard type values.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.Type.PP2_TYPE_ALPN">
 <span class="sig-name descname"><span class="pre">PP2_TYPE_ALPN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_ALPN" title="Permalink to this definition">¶</a></dt>
@@ -1318,26 +1351,6 @@ socket.</p>
 <span class="sig-name descname"><span class="pre">PP2_TYPE_MAX_FUTURE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">255</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_TYPE_MAX_FUTURE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_COMPRESSION">
-<span class="sig-name descname"><span class="pre">PP2_SUBTYPE_EXT_COMPRESSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_COMPRESSION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_SECRET_BITS">
-<span class="sig-name descname"><span class="pre">PP2_SUBTYPE_EXT_SECRET_BITS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_SECRET_BITS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_PEERCERT">
-<span class="sig-name descname"><span class="pre">PP2_SUBTYPE_EXT_PEERCERT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_PEERCERT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_DNSBL">
-<span class="sig-name descname"><span class="pre">PP2_SUBTYPE_EXT_DNSBL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#proxyprotocol.tlv.Type.PP2_SUBTYPE_EXT_DNSBL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -1376,11 +1389,22 @@ another <a class="reference internal" href="#proxyprotocol.tlv.TLV" title="proxy
 </ul>
 </dd>
 </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="proxyprotocol.tlv.TLV.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#proxyprotocol.tlv.TLV.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size of the TLV when converted to bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolTLV">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.tlv.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolTLV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crc32c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.tlv.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolTLV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crc32c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_crc32c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the TLV values that may be appended to a PROXY protocol header.
 These values can provide additional information not stored in the address
 data. Refer to the PROXY protocol spec for more information about each TLV.</p>
@@ -1393,6 +1417,50 @@ another <a class="reference internal" href="#proxyprotocol.tlv.TLV" title="proxy
 </ul>
 </dd>
 </dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolTLV.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size of the TLV when converted to bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolTLV.with_checksum">
+<span class="sig-name descname"><span class="pre">with_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.with_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the current TLV values with the <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV.crc32c" title="proxyprotocol.tlv.ProxyProtocolTLV.crc32c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">crc32c</span></code></a>
+checksum populated according to the rules in the PROXY protocol spec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>before</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The data in the PROXY protocol header before the TLV, which
+is included in the checksum.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum">
+<span class="sig-name descname"><span class="pre">verify_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">before</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies the <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocolTLV.crc32c" title="proxyprotocol.tlv.ProxyProtocolTLV.crc32c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">crc32c</span></code></a> checksum, if present, correctly matches
+the expected value computed for the PROXY protocol header. If this
+method returns False, the connection should likely be aborted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>before</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The data in the PROXY protocol header before the TLV, which
+is included in the checksum.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolTLV.alpn">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alpn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolTLV.alpn" title="Permalink to this definition">¶</a></dt>
@@ -1634,7 +1702,7 @@ parsed as a <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocol
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolExtTLV.compression">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compression</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.compression" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_COMPRESSION</span></code> value. This is used by the
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_EXT_COMPRESSION</span></code> value. This is used by the
 <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.compression" title="proxyprotocol.sock.SocketInfo.compression"><code class="xref py py-attr docutils literal notranslate"><span class="pre">compression</span></code></a> value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1646,7 +1714,7 @@ parsed as a <a class="reference internal" href="#proxyprotocol.tlv.ProxyProtocol
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">secret_bits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_SECRET_BITS</span></code> value. This is used to populate
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_EXT_SECRET_BITS</span></code> value. This is used to populate
 the third member of the: attr:<cite>~proxyprotocol.sock.SocketInfo.cipher</cite>
 tuple.</p>
 <dl class="field-list simple">
@@ -1659,7 +1727,7 @@ tuple.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolExtTLV.peercert">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peercert</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.peercert" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_PEERCERT</span></code> value. This is used by the
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_EXT_PEERCERT</span></code> value. This is used by the
 <a class="reference internal" href="#proxyprotocol.sock.SocketInfo.peercert" title="proxyprotocol.sock.SocketInfo.peercert"><code class="xref py py-attr docutils literal notranslate"><span class="pre">peercert</span></code></a> value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1671,7 +1739,7 @@ tuple.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.tlv.ProxyProtocolExtTLV.dnsbl">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dnsbl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.tlv.ProxyProtocolExtTLV.dnsbl" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_SUBTYPE_EXT_DNSBL</span></code> value. This is the hostname or other
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">PP2_TYPE_EXT_DNSBL</span></code> value. This is the hostname or other
 identifier that reports a status or reputation of the connecting IP
 address.</p>
 <dl class="field-list simple">
@@ -2136,7 +2204,7 @@ return the result.</p>
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.7.5 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.8.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
