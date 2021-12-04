@@ -5,7 +5,8 @@ from ipaddress import IPv4Address, IPv6Address
 from ssl import SSLObject
 from unittest.mock import MagicMock
 
-from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
+from proxyprotocol import ProxyProtocolSyntaxError, \
+    ProxyProtocolChecksumError, ProxyProtocolIncompleteError
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultLocal, \
     ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
@@ -21,19 +22,35 @@ class TestProxyProtocolV2(unittest.TestCase):
 
     def test_parse_incomplete(self) -> None:
         pp = ProxyProtocolV2()
-        with self.assertRaises(ProxyProtocolWantRead) as raised:
+        with self.assertRaises(ProxyProtocolIncompleteError) as raised:
             pp.parse(b'')
-        self.assertEqual(16, raised.exception.want_bytes)
-        self.assertFalse(raised.exception.want_line)
-        with self.assertRaises(ProxyProtocolWantRead) as raised:
+        self.assertEqual(16, raised.exception.want_read.want_bytes)
+        self.assertFalse(raised.exception.want_read.want_line)
+        with self.assertRaises(ProxyProtocolIncompleteError) as raised:
             pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x21\x21\xf0\xf0')
-        self.assertEqual(61680, raised.exception.want_bytes)
-        self.assertFalse(raised.exception.want_line)
+        self.assertEqual(61680, raised.exception.want_read.want_bytes)
+        self.assertFalse(raised.exception.want_read.want_line)
 
     def test_parse(self) -> None:
         pp = ProxyProtocolV2()
         res = pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x21\x00\x00\x00')
         self.assertIsInstance(res, ProxyProtocolResultUnknown)
+
+    def test_parse_local(self) -> None:
+        pp = ProxyProtocolV2()
+        res = pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x20\x00\x00\x07' +
+                       b'\x03\x00\x04\xa9\xb8~\x8f')
+        self.assertIsInstance(res, ProxyProtocolResultLocal)
+        self.assertEqual(2847440527, res.tlv.crc32c)
+
+    def test_parse_checksum_error(self) -> None:
+        pp = ProxyProtocolV2()
+        with self.assertRaises(ProxyProtocolChecksumError) as raised:
+            pp.parse(b'\r\n\r\n\x00\r\nQUIT\n\x20\x00\x00\x07' +
+                     b'\x03\x00\x04\xa9\xb8!\x8f')
+        res = raised.exception.result
+        self.assertIsInstance(res, ProxyProtocolResultLocal)
+        self.assertEqual(2847416719, res.tlv.crc32c)
 
     def test_parse_header(self) -> None:
         pp = ProxyProtocolV2()
@@ -46,16 +63,16 @@ class TestProxyProtocolV2(unittest.TestCase):
 
     def test_parse_header_bad(self) -> None:
         pp = ProxyProtocolV2()
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_header(b'bad')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_header(b'\r\n\r\n\x00\r\nQUIT\n\x31\x21\xf0\xf0')
 
     def test_parse_data_local(self) -> None:
         pp = ProxyProtocolV2()
         header = ProxyProtocolV2Header(command='local', family=None,
                                        protocol=None, data_len=0)
-        res = pp.parse_data(header, b'')
+        res = pp.parse_data(header, b'', b'')
         if not isinstance(res, ProxyProtocolResultLocal):
             self.fail('expected ProxyProtocolResultLocal instance')
         self.assertIsNone(res.source)
@@ -67,14 +84,14 @@ class TestProxyProtocolV2(unittest.TestCase):
         pp = ProxyProtocolV2()
         header = ProxyProtocolV2Header(command='bad', family=None,
                                        protocol=None, data_len=0)
-        with self.assertRaises(ProxyProtocolError):
-            pp.parse_data(header, b'')
+        with self.assertRaises(ProxyProtocolSyntaxError):
+            pp.parse_data(header, b'', b'')
 
     def test_parse_data_unknown(self) -> None:
         pp = ProxyProtocolV2()
         header = ProxyProtocolV2Header(command='proxy', family=None,
                                        protocol=None, data_len=0)
-        res = pp.parse_data(header, b'')
+        res = pp.parse_data(header, b'', b'')
         if not isinstance(res, ProxyProtocolResultUnknown):
             self.fail('expected ProxyProtocolResultUnknown instance')
         self.assertIsNone(res.source)
@@ -87,7 +104,7 @@ class TestProxyProtocolV2(unittest.TestCase):
         header = ProxyProtocolV2Header(command='proxy', family=socket.AF_INET,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.parse_data(
-            header, b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19')
+            header, b'', b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19')
         if not isinstance(res, ProxyProtocolResultIPv4):
             self.fail('expected ProxyProtocolResult4 instance')
         self.assertEqual(socket.AF_INET, res.family)
@@ -104,7 +121,7 @@ class TestProxyProtocolV2(unittest.TestCase):
         header = ProxyProtocolV2Header(command='proxy', family=socket.AF_INET6,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.parse_data(
-            header, (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19')
+            header, b'', (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19')
         if not isinstance(res, ProxyProtocolResultIPv6):
             self.fail('expected ProxyProtocolResult6 instance')
         self.assertEqual(socket.AF_INET6, res.family)
@@ -121,7 +138,7 @@ class TestProxyProtocolV2(unittest.TestCase):
         header = ProxyProtocolV2Header(command='proxy', family=socket.AF_UNIX,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.parse_data(
-            header, b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102)
+            header, b'', b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102)
         if not isinstance(res, ProxyProtocolResultUnix):
             self.fail('expected ProxyProtocolResultUnix instance')
         self.assertEqual('abc', res.source)
@@ -134,7 +151,7 @@ class TestProxyProtocolV2(unittest.TestCase):
         header = ProxyProtocolV2Header(command='proxy', family=socket.AF_INET,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.parse_data(
-            header, b'\x00' * 12 + b'\x02\x00\x04test')
+            header, b'', b'\x00' * 12 + b'\x02\x00\x04test')
         if not isinstance(res, ProxyProtocolResultIPv4):
             self.fail('expected ProxyProtocolResult4 instance')
         self.assertIsNotNone(res.tlv)
@@ -144,35 +161,37 @@ class TestProxyProtocolV2(unittest.TestCase):
         pp = ProxyProtocolV2()
         header = pp.build(('0.0.0.0', 0), ('127.0.0.1', 25),
                           family=socket.AF_INET, protocol=socket.SOCK_STREAM)
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x11\x00\x0c' +
-                         b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19',
-                         header)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x11\x00\x13' +
+                         b'\x00\x00\x00\x00\x7f\x00\x00\x01\x00\x00\x00\x19' +
+                         b'\x03\x00\x04%\xc9\x11r', header)
 
     def test_build_tcp6(self) -> None:
         pp = ProxyProtocolV2()
         header = pp.build(('::1', 0, 0, 0), ('::1', 25, 0, 0),
                           family=socket.AF_INET6, protocol=socket.SOCK_STREAM)
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x21\x00\x24' +
-                         (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19',
-                         header)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!!\x00+' +
+                         (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19' +
+                         b'\x03\x00\x04p\x86\x92\xe9', header)
 
     def test_build_unix(self) -> None:
         pp = ProxyProtocolV2()
         header = pp.build('abc', 'defghi', family=socket.AF_UNIX,
                           protocol=socket.SOCK_STREAM)
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x31\x00\xd8' +
-                         b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102,
-                         header)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x31\x00\xdf' +
+                         b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102 +
+                         b'\x03\x00\x04W\x8a\x8e\xb4', header)
 
     def test_build_unknown(self) -> None:
         pp = ProxyProtocolV2()
         header = pp.build(None, None, family=socket.AF_UNSPEC)
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x00\x00\x00', header)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!\x00\x00\x07'
+                         b'\x03\x00\x04>\xc9\x89N', header)
 
     def test_build_not_proxied(self) -> None:
         pp = ProxyProtocolV2()
         header = pp.build(None, None, family=socket.AF_UNSPEC, proxied=False)
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x20\x00\x00\x00', header)
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x20\x00\x00\x07' +
+                         b'\x03\x00\x04\xa9\xb8~\x8f', header)
 
     def test_build_tlv(self) -> None:
         pp = ProxyProtocolV2()
@@ -183,11 +202,10 @@ class TestProxyProtocolV2(unittest.TestCase):
         header = pp.build(None, None, family=socket.AF_UNSPEC,
                           ssl=ssl_object, unique_id=b'connection_id',
                           dnsbl='dnsbl_result')
-        print(repr(header))
-        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!\x00\x00f'
-                         b'\x04\x00/\x88\x1by\xc1\xce\x96\x85\xb0\x01\x00\x10'
-                         b'compression_name\x02\x00\x02\x00{\x04\x00\x0c'
-                         b'dnsbl_result\x05\x00\r'
-                         b'connection_id \x00!\x01\x00\x00\x00\x01!\x00\x0b'
-                         b'ssl_version#\x00\x0bcipher_name',
+        self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!\x00\x00m' +
+                         b'\x03\x00\x04\x16\xb5"\x85\x04\x00/\x88\x1by' +
+                         b'\xc1\xce\x96\x85\xb0\x01\x00\x10compression_name' +
+                         b'\x02\x00\x02\x00{\x04\x00\x0cdnsbl_result\x05\x00' +
+                         b'\rconnection_id \x00!\x01\x00\x00\x00\x01!\x00' +
+                         b'\x0bssl_version#\x00\x0bcipher_name',
                          header)

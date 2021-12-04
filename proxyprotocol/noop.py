@@ -1,4 +1,6 @@
 
+from __future__ import annotations
+
 from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Union, Optional, Sequence, NoReturn

@@ -1,8 +1,10 @@
 
+from __future__ import annotations
+
 import socket
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from typing import Optional, Tuple, Sequence
+from typing import Optional, Tuple
 from typing_extensions import Literal
 
 from . import ProxyProtocolResult
@@ -21,7 +23,11 @@ class ProxyProtocolResultLocal(ProxyProtocolResult):
 
     """
 
-    __slots__: Sequence[str] = []
+    __slots__ = ['_tlv']
+
+    def __init__(self, tlv: ProxyProtocolTLV = ProxyProtocolTLV()) -> None:
+        super().__init__()
+        self._tlv = tlv
 
     @property
     def proxied(self) -> Literal[False]:
@@ -37,7 +43,7 @@ class ProxyProtocolResultLocal(ProxyProtocolResult):
 
     @property
     def tlv(self) -> ProxyProtocolTLV:
-        return ProxyProtocolTLV()
+        return self._tlv
 
 
 class ProxyProtocolResultUnknown(ProxyProtocolResult):

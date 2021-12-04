@@ -4,7 +4,7 @@ import unittest
 import zlib
 from struct import pack
 
-from proxyprotocol.tlv import Type, TLV, ProxyProtocolTLV, \
+from proxyprotocol.tlv import Type, ExtType, TLV, ProxyProtocolTLV, \
     ProxyProtocolSSLTLV, ProxyProtocolExtTLV
 
 peercert = zlib.compress(json.dumps({'test': 'peercert'}).encode('ascii'))
@@ -17,10 +17,10 @@ ssl_data = \
     pack('!BH', Type.PP2_SUBTYPE_SSL_SIG_ALG, 12) + b'test_sig_alg' + \
     pack('!BH', Type.PP2_SUBTYPE_SSL_KEY_ALG, 12) + b'test_key_alg'
 ext_data = ProxyProtocolExtTLV.MAGIC_PREFIX + \
-    pack('!BH', Type.PP2_SUBTYPE_EXT_COMPRESSION, 16) + b'test_compression' + \
-    pack('!BHH', Type.PP2_SUBTYPE_EXT_SECRET_BITS, 2, 2048) + \
-    pack('!BH', Type.PP2_SUBTYPE_EXT_PEERCERT, len(peercert)) + peercert + \
-    pack('!BH', Type.PP2_SUBTYPE_EXT_DNSBL, 10) + b'test_dnsbl'
+    pack('!BH', ExtType.PP2_TYPE_EXT_COMPRESSION, 16) + b'test_compression' + \
+    pack('!BHH', ExtType.PP2_TYPE_EXT_SECRET_BITS, 2, 2048) + \
+    pack('!BH', ExtType.PP2_TYPE_EXT_PEERCERT, len(peercert)) + peercert + \
+    pack('!BH', ExtType.PP2_TYPE_EXT_DNSBL, 10) + b'test_dnsbl'
 tlv_data = \
     pack('!BH', Type.PP2_TYPE_ALPN, 5) + b'test1' + \
     pack('!BH', Type.PP2_TYPE_AUTHORITY, 7) + b'test\xe2\x91\xa1' + \
@@ -37,6 +37,7 @@ class TestProxyProtocolTLV(unittest.TestCase):
     def setUp(self) -> None:
         self.tlv = ProxyProtocolTLV(tlv_data)
         self.empty = ProxyProtocolTLV()
+        self.auto = ProxyProtocolTLV(unique_id=b'test', auto_crc32c=True)
 
     def test_alpn(self) -> None:
         self.assertIsNone(self.empty.alpn)
@@ -49,6 +50,19 @@ class TestProxyProtocolTLV(unittest.TestCase):
     def test_crc32c(self) -> None:
         self.assertIsNone(self.empty.crc32c)
         self.assertEqual(389237127, self.tlv.crc32c)
+
+    def test_checksum(self) -> None:
+        self.assertTrue(self.empty.verify_checksum(b'invalid'))
+        self.assertEqual(self.empty, self.empty.with_checksum(b'test'))
+        tlv = self.auto.with_checksum(b'one', b'two', b'three')
+        self.assertEqual(1851355838, tlv.crc32c)
+        self.assertTrue(tlv.verify_checksum(b'one', b'two', b'three'))
+        self.assertFalse(tlv.verify_checksum(b'one', b'two'))
+        self.assertFalse(tlv.verify_checksum(b'four', b'five'))
+        tlv = self.auto.with_checksum(b'four', b'five')
+        self.assertEqual(3148507994, tlv.crc32c)
+        self.assertTrue(tlv.verify_checksum(b'four', b'five'))
+        self.assertFalse(tlv.verify_checksum(b'one', b'two', b'three'))
 
     def test_noop(self) -> None:
         self.assertIsNone(self.empty.get(Type.PP2_TYPE_NOOP))
@@ -128,6 +142,16 @@ class TestProxyProtocolTLV(unittest.TestCase):
                           Type.PP2_TYPE_NETNS, Type.PP2_TYPE_MIN_CUSTOM + 2},
                          set(self.tlv))
 
+    def test_bytes_auto(self) -> None:
+        with self.assertRaises(ValueError):
+            bytes(self.auto)
+
+    def test_size(self) -> None:
+        self.assertEqual(len(bytes(self.empty)), self.empty.size)
+        self.assertEqual(len(bytes(self.tlv)), self.tlv.size)
+        without_auto = ProxyProtocolTLV(init=self.auto)
+        self.assertEqual(len(bytes(without_auto)) + 7, self.auto.size)
+
     def test_len(self) -> None:
         self.assertEqual(0, len(self.empty))
         self.assertEqual(8, len(self.tlv))
@@ -166,7 +190,7 @@ class TestProxyProtocolTLV(unittest.TestCase):
                                       dnsbl='test_dnsbl')
         custom_type = Type.PP2_TYPE_MIN_CUSTOM + 2
         unique_id = b'\x00\x00\x00\x12W\xbb\x1d3\x00\x00\x00\x009\xe9\xdbv'
-        init_tlv = TLV(init={custom_type: memoryview(b'test4')})
+        init_tlv = TLV(init={custom_type: b'test4'})
         tlv = ProxyProtocolTLV(init=init_tlv,
                                alpn=b'test1', authority='test②',
                                crc32c=389237127, ext=ext_tlv,

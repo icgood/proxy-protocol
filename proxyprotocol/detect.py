@@ -1,10 +1,12 @@
 
+from __future__ import annotations
+
 from socket import AddressFamily, SocketKind
 from ssl import SSLSocket, SSLObject
 from typing import Union, Optional
 
-from . import ProxyProtocolError, ProxyProtocolWantRead, \
-    ProxyProtocolResult, ProxyProtocol
+from . import ProxyProtocolWantRead, ProxyProtocolResult, ProxyProtocol, \
+    ProxyProtocolSyntaxError, ProxyProtocolIncompleteError
 from .typing import Address
 from .v1 import ProxyProtocolV1
 from .v2 import ProxyProtocolV2
@@ -33,7 +35,8 @@ class ProxyProtocolDetect(ProxyProtocol):
 
     def parse(self, data: bytes) -> ProxyProtocolResult:
         if len(data) < 8:
-            raise ProxyProtocolWantRead(8 - len(data))
+            want_read = ProxyProtocolWantRead(8 - len(data))
+            raise ProxyProtocolIncompleteError(want_read)
         pp = self.choose_version(data[0:8])
         return pp.parse(data)
 
@@ -47,7 +50,7 @@ class ProxyProtocolDetect(ProxyProtocol):
         for version in self.versions:
             if version.is_valid(signature):
                 return version
-        raise ProxyProtocolError(
+        raise ProxyProtocolSyntaxError(
             'Unrecognized proxy protocol version signature')
 
     def build(self, source: Address, dest: Address, *, family: AddressFamily,

@@ -3,7 +3,8 @@ import socket
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
-from proxyprotocol import ProxyProtocolError, ProxyProtocolWantRead
+from proxyprotocol import ProxyProtocolSyntaxError, \
+    ProxyProtocolIncompleteError
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyProtocolResultUnknown, \
     ProxyProtocolResultIPv4, ProxyProtocolResultIPv6
@@ -18,10 +19,10 @@ class TestProxyProtocolV1(unittest.TestCase):
 
     def test_parse_incomplete(self) -> None:
         pp = ProxyProtocolV1()
-        with self.assertRaises(ProxyProtocolWantRead) as raised:
+        with self.assertRaises(ProxyProtocolIncompleteError) as raised:
             pp.parse(b'PROXY')
-        self.assertIsNone(raised.exception.want_bytes)
-        self.assertTrue(raised.exception.want_line)
+        self.assertIsNone(raised.exception.want_read.want_bytes)
+        self.assertTrue(raised.exception.want_read.want_line)
 
     def test_parse(self) -> None:
         pp = ProxyProtocolV1()
@@ -30,15 +31,15 @@ class TestProxyProtocolV1(unittest.TestCase):
 
     def test_parse_line_bad(self) -> None:
         pp = ProxyProtocolV1()
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_line(b'bad\r\n')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_line(b'PROXY \n')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_line(b'PROXY one two three four\r\n')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_line(b'PROXY one two three four five\r\n')
-        with self.assertRaises(ProxyProtocolError):
+        with self.assertRaises(ProxyProtocolSyntaxError):
             pp.parse_line(b'PROXY one two three four five six\r\n')
 
     def test_parse_line_tcp4(self) -> None:

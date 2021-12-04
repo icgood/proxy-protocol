@@ -27,12 +27,14 @@ _Connect = Tuple[BaseTransport, BaseProtocol]
 
 class _Base(BufferedProtocol, metaclass=ABCMeta):
 
-    __slots__ = ['_paused', '_buf', '_queue', '_transport', '_sock_info']
+    __slots__ = ['_paused', '_buf', '_view', '_queue',
+                 '_transport', '_sock_info']
 
     def __init__(self, buf_len: int) -> None:
         super().__init__()
         self._paused = False
-        self._buf: bytearray = bytearray(buf_len)
+        self._buf = buf = bytearray(buf_len)
+        self._view = memoryview(buf).toreadonly()
         self._queue: Deque[bytes] = deque()
         self._transport: Optional[Transport] = None
         self._sock_info: Optional[SocketInfo] = None
@@ -48,11 +50,11 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
             self._transport.close()
             self._transport = None
 
-    def write(self, data: memoryview) -> None:
+    def write(self, data: bytes) -> None:
         transport = self._transport
         queue = self._queue
         if self._paused or transport is None:
-            queue.append(data.tobytes())
+            queue.append(bytes(data))
         else:
             if queue:
                 self._drain(queue)
@@ -84,11 +86,11 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
         return self._buf
 
     def buffer_updated(self, nbytes: int) -> None:
-        data = memoryview(self._buf)[0:nbytes]
-        self.proxy_data(data)
+        with self._view[0:nbytes] as updated:
+            self.proxy_data(updated)
 
     @abstractmethod
-    def proxy_data(self, data: memoryview) -> None:
+    def proxy_data(self, data: bytes) -> None:
         ...
 
 
@@ -106,7 +108,7 @@ class DownstreamProtocol(_Base):
         self.upstream: Final = upstream
         self.id: Final = uuid4().bytes
         self._dnsbl_task: Optional[Task[Optional[str]]] = None
-        self._waiting: Deque[memoryview] = deque()
+        self._waiting: Deque[bytes] = deque()
         self._waiting_closed = False
         self._upstream: Optional[UpstreamProtocol] = None
         self._upstream_factory = partial(upstream_protocol, self, buf_len,
@@ -158,10 +160,10 @@ class DownstreamProtocol(_Base):
             self._upstream.close()
         _log.info('[%s] Downstream connection closed', self.id.hex())
 
-    def proxy_data(self, data: memoryview) -> None:
+    def proxy_data(self, data: bytes) -> None:
         upstream = self._upstream
         if upstream is None:
-            self._waiting.append(memoryview(data.tobytes()))
+            self._waiting.append(bytes(data))
         else:
             upstream.write(data)
 
@@ -195,7 +197,7 @@ class UpstreamProtocol(_Base):
 
     def write_header(self, dnsbl: Optional[str]) -> None:
         header = self.build_pp_header(dnsbl)
-        self.write(memoryview(header))
+        self.write(header)
 
-    def proxy_data(self, data: memoryview) -> None:
+    def proxy_data(self, data: bytes) -> None:
         self.downstream.write(data)

@@ -28,7 +28,7 @@ with open('LICENSE.md') as f:
     license = f.read()
 
 setup(name='proxy-protocol',
-      version='0.7.5',
+      version='0.8.0',
       author='Ian Good',
       author_email='ian@icgood.net',
       description='PROXY protocol library with asyncio server implementation',
@@ -51,6 +51,8 @@ setup(name='proxy-protocol',
       packages=find_packages(),
       install_requires=[
           'typing-extensions'],
+      extras_require={
+          'crc32c': ['crc32c ~= 2.2']},
       entry_points={
           'console_scripts': [
               'proxyprotocol-server = proxyprotocol.server.main:main',

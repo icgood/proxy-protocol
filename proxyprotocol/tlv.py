@@ -6,8 +6,9 @@ import zlib
 from enum import IntEnum, IntFlag
 from struct import Struct, error as struct_error
 from typing import ClassVar, Any, Hashable, Optional, Union, Iterator, \
-    Mapping, Dict, List
+    Sequence, Mapping, Dict, List
 
+from .checksum import crc32c
 from .typing import PeerCert
 
 __all__ = ['Type', 'SSLClient', 'TLV', 'ProxyProtocolTLV',
@@ -15,7 +16,7 @@ __all__ = ['Type', 'SSLClient', 'TLV', 'ProxyProtocolTLV',
 
 
 class Type(IntEnum):
-    """The PROXY protocol TLV type values."""
+    """The PROXY protocol TLV standard type values."""
 
     PP2_TYPE_ALPN = 0x01
     PP2_TYPE_AUTHORITY = 0x02
@@ -36,11 +37,14 @@ class Type(IntEnum):
     PP2_TYPE_MIN_FUTURE = 0xF8
     PP2_TYPE_MAX_FUTURE = 0xFF
 
-    # Extension TLV sub-types
-    PP2_SUBTYPE_EXT_COMPRESSION = 0x01
-    PP2_SUBTYPE_EXT_SECRET_BITS = 0x02
-    PP2_SUBTYPE_EXT_PEERCERT = 0x03
-    PP2_SUBTYPE_EXT_DNSBL = 0x04
+
+class ExtType(IntEnum):
+    """Non-standard extension TLV types."""
+
+    PP2_TYPE_EXT_COMPRESSION = 0x01
+    PP2_TYPE_EXT_SECRET_BITS = 0x02
+    PP2_TYPE_EXT_PEERCERT = 0x03
+    PP2_TYPE_EXT_DNSBL = 0x04
 
 
 class SSLClient(IntFlag):
@@ -63,6 +67,8 @@ class TLV(Mapping[int, bytes], Hashable):
 
     """
 
+    __slots__ = ['_tlv', '_frozen']
+
     _fmt = Struct('!BH')
 
     def __init__(self, data: bytes = b'',
@@ -74,30 +80,42 @@ class TLV(Mapping[int, bytes], Hashable):
         self._frozen = self._freeze()
 
     def _freeze(self) -> Hashable:
-        return frozenset((key, zlib.adler32(val))
-                         for key, val in self._tlv.items())
+        return frozenset(self._tlv.items())
 
     def _unpack(self, data: bytes) -> Dict[int, bytes]:
-        view = memoryview(data)
         index = 0
         fmt = self._fmt
         results: Dict[int, bytes] = {}
         while len(data) >= index + fmt.size:
-            type_num, size = fmt.unpack_from(view, index)
+            type_num, size = fmt.unpack_from(data, index)
             index += fmt.size
-            results[type_num] = view[index:index + size]
+            results[type_num] = bytes(data[index:index + size])
             index += size
         return results
 
     def _pack(self) -> bytes:
         parts: List[bytes] = []
         fmt = self._fmt
+        tlv = self._tlv
         for type_num in range(0x00, 0x100):
-            val = self.get(type_num)
+            val = tlv.get(type_num)
             if val is not None:
                 parts.append(fmt.pack(type_num, len(val)))
                 parts.append(val)
         return b''.join(parts)
+
+    @property
+    def size(self) -> int:
+        """The size of the TLV when converted to bytes."""
+        cur_len = 0
+        fmt_size = self._fmt.size
+        tlv = self._tlv
+        for type_num in range(0x00, 0x100):
+            val = tlv.get(type_num)
+            if val is not None:
+                cur_len += fmt_size
+                cur_len += len(val)
+        return cur_len
 
     def __bytes__(self) -> bytes:
         return self._pack()
@@ -135,7 +153,7 @@ class ProxyProtocolTLV(TLV):
 
     """
 
-    __slots__ = ['_ssl']
+    __slots__ = ['_auto_crc32c']
 
     _crc32c_fmt = Struct('!L')
 
@@ -147,7 +165,8 @@ class ProxyProtocolTLV(TLV):
                  unique_id: Optional[bytes] = None,
                  ssl: Optional[ProxyProtocolSSLTLV] = None,
                  netns: Optional[str] = None,
-                 ext: Optional[ProxyProtocolExtTLV] = None) -> None:
+                 ext: Optional[ProxyProtocolExtTLV] = None,
+                 auto_crc32c: bool = False) -> None:
         results = dict(init or {})
         if alpn is not None:
             results[Type.PP2_TYPE_ALPN] = alpn
@@ -164,6 +183,59 @@ class ProxyProtocolTLV(TLV):
         if ext is not None:
             results[Type.PP2_TYPE_NOOP] = bytes(ext)
         super().__init__(data, results)
+        self._auto_crc32c = auto_crc32c
+
+    def _pack(self) -> bytes:
+        if self._auto_crc32c:
+            raise ValueError('Cannot convert to bytes with auto_crc32c=True')
+        return super()._pack()
+
+    @property
+    def _zero_crc32c(self) -> ProxyProtocolTLV:
+        return ProxyProtocolTLV(init=self, crc32c=0)
+
+    @property
+    def size(self) -> int:
+        if self.crc32c is None and self._auto_crc32c and crc32c is not None:
+            return self._zero_crc32c.size
+        else:
+            return super().size
+
+    def _compute_checksum(self, before: Sequence[bytes]) -> int:
+        assert crc32c is not None
+        crc = crc32c(b'')
+        for data in before:
+            crc = crc32c(data, crc)
+        return crc32c(bytes(self._zero_crc32c), crc)
+
+    def with_checksum(self, *before: bytes) -> ProxyProtocolTLV:
+        """Return a copy of the current TLV values with the :attr:`.crc32c`
+        checksum populated according to the rules in the PROXY protocol spec.
+
+        Args:
+            before: The data in the PROXY protocol header before the TLV, which
+                is included in the checksum.
+
+        """
+        if not self._auto_crc32c or crc32c is None:
+            return self
+        crc = self._compute_checksum(before)
+        return ProxyProtocolTLV(init=self, crc32c=crc)
+
+    def verify_checksum(self, *before: bytes) -> bool:
+        """Verifies the :attr:`.crc32c` checksum, if present, correctly matches
+        the expected value computed for the PROXY protocol header. If this
+        method returns False, the connection should likely be aborted.
+
+        Args:
+            before: The data in the PROXY protocol header before the TLV, which
+                is included in the checksum.
+
+        """
+        if self.crc32c is None or crc32c is None:
+            return True
+        crc = self._compute_checksum(before)
+        return self.crc32c == crc
 
     @property
     def alpn(self) -> Optional[bytes]:
@@ -234,6 +306,8 @@ class ProxyProtocolSSLTLV(TLV):
 
     """
 
+    __slots__ = ['_client', '_verify']
+
     _prefix_fmt = Struct('!BL')
 
     def __init__(self, data: bytes = b'',
@@ -277,13 +351,12 @@ class ProxyProtocolSSLTLV(TLV):
             self._verify = int(verify)
 
     def _unpack(self, data: bytes) -> Dict[int, bytes]:
-        view = memoryview(data)
         try:
-            self._client, self._verify = self._prefix_fmt.unpack_from(data, 0)
+            self._client, self._verify = \
+                self._prefix_fmt.unpack_from(data, 0)
         except struct_error:
             pass
-        view = view[self._prefix_fmt.size:]
-        return super()._unpack(view)
+        return super()._unpack(data[self._prefix_fmt.size:])
 
     def _pack(self) -> bytes:
         prefix = self._prefix_fmt.pack(self.client, self.verify)
@@ -399,48 +472,47 @@ class ProxyProtocolExtTLV(TLV):
         results = dict(init or {})
         if compression is not None:
             val = compression.encode('ascii')
-            results[Type.PP2_SUBTYPE_EXT_COMPRESSION] = val
+            results[ExtType.PP2_TYPE_EXT_COMPRESSION] = val
         if secret_bits is not None:
             val = self._secret_bits_fmt.pack(secret_bits)
-            results[Type.PP2_SUBTYPE_EXT_SECRET_BITS] = val
+            results[ExtType.PP2_TYPE_EXT_SECRET_BITS] = val
         if peercert is not None:
             val = zlib.compress(json.dumps(peercert).encode('ascii'))
-            results[Type.PP2_SUBTYPE_EXT_PEERCERT] = val
+            results[ExtType.PP2_TYPE_EXT_PEERCERT] = val
         if dnsbl is not None:
             val = dnsbl.encode('utf-8')
-            results[Type.PP2_SUBTYPE_EXT_DNSBL] = val
+            results[ExtType.PP2_TYPE_EXT_DNSBL] = val
         super().__init__(data, results)
 
     def _unpack(self, data: bytes) -> Dict[int, bytes]:
-        view = memoryview(data)
         magic_prefix = self.MAGIC_PREFIX
-        if view[0:len(magic_prefix)] != magic_prefix:
+        magic_prefix_len = len(magic_prefix)
+        if data[0:magic_prefix_len] != magic_prefix:
             return {}
-        view = view[len(magic_prefix):]
-        return super()._unpack(view)
+        return super()._unpack(data[magic_prefix_len:])
 
     def _pack(self) -> bytes:
         return self.MAGIC_PREFIX + super()._pack()
 
     @property
     def compression(self) -> Optional[str]:
-        """The ``PP2_SUBTYPE_EXT_COMPRESSION`` value. This is used by the
+        """The ``PP2_TYPE_EXT_COMPRESSION`` value. This is used by the
         :attr:`~proxyprotocol.sock.SocketInfo.compression` value.
 
         """
-        val = self.get(Type.PP2_SUBTYPE_EXT_COMPRESSION)
+        val = self.get(ExtType.PP2_TYPE_EXT_COMPRESSION)
         if val is not None:
             return str(val, 'ascii')
         return None
 
     @property
     def secret_bits(self) -> Optional[int]:
-        """The ``PP2_SUBTYPE_EXT_SECRET_BITS`` value. This is used to populate
+        """The ``PP2_TYPE_EXT_SECRET_BITS`` value. This is used to populate
         the third member of the: attr:`~proxyprotocol.sock.SocketInfo.cipher`
         tuple.
 
         """
-        val = self.get(Type.PP2_SUBTYPE_EXT_SECRET_BITS)
+        val = self.get(ExtType.PP2_TYPE_EXT_SECRET_BITS)
         if val is not None:
             secret_bits, = self._secret_bits_fmt.unpack(val)
             return int(secret_bits)
@@ -448,11 +520,11 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def peercert(self) -> Optional[PeerCert]:
-        """The ``PP2_SUBTYPE_EXT_PEERCERT`` value. This is used by the
+        """The ``PP2_TYPE_EXT_PEERCERT`` value. This is used by the
         :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.
 
         """
-        val = self.get(Type.PP2_SUBTYPE_EXT_PEERCERT)
+        val = self.get(ExtType.PP2_TYPE_EXT_PEERCERT)
         if val is not None:
             decompressed = zlib.decompress(val)
             ret: PeerCert = json.loads(decompressed)
@@ -461,12 +533,12 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def dnsbl(self) -> Optional[str]:
-        """The ``PP2_SUBTYPE_EXT_DNSBL`` value. This is the hostname or other
+        """The ``PP2_TYPE_EXT_DNSBL`` value. This is the hostname or other
         identifier that reports a status or reputation of the connecting IP
         address.
 
         """
-        val = self.get(Type.PP2_SUBTYPE_EXT_DNSBL)
+        val = self.get(ExtType.PP2_TYPE_EXT_DNSBL)
         if val is not None:
             return str(val, 'utf-8')
         return None
