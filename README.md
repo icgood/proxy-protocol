@@ -118,12 +118,11 @@ proxyprotocol-server --service localhost:10000 localhost:10007
 ## Development and Testing
 
 You will need to do some additional setup to develop and test plugins. First
-off, I suggest activating a [venv][5]. Then, install the test requirements and
-a local link to the proxy-protocol package:
+off, I suggest activating a [venv][5]. Then, install the requirements and a
+local link to the proxy-protocol package:
 
 ```
-$ pip install -r test/requirements.txt
-$ pip install -e .
+$ pip install -r requirements-dev.txt
 ```
 
 Run the tests with py.test:
@@ -137,17 +136,17 @@ tests run by CI/CD is passing:
 
 ```
 $ py.test
-$ mypy --strict proxyprotocol test
+$ mypy proxyprotocol test
 $ flake8 proxyprotocol test
 ```
 
 ### Type Hinting
 
 This project makes heavy use of Python's [type hinting][6] system, with the
-intention of a clean run of [mypy][7]:
+intention of a clean run of [mypy][7] in strict mode:
 
 ```
-mypy --strict proxyprotocol test
+mypy proxyprotocol test
 ```
 
 No code contribution will be accepted unless it makes every effort to use type
