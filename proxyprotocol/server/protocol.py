@@ -125,13 +125,12 @@ class DownstreamProtocol(_Base):
             _log.exception('[%s] Connection failed: %s',
                            self.id.hex(), self.upstream)
         else:
-            assert isinstance(upstream, UpstreamProtocol)
-            self._upstream = upstream
-            dnsbl_task.add_done_callback(self._send_initial)
+            callback = partial(self._send_initial, upstream)
+            dnsbl_task.add_done_callback(callback)
 
-    def _send_initial(self, dnsbl_task: Task[Optional[str]]) -> None:
-        upstream = self._upstream
-        assert upstream is not None
+    def _send_initial(self, upstream: UpstreamProtocol,
+                      dnsbl_task: Task[Optional[str]]) -> None:
+        self._upstream = upstream
         upstream.write_header(dnsbl_task.result())
         waiting = self._waiting
         while waiting:
