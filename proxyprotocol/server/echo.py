@@ -71,6 +71,7 @@ async def run_conn(pp: ProxyProtocol, reader: StreamReader,
                 if not line:
                     break
                 writer.write(line)
+                await writer.drain()
         except IOError:
             pass
         finally:
