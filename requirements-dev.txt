@@ -2,7 +2,6 @@ mypy
 flake8
 autopep8
 pytest
-pytest-asyncio
 pytest-cov
 rope
 
