@@ -69,7 +69,8 @@ class NoopDnsbl(Dnsbl):
     __slots__: Sequence[str] = []
 
     async def lookup(self, sock_info: SocketInfo, *,
-                     loop: Optional[AbstractEventLoop] = None) -> None:
+                     loop: Optional[AbstractEventLoop] = None) \
+            -> Optional[str]:
         return None
 
 
