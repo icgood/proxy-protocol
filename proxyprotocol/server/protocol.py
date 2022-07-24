@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from abc import abstractmethod, ABCMeta
 from asyncio import Task, AbstractEventLoop
-from asyncio.protocols import BufferedProtocol, BaseProtocol
+from asyncio.protocols import BufferedProtocol
 from asyncio.transports import Transport, BaseTransport
 from collections import deque
 from functools import partial
@@ -22,7 +22,7 @@ __all__ = ['DownstreamProtocol', 'UpstreamProtocol']
 
 _log = logging.getLogger(__name__)
 
-_Connect = Tuple[BaseTransport, BaseProtocol]
+_Connect = Tuple[BaseTransport, 'UpstreamProtocol']
 
 
 class _Base(BufferedProtocol, metaclass=ABCMeta):
