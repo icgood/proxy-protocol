@@ -173,7 +173,7 @@ class TestProxyProtocolTLV(unittest.TestCase):
         self.assertEqual(self.tlv.ssl, self.tlv.ssl)
 
     def test_repr(self) -> None:
-        self.assertEqual("ProxyProtocolTLV(b'')", repr(self.empty))
+        self.assertEqual("ProxyProtocolTLV()", repr(self.empty))
         self.assertEqual(f'ProxyProtocolTLV({bytes(self.tlv)!r})',
                          repr(self.tlv))
 

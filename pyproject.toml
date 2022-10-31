@@ -1,0 +1,27 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+
+[tool.mypy]
+strict = true
+files = ['proxyprotocol', 'test']
+
+[[tool.mypy.overrides]]
+module = 'crc32c.*'
+ignore_missing_imports = true
+
+[tool.bandit]
+skips = ['B101']
+
+[tool.pytest.ini_options]
+testpaths = 'test'
+norecursedirs = 'doc'
+
+[tool.coverage.report]
+fail_under = 100
+omit = ['*/reader.py', '*/server/*']
+exclude_lines = [
+    'pragma: no cover',
+    'NotImplemented',
+    '^\s*...\s*$',
+    'def __repr__',
+]

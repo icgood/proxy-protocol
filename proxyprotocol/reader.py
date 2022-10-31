@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from typing_extensions import Final
 
-from . import ProxyProtocol, ProxyProtocolResult, \
-    ProxyProtocolIncompleteError, ProxyProtocolWantRead
-from .result import ProxyProtocolResultUnknown
+from . import ProxyProtocol, ProxyProtocolIncompleteError, \
+    ProxyProtocolWantRead
+from .result import ProxyResult, ProxyResultUnknown
 from .typing import StreamReaderProtocol
 
 __all__ = ['ProxyProtocolReader']
@@ -31,7 +31,7 @@ class ProxyProtocolReader:
             return await reader.readline()
         raise ValueError('No conditions given to complete parsing')
 
-    async def read(self, reader: StreamReaderProtocol) -> ProxyProtocolResult:
+    async def read(self, reader: StreamReaderProtocol) -> ProxyResult:
         """Read a complete PROXY protocol header from the input stream and
         return the result.
 
@@ -44,10 +44,10 @@ class ProxyProtocolReader:
         while True:
             try:
                 with memoryview(data) as view:
-                    return self.pp.parse(view)
+                    return self.pp.unpack(view)
             except ProxyProtocolIncompleteError as exc:
                 want_read = exc.want_read
             try:
                 data += await self._handle_want(reader, want_read)
             except (EOFError, ConnectionResetError) as exc:
-                return ProxyProtocolResultUnknown(exc)
+                return ProxyResultUnknown(exc)

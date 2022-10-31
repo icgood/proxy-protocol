@@ -3,15 +3,13 @@ from __future__ import annotations
 
 import socket
 from ipaddress import IPv4Address, IPv6Address
-from socket import AddressFamily, SocketKind
-from ssl import SSLSocket, SSLObject
-from typing import Union, Optional, Sequence
+from socket import AddressFamily
+from typing import Sequence
 
-from . import ProxyProtocolWantRead, ProxyProtocolResult, ProxyProtocol, \
-    ProxyProtocolSyntaxError, ProxyProtocolIncompleteError
-from .result import ProxyProtocolResultUnknown, ProxyProtocolResultIPv4, \
-    ProxyProtocolResultIPv6
-from .typing import Address
+from . import ProxyProtocolWantRead, ProxyProtocol, ProxyProtocolSyntaxError, \
+    ProxyProtocolIncompleteError
+from .result import is_ipv4, is_ipv6, ProxyResult, ProxyResultUnknown, \
+    ProxyResultIPv4, ProxyResultIPv6
 
 
 class ProxyProtocolV1(ProxyProtocol):
@@ -22,13 +20,13 @@ class ProxyProtocolV1(ProxyProtocol):
     def is_valid(self, signature: bytes) -> bool:
         return signature[0:6] == b'PROXY '
 
-    def parse(self, data: bytes) -> ProxyProtocolResult:
+    def unpack(self, data: bytes) -> ProxyResult:
         if data[-1:] != b'\n':
             want_read = ProxyProtocolWantRead(want_line=True)
             raise ProxyProtocolIncompleteError(want_read)
-        return self.parse_line(data)
+        return self.unpack_line(data)
 
-    def parse_line(self, data: bytes) -> ProxyProtocolResult:
+    def unpack_line(self, data: bytes) -> ProxyResult:
         """Parse the PROXY protocol v1 header line.
 
         Args:
@@ -42,18 +40,18 @@ class ProxyProtocolV1(ProxyProtocol):
         parts = line.split(b' ')
         family_string = parts[0]
         if family_string == b'UNKNOWN':
-            return ProxyProtocolResultUnknown()
+            return ProxyResultUnknown()
         elif len(parts) != 5:
             raise ProxyProtocolSyntaxError(
                 'Invalid proxy protocol header format')
         elif family_string == b'TCP4':
             source_addr4 = (self._get_ip4(parts[1]), self._get_port(parts[3]))
             dest_addr4 = (self._get_ip4(parts[2]), self._get_port(parts[4]))
-            return ProxyProtocolResultIPv4(source_addr4, dest_addr4)
+            return ProxyResultIPv4(source_addr4, dest_addr4)
         elif family_string == b'TCP6':
             source_addr6 = (self._get_ip6(parts[1]), self._get_port(parts[3]))
             dest_addr6 = (self._get_ip6(parts[2]), self._get_port(parts[4]))
-            return ProxyProtocolResultIPv6(source_addr6, dest_addr6)
+            return ProxyResultIPv6(source_addr6, dest_addr6)
         else:
             raise ProxyProtocolSyntaxError(
                 'Invalid proxy protocol address family')
@@ -70,31 +68,24 @@ class ProxyProtocolV1(ProxyProtocol):
             raise ValueError(port_num)
         return port_num
 
-    def build(self, source: Address, dest: Address, *, family: AddressFamily,
-              protocol: Optional[SocketKind] = None,
-              ssl: Union[None, SSLSocket, SSLObject] = None,
-              unique_id: Optional[bytes] = None,
-              proxied: bool = True,
-              dnsbl: Optional[str] = None) -> bytes:
-        if not proxied:
+    def pack(self, result: ProxyResult) -> bytes:
+        if not result.proxied:
             raise ValueError('proxied must be True in v1')
-        family_b = self._build_family(family)
-        if source is None or isinstance(source, str):
-            source_ip: bytes = b''
-            source_port: bytes = b''
+        family_b = self._pack_family(result.family)
+        if is_ipv4(result) or is_ipv6(result):
+            source_ip: bytes = result.peername[0].encode('ascii')
+            source_port: bytes = str(result.peername[1]).encode('ascii')
+            dest_ip: bytes = result.sockname[0].encode('ascii')
+            dest_port: bytes = str(result.sockname[1]).encode('ascii')
         else:
-            source_ip = source[0].encode('ascii')
-            source_port = str(source[1]).encode('ascii')
-        if dest is None or isinstance(dest, str):
-            dest_ip: bytes = b''
-            dest_port: bytes = b''
-        else:
-            dest_ip = dest[0].encode('ascii')
-            dest_port = str(dest[1]).encode('ascii')
+            source_ip = b''
+            source_port = b''
+            dest_ip = b''
+            dest_port = b''
         return b'PROXY %b %b %b %b %b\r\n' % \
             (family_b, source_ip, dest_ip, source_port, dest_port)
 
-    def _build_family(self, family: AddressFamily) -> bytes:
+    def _pack_family(self, family: AddressFamily) -> bytes:
         if family == socket.AF_INET:
             return b'TCP4'
         elif family == socket.AF_INET6:

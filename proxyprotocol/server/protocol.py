@@ -8,7 +8,6 @@ from asyncio.protocols import BufferedProtocol
 from asyncio.transports import Transport, BaseTransport
 from collections import deque
 from functools import partial
-from socket import AddressFamily, SocketKind
 from typing import Type, Optional, Tuple, Deque
 from typing_extensions import Final
 from uuid import uuid4
@@ -16,7 +15,8 @@ from uuid import uuid4
 from . import Address
 from .. import ProxyProtocol
 from ..dnsbl import Dnsbl
-from ..sock import SocketInfo
+from ..build import build_transport_result
+from ..sock import SocketInfo, SocketInfoLocal
 
 __all__ = ['DownstreamProtocol', 'UpstreamProtocol']
 
@@ -45,6 +45,12 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
         assert sock_info is not None
         return sock_info
 
+    @property
+    def transport(self) -> Transport:
+        transport = self._transport
+        assert transport is not None
+        return transport
+
     def close(self) -> None:
         if self._transport is not None:
             self._transport.close()
@@ -70,7 +76,7 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
     def connection_made(self, transport: BaseTransport) -> None:
         assert isinstance(transport, Transport)
         self._transport = transport
-        self._sock_info = SocketInfo(transport, unique_id=uuid4().bytes)
+        self._sock_info = SocketInfoLocal(transport, unique_id=uuid4().bytes)
 
     def connection_lost(self, exc: Optional[Exception]) -> None:
         self.close()
@@ -182,17 +188,10 @@ class UpstreamProtocol(_Base):
         self.downstream.close()
 
     def build_pp_header(self, dnsbl: Optional[str]) -> bytes:
-        sock_info = self.downstream.sock_info
-        sock = sock_info.socket
-        ssl_object = sock_info.transport.get_extra_info('ssl_object')
-        try:
-            protocol: Optional[SocketKind] = SocketKind(sock.type)
-        except ValueError:
-            protocol = None
-        return self.pp.build(sock_info.peername, sock_info.sockname,
-                             family=AddressFamily(sock.family),
-                             protocol=protocol, unique_id=self.downstream.id,
-                             ssl=ssl_object, dnsbl=dnsbl)
+        result = build_transport_result(self.downstream.transport,
+                                        unique_id=self.downstream.id,
+                                        dnsbl=dnsbl)
+        return self.pp.pack(result)
 
     def write_header(self, dnsbl: Optional[str]) -> None:
         header = self.build_pp_header(dnsbl)

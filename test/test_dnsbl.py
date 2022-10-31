@@ -1,14 +1,8 @@
 
 from asyncio import AbstractEventLoop
 from ipaddress import IPv4Address, IPv6Address
-from unittest.mock import MagicMock
-
-try:
-    from unittest import IsolatedAsyncioTestCase
-    from unittest.mock import AsyncMock
-except ImportError as exc:  # Python < 3.8
-    from unittest import SkipTest
-    raise SkipTest('Missing unittest asyncio imports') from exc
+from unittest import IsolatedAsyncioTestCase
+from unittest.mock import AsyncMock, MagicMock
 
 from proxyprotocol.dnsbl import Dnsbl, NoopDnsbl, BasicDnsbl, SpamhausDnsbl
 from proxyprotocol.sock import SocketInfo

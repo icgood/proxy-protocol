@@ -1,13 +1,10 @@
 
 from __future__ import annotations
 
-from socket import AddressFamily, SocketKind
-from ssl import SSLSocket, SSLObject
-from typing import Union, Optional, Sequence, NoReturn
+from typing import Sequence, NoReturn
 
 from . import ProxyProtocol
-from .result import ProxyProtocolResultLocal
-from .typing import Address
+from .result import ProxyResult, ProxyResultLocal
 
 __all__ = ['ProxyProtocolNoop']
 
@@ -15,7 +12,7 @@ __all__ = ['ProxyProtocolNoop']
 class ProxyProtocolNoop(ProxyProtocol):
     """Implements :class:`~proxyprotocol.base.ProxyProtocol` but does not read
     anything from the stream. A
-    :class:`~proxyprotocol.result.ProxyProtocolResultLocal` result is always
+    :class:`~proxyprotocol.result.ProxyResultLocal` result is always
     returned.
 
     """
@@ -26,13 +23,8 @@ class ProxyProtocolNoop(ProxyProtocol):
         # This implementation may not be detected
         raise NotImplementedError()
 
-    def parse(self, data: bytes) -> ProxyProtocolResultLocal:
-        return ProxyProtocolResultLocal()
+    def unpack(self, data: bytes) -> ProxyResultLocal:
+        return ProxyResultLocal()
 
-    def build(self, source: Address, dest: Address, *, family: AddressFamily,
-              protocol: Optional[SocketKind] = None,
-              ssl: Union[None, SSLSocket, SSLObject] = None,
-              unique_id: Optional[bytes] = None,
-              proxied: bool = True,
-              dnsbl: Optional[str] = None) -> bytes:
+    def pack(self, result: ProxyResult) -> bytes:
         return b''

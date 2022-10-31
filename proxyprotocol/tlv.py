@@ -138,7 +138,8 @@ class TLV(Mapping[int, bytes], Hashable):
         return super().__eq__(other)
 
     def __repr__(self) -> str:
-        return f'{type(self).__name__}({bytes(self)!r})'
+        arg = repr(bytes(self)) if self else ''
+        return f'{type(self).__name__}({arg})'
 
 
 class ProxyProtocolTLV(TLV):
@@ -183,7 +184,7 @@ class ProxyProtocolTLV(TLV):
         if ext is not None:
             results[Type.PP2_TYPE_NOOP] = bytes(ext)
         super().__init__(data, results)
-        self._auto_crc32c = auto_crc32c
+        self._auto_crc32c = auto_crc32c and crc32c is None
 
     def _pack(self) -> bytes:
         if self._auto_crc32c:
