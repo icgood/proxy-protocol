@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 from abc import abstractmethod, ABCMeta
-from asyncio import AbstractEventLoop, TimeoutError
+from asyncio import AbstractEventLoop
 from ipaddress import IPv4Address, IPv4Network
 from socket import AF_INET, SOCK_STREAM
 from typing import Optional, Sequence
@@ -96,9 +96,7 @@ class BasicDnsbl(Dnsbl):
 
         """
         if addresses:
-            result = self.host
-            assert result is not None
-            return result
+            return self.host
         else:
             return None
 
@@ -115,7 +113,7 @@ class BasicDnsbl(Dnsbl):
             addrinfo = await asyncio.wait_for(
                 loop.getaddrinfo(lookup, 0, family=AF_INET, type=SOCK_STREAM),
                 self.timeout)
-        except (OSError, TimeoutError):
+        except OSError:
             pass
         else:
             if addrinfo:

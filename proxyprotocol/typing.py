@@ -2,21 +2,32 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from ipaddress import IPv4Address, IPv6Address
 from typing import Any, Union, Optional, Tuple, Mapping
-from typing_extensions import Protocol
+from typing_extensions import Protocol, TypeAlias
 
-__all__ = ['Address', 'PeerCert', 'Cipher',
+__all__ = ['SockAddr', 'Address', 'Cipher', 'PeerCert',
            'StreamReaderProtocol', 'TransportProtocol']
 
 #: The types that can be retured by :meth:`~socket.socket.getsockname` and
 #: :meth:`~socket.socket.getpeername`.
-Address = Union[None, str, Tuple[str, int], Tuple[str, int, int, int]]
+SockAddr: TypeAlias = Union[None,
+                            str,
+                            Tuple[str, int],
+                            Tuple[str, int, int, int]]
+
+#: The types that can be returned by address attributes on
+#: :class:`~proxyprotocol.ProxyProtocolResult`.
+Address: TypeAlias = Union[None,
+                           str,
+                           Tuple[IPv4Address, int],
+                           Tuple[IPv6Address, int]]
 
 #: The type returned by :meth:`ssl.SSLSocket.cipher`.
-Cipher = Tuple[str, str, Optional[int]]
+Cipher: TypeAlias = Tuple[str, str, Optional[int]]
 
 #: The type returned by :meth:`ssl.SSLSocket.getpeercert`.
-PeerCert = Mapping[str, Any]
+PeerCert: TypeAlias = Mapping[str, Any]
 
 
 class StreamReaderProtocol(Protocol):

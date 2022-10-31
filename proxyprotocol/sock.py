@@ -2,57 +2,60 @@
 from __future__ import annotations
 
 import socket
+from abc import abstractmethod, ABCMeta
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
 from typing import Union, Optional
-from typing_extensions import Final
 
-from . import ProxyProtocolResult
-from .result import ProxyProtocolResultLocal
-from .typing import Address, Cipher, PeerCert, TransportProtocol
+from .result import ProxyResult
+from .typing import SockAddr, Cipher, PeerCert, TransportProtocol
 
-__all__ = ['SocketInfo']
+__all__ = ['SocketInfo', 'SocketInfoProxy', 'SocketInfoLocal']
 
 _IP = Union[None, IPv4Address, IPv6Address]
 
 
-class SocketInfo:
+class SocketInfo(metaclass=ABCMeta):
     """Provides information about the connection, from either the underlying
     :mod:`asyncio` transport layer or overridden by the PROXY protocol result.
 
-    Args:
-        transport: The :class:`~asyncio.BaseTransport` or
-            :class:`~asyncio.StreamWriter` for the connection.
-        result: The PROXY protocol result.
-        unique_id: A unique ID to associate with the connection, unless
-            overridden by the PROXY protocol result.
-        dnsbl: The DNSBL lookup result, if any.
-
     """
 
-    __slots__ = ['transport', 'pp_result', '_unique_id', '_dnsbl']
+    __slots__ = ['_transport']
 
-    def __init__(self, transport: TransportProtocol,
-                 result: Optional[ProxyProtocolResult] = None, *,
-                 unique_id: bytes = b'', dnsbl: Optional[str] = None) -> None:
+    def __init__(self, transport: TransportProtocol) -> None:
         super().__init__()
-        self.transport: Final = transport
-        self.pp_result: Final = result or ProxyProtocolResultLocal()
-        self._unique_id = unique_id
-        self._dnsbl = dnsbl
+        self._transport = transport
 
-    @property
-    def socket(self) -> socket.socket:
-        """The underlying socket object.
+    @classmethod
+    def get(cls, transport: TransportProtocol, result: Optional[ProxyResult],
+            *, unique_id: bytes = b'', dnsbl: Optional[str] = None) \
+            -> SocketInfo:
+        """Choose the :class:`SocketInfo` implementation based on whether the
+        *result* indicates the connection is
+        :attr:`~proxyprotocol.result.ProxyResult.proxied`.
 
-        See Also:
-            :meth:`~asyncio.BaseTransport.get_extra_info`
+        Args:
+            transport: The :class:`~asyncio.BaseTransport` or
+                :class:`~asyncio.StreamWriter` for the connection.
+            result: The PROXY protocol result.
+            unique_id: A unique ID to associate with the connection, unless
+                overridden by the PROXY protocol result.
+            dnsbl: The DNSBL lookup result, if any.
 
         """
-        ret: socket.socket = self.transport.get_extra_info('socket')
+        if result is not None and result.proxied:
+            return SocketInfoProxy(transport, result)
+        else:
+            return SocketInfoLocal(transport, unique_id=unique_id, dnsbl=dnsbl)
+
+    @property
+    def socket(self) -> socket.socket:  # pragma: no cover
+        """The underlying socket object."""
+        ret: socket.socket = self._transport.get_extra_info('socket')
         return ret
 
-    def _get_ip(self, addr: Address) -> _IP:
+    def _get_ip(self, addr: SockAddr) -> _IP:
         if self.family in (socket.AF_INET, socket.AF_INET6):
             assert isinstance(addr, tuple)
             ip_str: str = addr[0]
@@ -62,14 +65,14 @@ class SocketInfo:
             return ip
         return None
 
-    def _get_port(self, addr: Address) -> Optional[int]:
+    def _get_port(self, addr: SockAddr) -> Optional[int]:
         if self.family in (socket.AF_INET, socket.AF_INET6):
             assert isinstance(addr, tuple)
             port: int = addr[1]
             return port
         return None
 
-    def _get_str(self, addr: Address, ip: _IP,
+    def _get_str(self, addr: SockAddr, ip: _IP,
                  port: Optional[int]) -> Optional[str]:
         if self.family in (socket.AF_INET, socket.AF_INET6):
             return f'[{ip!s}]:{port!s}'
@@ -82,18 +85,15 @@ class SocketInfo:
             return str(addr)
 
     @property
-    def sockname(self) -> Address:
+    @abstractmethod
+    def sockname(self) -> SockAddr:
         """The local address of the socket.
 
         See Also:
             :meth:`~socket.socket.getsockname`
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result._sockname
-        else:
-            ret: Address = self.transport.get_extra_info('sockname')
-            return ret
+        ...
 
     @property
     def sockname_ip(self) -> Union[None, IPv4Address, IPv6Address]:
@@ -122,18 +122,15 @@ class SocketInfo:
                              self.sockname_port)
 
     @property
-    def peername(self) -> Address:
+    @abstractmethod
+    def peername(self) -> SockAddr:
         """The remote address of the socket.
 
         See Also:
             :meth:`~socket.socket.getpeername`
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result._peername
-        else:
-            ret: Address = self.transport.get_extra_info('peername')
-            return ret
+        ...
 
     @property
     def peername_ip(self) -> Union[None, IPv4Address, IPv6Address]:
@@ -162,6 +159,7 @@ class SocketInfo:
                              self.peername_port)
 
     @property
+    @abstractmethod
     def family(self) -> AddressFamily:
         """The socket address family.
 
@@ -169,12 +167,10 @@ class SocketInfo:
             :attr:`socket.socket.family`
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result.family
-        else:
-            return AddressFamily(self.socket.family)
+        ...
 
     @property
+    @abstractmethod
     def protocol(self) -> Optional[SocketKind]:
         """The socket protocol.
 
@@ -182,12 +178,10 @@ class SocketInfo:
             :attr:`socket.socket.type`
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result.protocol
-        else:
-            return SocketKind(self.socket.type)
+        ...
 
     @property
+    @abstractmethod
     def compression(self) -> Optional[str]:
         """The :meth:`~ssl.SSLSocket.compression` value for encrypted
         connections.
@@ -197,13 +191,10 @@ class SocketInfo:
             the server implementation and PROXY protocol version.
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result.tlv.ext.compression
-        else:
-            ret: Optional[str] = self.transport.get_extra_info('compression')
-            return ret
+        ...
 
     @property
+    @abstractmethod
     def cipher(self) -> Optional[Cipher]:
         """The :meth:`~ssl.SSLSocket.cipher` value for encrypted connections.
 
@@ -213,19 +204,10 @@ class SocketInfo:
             protocol version.
 
         """
-        if self.pp_result.proxied:
-            if self.pp_result.tlv.ssl.has_ssl:
-                cipher = self.pp_result.tlv.ssl.cipher or ''
-                version = self.pp_result.tlv.ssl.version or ''
-                secret_bits = self.pp_result.tlv.ext.secret_bits or None
-                return (cipher, version, secret_bits)
-            else:
-                return None
-        else:
-            ret: Optional[Cipher] = self.transport.get_extra_info('cipher')
-            return ret
+        ...
 
     @property
+    @abstractmethod
     def peercert(self) -> Optional[PeerCert]:
         """The :meth:`~ssl.SSLSocket.peercert` value for encrypted connections.
 
@@ -234,23 +216,28 @@ class SocketInfo:
             the server implementation and PROXY protocol version.
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result.tlv.ext.peercert
-        else:
-            ret: Optional[PeerCert] = self.transport.get_extra_info('peercert')
-            return ret
+        ...
 
     @property
+    @abstractmethod
     def unique_id(self) -> bytes:
         """A unique identifier for the connection. For proxied connections, the
         unique ID from the header (if any) is returned, otherwise returns the
         value passed in to the constructor.
 
         """
-        if self.pp_result.proxied:
-            return self.pp_result.tlv.unique_id
-        else:
-            return self._unique_id
+        ...
+
+    @property
+    @abstractmethod
+    def dnsbl(self) -> Optional[str]:
+        """The DNSBL lookup result of the connecting IP address, if any.
+
+        This value is contextual to the DNSBL in use, but generally any value
+        here other than ``None`` indicates the IP address should be blocked.
+
+        """
+        ...
 
     @property
     def from_localhost(self) -> bool:
@@ -272,20 +259,138 @@ class SocketInfo:
             return False
         return ip.is_loopback
 
+    @abstractmethod
+    def __repr__(self) -> str:
+        ...
+
+
+class SocketInfoProxy(SocketInfo):
+    """Provides information about the connection, overridden by the PROXY
+    protocol result.
+
+    Args:
+        result: The PROXY protocol result.
+
+    """
+
+    __slots__ = ['_result']
+
+    def __init__(self, transport: TransportProtocol,
+                 result: ProxyResult) -> None:
+        super().__init__(transport)
+        self._result = result
+
+    @property
+    def sockname(self) -> SockAddr:
+        return self._result.sockname
+
+    @property
+    def peername(self) -> SockAddr:
+        return self._result.peername
+
+    @property
+    def family(self) -> AddressFamily:
+        return self._result.family
+
+    @property
+    def protocol(self) -> Optional[SocketKind]:
+        return self._result.protocol
+
+    @property
+    def compression(self) -> Optional[str]:
+        return self._result.tlv.ext.compression
+
+    @property
+    def cipher(self) -> Optional[Cipher]:
+        result = self._result
+        if result.tlv.ssl.has_ssl:
+            cipher = result.tlv.ssl.cipher or ''
+            version = result.tlv.ssl.version or ''
+            secret_bits = result.tlv.ext.secret_bits or None
+            return (cipher, version, secret_bits)
+        else:
+            return None
+
+    @property
+    def peercert(self) -> Optional[PeerCert]:
+        return self._result.tlv.ext.peercert
+
+    @property
+    def unique_id(self) -> bytes:
+        return self._result.tlv.unique_id
+
     @property
     def dnsbl(self) -> Optional[str]:
-        """The DNSBL lookup result of the connecting IP address, if any.
+        return self._result.tlv.ext.dnsbl
 
-        This value is contextual to the DNSBL in use, but generally any value
-        here other than ``None`` indicates the IP address should be blocked.
+    def __repr__(self) -> str:
+        return f'<SocketInfoProxy peername={self.peername_str!r} ' \
+            f'sockname={self.sockname_str!r}>'
 
-        """
-        if self.pp_result.proxied:
-            return self.pp_result.tlv.ext.dnsbl
-        else:
-            return self._dnsbl
 
-    def __str__(self) -> str:
-        proxied = ' proxied=True' if self.pp_result.proxied else ''
-        return '<SocketInfo peername=%r sockname=%r%s>' \
-            % (self.peername_str, self.sockname_str, proxied)
+class SocketInfoLocal(SocketInfo):
+    """Provides information about the connection, from the underlying
+    :mod:`asyncio` transport layer.
+
+    Args:
+        transport: The :class:`~asyncio.BaseTransport` or
+            :class:`~asyncio.StreamWriter` for the connection.
+        unique_id: A unique ID to associate with the connection, unless
+            overridden by the PROXY protocol result.
+        dnsbl: The DNSBL lookup result, if any.
+
+    """
+
+    __slots__ = ['_transport', '_unique_id', '_dnsbl']
+
+    def __init__(self, transport: TransportProtocol,
+                 result: Optional[ProxyResult] = None, *,
+                 unique_id: bytes = b'', dnsbl: Optional[str] = None) -> None:
+        super().__init__(transport)
+        self._unique_id = unique_id
+        self._dnsbl = dnsbl
+
+    @property
+    def sockname(self) -> SockAddr:
+        ret: SockAddr = self._transport.get_extra_info('sockname')
+        return ret
+
+    @property
+    def peername(self) -> SockAddr:
+        ret: SockAddr = self._transport.get_extra_info('peername')
+        return ret
+
+    @property
+    def family(self) -> AddressFamily:
+        return AddressFamily(self.socket.family)
+
+    @property
+    def protocol(self) -> Optional[SocketKind]:
+        return SocketKind(self.socket.type)
+
+    @property
+    def compression(self) -> Optional[str]:
+        ret: Optional[str] = self._transport.get_extra_info('compression')
+        return ret
+
+    @property
+    def cipher(self) -> Optional[Cipher]:
+        ret: Optional[Cipher] = self._transport.get_extra_info('cipher')
+        return ret
+
+    @property
+    def peercert(self) -> Optional[PeerCert]:
+        ret: Optional[PeerCert] = self._transport.get_extra_info('peercert')
+        return ret
+
+    @property
+    def unique_id(self) -> bytes:
+        return self._unique_id
+
+    @property
+    def dnsbl(self) -> Optional[str]:
+        return self._dnsbl
+
+    def __repr__(self) -> str:
+        return f'<SocketInfoLocal peername={self.peername_str!r} ' \
+            f'sockname={self.sockname_str!r}>'

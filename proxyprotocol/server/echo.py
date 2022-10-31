@@ -58,7 +58,7 @@ async def run_conn(pp: ProxyProtocol, reader: StreamReader,
     pp_reader = ProxyProtocolReader(pp)
     with closing(writer):
         result = await pp_reader.read(reader)
-        sock_info = SocketInfo(writer, result)
+        sock_info = SocketInfo.get(writer, result)
         _log.info('[%s] Connection received: %s',
                   sock_info.unique_id.hex(), sock_info)
         if sock_info.dnsbl is not None:

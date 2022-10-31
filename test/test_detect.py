@@ -1,12 +1,11 @@
 
-import socket
 import unittest
 from unittest.mock import MagicMock
 
 from proxyprotocol import ProxyProtocolSyntaxError, \
     ProxyProtocolIncompleteError
 from proxyprotocol.version import ProxyProtocolVersion
-from proxyprotocol.result import ProxyProtocolResultUnknown
+from proxyprotocol.result import ProxyResultUnknown
 from proxyprotocol.detect import ProxyProtocolDetect
 from proxyprotocol.v1 import ProxyProtocolV1
 from proxyprotocol.v2 import ProxyProtocolV2
@@ -24,23 +23,23 @@ class TestProxyProtocolDetect(unittest.TestCase):
         self.assertTrue(pp.is_valid(b'\r\n\r\n\x00\r\nQ'))
         self.assertFalse(pp.is_valid(b'bad'))
 
-    def test_parse_incomplete(self) -> None:
+    def test_unpack_incomplete(self) -> None:
         pp = ProxyProtocolDetect()
         with self.assertRaises(ProxyProtocolIncompleteError) as raised:
-            pp.parse(b'')
+            pp.unpack(b'')
         self.assertEqual(8, raised.exception.want_read.want_bytes)
         self.assertFalse(raised.exception.want_read.want_line)
 
-    def test_parse(self) -> None:
+    def test_unpack(self) -> None:
         mock_one = MagicMock(ProxyProtocolV1)
         mock_two = MagicMock(ProxyProtocolV1)
         pp = ProxyProtocolDetect(mock_one, mock_two)
         mock_one.is_valid.return_value = False
-        mock_one.parse.side_effect = ValueError
+        mock_one.unpack.side_effect = ValueError
         mock_two.is_valid.return_value = True
-        mock_two.parse.return_value = ProxyProtocolResultUnknown()
-        res = pp.parse(b'12345678')
-        self.assertIsInstance(res, ProxyProtocolResultUnknown)
+        mock_two.unpack.return_value = ProxyResultUnknown()
+        res = pp.unpack(b'12345678')
+        self.assertIsInstance(res, ProxyResultUnknown)
 
     def test_choose_version_v1(self) -> None:
         pp = ProxyProtocolDetect()
@@ -63,20 +62,20 @@ class TestProxyProtocolDetect(unittest.TestCase):
         with self.assertRaises(ProxyProtocolSyntaxError):
             pp.choose_version(b'bad\r\n\r\n\x00\r\nQUIT')
 
-    def test_build(self) -> None:
+    def test_pack(self) -> None:
         mock_one = MagicMock(ProxyProtocolV1)
         mock_two = MagicMock(ProxyProtocolV1)
         mock_three = MagicMock(ProxyProtocolV1)
         pp = ProxyProtocolDetect(mock_one, mock_two, mock_three)
-        mock_one.build.side_effect = ValueError
-        mock_two.build.return_value = b'data'
-        mock_three.build.side_effect = AssertionError
+        mock_one.pack.side_effect = ValueError
+        mock_two.pack.return_value = b'data'
+        mock_three.pack.side_effect = AssertionError
         self.assertEqual(
-            b'data', pp.build(None, None, family=socket.AF_UNSPEC))
+            b'data', pp.pack(ProxyResultUnknown()))
 
-    def test_build_error(self) -> None:
+    def test_pack_error(self) -> None:
         mock_one = MagicMock(ProxyProtocolV1)
         pp = ProxyProtocolDetect(mock_one)
-        mock_one.build.side_effect = ValueError
+        mock_one.pack.side_effect = ValueError
         with self.assertRaises(ValueError):
-            pp.build(None, None, family=socket.AF_UNSPEC)
+            pp.pack(ProxyResultUnknown())
