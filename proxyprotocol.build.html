@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>proxyprotocol.build &#8212; proxy-protocol 0.9.0rc1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="proxyprotocol.typing" href="proxyprotocol.typing.html" />
+    <link rel="prev" title="proxyprotocol.sock" href="proxyprotocol.sock.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proxyprotocol.typing.html" title="proxyprotocol.typing"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proxyprotocol.sock.html" title="proxyprotocol.sock"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-proxyprotocol.build">
+<span id="proxyprotocol-build"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code><a class="headerlink" href="#module-proxyprotocol.build" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="proxyprotocol.build.build_socket_result">
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_socket_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.build.build_socket_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a <a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a> from the given
+<em>sock</em> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sock</strong> (<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">socket</span></code></a>) – A connected socket object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="proxyprotocol.build.build_transport_result">
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_transport_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.build.build_transport_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a <a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a> from the given
+<em>transport</em> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>transport</strong> (<a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.TransportProtocol" title="proxyprotocol.typing.TransportProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransportProtocol</span></code></a>) – A connected transport object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a><ul>
+<li><a class="reference internal" href="#proxyprotocol.build.build_socket_result"><code class="docutils literal notranslate"><span class="pre">build_socket_result()</span></code></a></li>
+<li><a class="reference internal" href="#proxyprotocol.build.build_transport_result"><code class="docutils literal notranslate"><span class="pre">build_transport_result()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="proxyprotocol.sock.html"
+                          title="Previous page">&larr; <code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="proxyprotocol.typing.html"
+                          title="Next page">&rarr; <code class="docutils literal notranslate"><span class="pre">proxyprotocol.typing</span></code></a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/proxyprotocol.build.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proxyprotocol.typing.html" title="proxyprotocol.typing"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="proxyprotocol.sock.html" title="proxyprotocol.sock"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

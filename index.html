@@ -3,12 +3,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>proxy-protocol Documentation &#8212; proxy-protocol 0.8.1 documentation</title>
+    <title>proxy-protocol Documentation &#8212; proxy-protocol 0.9.0rc1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -16,7 +16,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
 
     
     
@@ -53,7 +55,7 @@
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
-    <li><a href="#">proxy-protocol 0.8.1 documentation</a> &#187;</li>
+    <li><a href="#">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxy-protocol</span></code> Documentation</a></li> 
       </ul>
@@ -67,31 +69,105 @@
           <div class="body" role="main">
             
   <section id="proxy-protocol-documentation">
-<h1><code class="docutils literal notranslate"><span class="pre">proxy-protocol</span></code> Documentation<a class="headerlink" href="#proxy-protocol-documentation" title="Permalink to this headline">¶</a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">proxy-protocol</span></code> Documentation<a class="headerlink" href="#proxy-protocol-documentation" title="Permalink to this heading">¶</a></h1>
 <section id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="proxyprotocol.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.version"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.version</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.typing"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.typing</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.noop"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.noop</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.detect"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.v1"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v1</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.v2"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v2</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.result"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.tlv"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.tlv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.sock"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.reader"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#module-proxyprotocol.server"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.server</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocolSyntaxError"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolSyntaxError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocolChecksumError"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolChecksumError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocolIncompleteError"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolIncompleteError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocolWantRead"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolWantRead</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocol"><code class="docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.result.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.is_local"><code class="docutils literal notranslate"><span class="pre">is_local()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.is_unknown"><code class="docutils literal notranslate"><span class="pre">is_unknown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.is_ipv4"><code class="docutils literal notranslate"><span class="pre">is_ipv4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.is_ipv6"><code class="docutils literal notranslate"><span class="pre">is_ipv6()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.is_unix"><code class="docutils literal notranslate"><span class="pre">is_unix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult"><code class="docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal"><code class="docutils literal notranslate"><span class="pre">ProxyResultLocal</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnknown</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.sock.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.sock</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo"><code class="docutils literal notranslate"><span class="pre">SocketInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy"><code class="docutils literal notranslate"><span class="pre">SocketInfoProxy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal"><code class="docutils literal notranslate"><span class="pre">SocketInfoLocal</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.build.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.build.html#proxyprotocol.build.build_socket_result"><code class="docutils literal notranslate"><span class="pre">build_socket_result()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.build.html#proxyprotocol.build.build_transport_result"><code class="docutils literal notranslate"><span class="pre">build_transport_result()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.typing.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.typing</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.SockAddr"><code class="docutils literal notranslate"><span class="pre">SockAddr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.Address"><code class="docutils literal notranslate"><span class="pre">Address</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.Cipher"><code class="docutils literal notranslate"><span class="pre">Cipher</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.PeerCert"><code class="docutils literal notranslate"><span class="pre">PeerCert</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.StreamReaderProtocol"><code class="docutils literal notranslate"><span class="pre">StreamReaderProtocol</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.TransportProtocol"><code class="docutils literal notranslate"><span class="pre">TransportProtocol</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.version.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.version</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolVersion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.noop.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.noop</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolNoop</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.detect.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolDetect</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.v1.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v1</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolV1</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.v2.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.v2</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2Header"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolV2Header</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolV2</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.checksum.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.checksum</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.checksum.html#proxyprotocol.checksum.crc32c"><code class="docutils literal notranslate"><span class="pre">crc32c()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.checksum.html#proxyprotocol.checksum.Checksum"><code class="docutils literal notranslate"><span class="pre">Checksum</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.dnsbl.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.dnsbl</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl"><code class="docutils literal notranslate"><span class="pre">Dnsbl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.NoopDnsbl"><code class="docutils literal notranslate"><span class="pre">NoopDnsbl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl"><code class="docutils literal notranslate"><span class="pre">BasicDnsbl</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl"><code class="docutils literal notranslate"><span class="pre">SpamhausDnsbl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.tlv.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.tlv</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type"><code class="docutils literal notranslate"><span class="pre">Type</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient"><code class="docutils literal notranslate"><span class="pre">SSLClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.TLV"><code class="docutils literal notranslate"><span class="pre">TLV</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolSSLTLV</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolExtTLV</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxyprotocol.reader.html"><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proxyprotocol.reader.html#proxyprotocol.reader.ProxyProtocolReader"><code class="docutils literal notranslate"><span class="pre">ProxyProtocolReader</span></code></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
 <section id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -138,7 +214,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
     
@@ -174,7 +250,7 @@
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              >next</a> &nbsp; &nbsp;</li>
-    <li><a href="#">proxy-protocol 0.8.1 documentation</a> &#187;</li>
+    <li><a href="#">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxy-protocol</span></code> Documentation</a></li> 
       </ul>
@@ -183,7 +259,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

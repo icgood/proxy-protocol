@@ -3,11 +3,11 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; proxy-protocol 0.8.1 documentation</title>
+    <title>Index &#8212; proxy-protocol 0.9.0rc1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -15,7 +15,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
 
     
     
@@ -48,7 +50,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.8.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
@@ -75,6 +77,7 @@
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
@@ -89,17 +92,13 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.server.Address">Address (class in proxyprotocol.server)</a>
-
-      <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.typing.Address">(in module proxyprotocol.typing)</a>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.Address">Address (in module proxyprotocol.typing)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.alpn">alpn (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.alpn">alpn (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.authority">authority (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.authority">authority (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -107,25 +106,13 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect.build">build() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
-
-      <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.noop.ProxyProtocolNoop.build">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl">BasicDnsbl (class in proxyprotocol.dnsbl)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol.build">(proxyprotocol.ProxyProtocol method)</a>
-</li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1.build">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
-</li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build_addresses">build_addresses() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+      <li><a href="proxyprotocol.build.html#proxyprotocol.build.build_socket_result">build_socket_result() (in module proxyprotocol.build)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build_header">build_header() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.build_tlv">build_tlv() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+      <li><a href="proxyprotocol.build.html#proxyprotocol.build.build_transport_result">build_transport_result() (in module proxyprotocol.build)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -133,29 +120,41 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect.choose_version">choose_version() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
+      <li><a href="proxyprotocol.checksum.html#proxyprotocol.checksum.Checksum">Checksum (class in proxyprotocol.checksum)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.typing.Cipher">Cipher (in module proxyprotocol.typing)</a>
+      <li><a href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect.choose_version">choose_version() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.cipher">cipher (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.Cipher">Cipher (in module proxyprotocol.typing)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.cipher">cipher (proxyprotocol.sock.SocketInfo property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.cipher">(proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.cipher">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.cipher">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.cipher">(proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.client">client (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.client">client (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.cn">cn (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.cn">cn (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.compression">compression (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.compression">compression (proxyprotocol.sock.SocketInfo property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV.compression">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.compression">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.compression">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV.compression">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.crc32c">crc32c (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.crc32c">crc32c (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+</li>
+      <li><a href="proxyprotocol.checksum.html#proxyprotocol.checksum.crc32c">crc32c() (in module proxyprotocol.checksum)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -163,30 +162,34 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.dest">dest (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.dest">dest (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.dest">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.dest">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.dest">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.dest">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.dest">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.dest">(proxyprotocol.result.ProxyResultLocal property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal.dest">(proxyprotocol.result.ProxyProtocolResultLocal property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.dest">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.dest">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
-</li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.dest">(proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.dest">(proxyprotocol.result.ProxyResultUnknown property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.DETECT">DETECT (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
+      <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion.DETECT">DETECT (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.dnsbl">dnsbl (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl">Dnsbl (class in proxyprotocol.dnsbl)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.dnsbl">dnsbl (proxyprotocol.sock.SocketInfo property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV.dnsbl">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.dnsbl">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.dnsbl">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV.dnsbl">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -195,11 +198,11 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.exception">exception (proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.exception">exception (proxyprotocol.result.ProxyResultUnknown property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.ext">ext (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.ext">ext (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -207,23 +210,25 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.family">family (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.family">family (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.family">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.family">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.family">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.family">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.family">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.family">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.family">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.family">(proxyprotocol.sock.SocketInfo property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.family">(proxyprotocol.sock.SocketInfo property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.family">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.family">(proxyprotocol.sock.SocketInfoProxy property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.from_localhost">from_localhost (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.from_localhost">from_localhost (proxyprotocol.sock.SocketInfo property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -231,23 +236,25 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.get">get() (proxyprotocol.version.ProxyProtocolVersion class method)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.get">get() (proxyprotocol.sock.SocketInfo class method)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion.get">(proxyprotocol.version.ProxyProtocolVersion class method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_conn">has_cert_conn (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_sess">has_cert_sess (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_conn">has_cert_conn (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_ssl">has_ssl (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_sess">has_cert_sess (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.server.Address.host">host (proxyprotocol.server.Address property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_ssl">has_ssl (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -255,16 +262,28 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect.is_valid">is_valid() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.is_ipv4">is_ipv4() (in module proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.is_ipv6">is_ipv6() (in module proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.is_local">is_local() (in module proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.is_unix">is_unix() (in module proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.is_unknown">is_unknown() (in module proxyprotocol.result)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect.is_valid">is_valid() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.noop.ProxyProtocolNoop.is_valid">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
+        <li><a href="proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.is_valid">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
 </li>
         <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol.is_valid">(proxyprotocol.ProxyProtocol method)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1.is_valid">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
+        <li><a href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1.is_valid">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.is_valid">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
+        <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2.is_valid">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -273,43 +292,69 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.key_alg">key_alg (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.key_alg">key_alg (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl.load">load() (proxyprotocol.dnsbl.Dnsbl class method)</a>
+</li>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl.lookup">lookup() (proxyprotocol.dnsbl.BasicDnsbl method)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl.lookup">(proxyprotocol.dnsbl.Dnsbl method)</a>
+</li>
+        <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.NoopDnsbl.lookup">(proxyprotocol.dnsbl.NoopDnsbl method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX">MAGIC_PREFIX (proxyprotocol.tlv.ProxyProtocolExtTLV attribute)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV.MAGIC_PREFIX">MAGIC_PREFIX (proxyprotocol.tlv.ProxyProtocolExtTLV attribute)</a>
 </li>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl.map_results">map_results() (proxyprotocol.dnsbl.BasicDnsbl method)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl.map_results">(proxyprotocol.dnsbl.SpamhausDnsbl method)</a>
+</li>
+      </ul></li>
       <li>
     module
 
       <ul>
         <li><a href="proxyprotocol.html#module-proxyprotocol">proxyprotocol</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.detect">proxyprotocol.detect</a>
+        <li><a href="proxyprotocol.build.html#module-proxyprotocol.build">proxyprotocol.build</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.noop">proxyprotocol.noop</a>
+        <li><a href="proxyprotocol.checksum.html#module-proxyprotocol.checksum">proxyprotocol.checksum</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.reader">proxyprotocol.reader</a>
+        <li><a href="proxyprotocol.detect.html#module-proxyprotocol.detect">proxyprotocol.detect</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.result">proxyprotocol.result</a>
+        <li><a href="proxyprotocol.dnsbl.html#module-proxyprotocol.dnsbl">proxyprotocol.dnsbl</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.server">proxyprotocol.server</a>
+        <li><a href="proxyprotocol.noop.html#module-proxyprotocol.noop">proxyprotocol.noop</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.sock">proxyprotocol.sock</a>
+        <li><a href="proxyprotocol.reader.html#module-proxyprotocol.reader">proxyprotocol.reader</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.tlv">proxyprotocol.tlv</a>
+        <li><a href="proxyprotocol.result.html#module-proxyprotocol.result">proxyprotocol.result</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.typing">proxyprotocol.typing</a>
+        <li><a href="proxyprotocol.sock.html#module-proxyprotocol.sock">proxyprotocol.sock</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.v1">proxyprotocol.v1</a>
+        <li><a href="proxyprotocol.tlv.html#module-proxyprotocol.tlv">proxyprotocol.tlv</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.v2">proxyprotocol.v2</a>
+        <li><a href="proxyprotocol.typing.html#module-proxyprotocol.typing">proxyprotocol.typing</a>
 </li>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.version">proxyprotocol.version</a>
+        <li><a href="proxyprotocol.v1.html#module-proxyprotocol.v1">proxyprotocol.v1</a>
+</li>
+        <li><a href="proxyprotocol.v2.html#module-proxyprotocol.v2">proxyprotocol.v2</a>
+</li>
+        <li><a href="proxyprotocol.version.html#module-proxyprotocol.version">proxyprotocol.version</a>
 </li>
       </ul></li>
   </ul></td>
@@ -318,11 +363,13 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.netns">netns (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.netns">netns (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.NOOP">NOOP (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
+      <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion.NOOP">NOOP (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
+</li>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.NoopDnsbl">NoopDnsbl (class in proxyprotocol.dnsbl)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -330,114 +377,126 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect.parse">parse() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
+      <li><a href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect.pack">pack() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.noop.ProxyProtocolNoop.parse">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
+        <li><a href="proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.pack">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol.parse">(proxyprotocol.ProxyProtocol method)</a>
+        <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol.pack">(proxyprotocol.ProxyProtocol method)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1.parse">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
+        <li><a href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1.pack">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
+        <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2.pack">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse_data">parse_data() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.PeerCert">PeerCert (in module proxyprotocol.typing)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2.parse_header">parse_header() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1.parse_line">parse_line() (proxyprotocol.v1.ProxyProtocolV1 method)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.typing.PeerCert">PeerCert (in module proxyprotocol.typing)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peercert">peercert (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peercert">peercert (proxyprotocol.sock.SocketInfo property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV.peercert">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.peercert">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.peercert">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV.peercert">(proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peername">peername (proxyprotocol.sock.SocketInfo property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peername_ip">peername_ip (proxyprotocol.sock.SocketInfo property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peername_port">peername_port (proxyprotocol.sock.SocketInfo property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.peername_str">peername_str (proxyprotocol.sock.SocketInfo property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.server.Address.port">port (proxyprotocol.server.Address property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.server.Address.pp">pp (proxyprotocol.server.Address property)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_CONN">PP2_CLIENT_CERT_CONN (proxyprotocol.tlv.SSLClient attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_SESS">PP2_CLIENT_CERT_SESS (proxyprotocol.tlv.SSLClient attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_SSL">PP2_CLIENT_SSL (proxyprotocol.tlv.SSLClient attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CIPHER">PP2_SUBTYPE_SSL_CIPHER (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CN">PP2_SUBTYPE_SSL_CN (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_KEY_ALG">PP2_SUBTYPE_SSL_KEY_ALG (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_SIG_ALG">PP2_SUBTYPE_SSL_SIG_ALG (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_VERSION">PP2_SUBTYPE_SSL_VERSION (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_ALPN">PP2_TYPE_ALPN (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_AUTHORITY">PP2_TYPE_AUTHORITY (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_CRC32C">PP2_TYPE_CRC32C (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_CUSTOM">PP2_TYPE_MAX_CUSTOM (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_EXPERIMENT">PP2_TYPE_MAX_EXPERIMENT (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_FUTURE">PP2_TYPE_MAX_FUTURE (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_CUSTOM">PP2_TYPE_MIN_CUSTOM (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_EXPERIMENT">PP2_TYPE_MIN_EXPERIMENT (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_FUTURE">PP2_TYPE_MIN_FUTURE (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_NETNS">PP2_TYPE_NETNS (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_NOOP">PP2_TYPE_NOOP (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_SSL">PP2_TYPE_SSL (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type.PP2_TYPE_UNIQUE_ID">PP2_TYPE_UNIQUE_ID (proxyprotocol.tlv.Type attribute)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.protocol">protocol (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.peername">peername (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.protocol">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.peername">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.protocol">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.peername">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.protocol">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.peername">(proxyprotocol.result.ProxyResultLocal property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.protocol">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.peername">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.protocol">(proxyprotocol.sock.SocketInfo property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.peername">(proxyprotocol.result.ProxyResultUnknown property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peername">(proxyprotocol.sock.SocketInfo property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.peername">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.peername">(proxyprotocol.sock.SocketInfoProxy property)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.proxied">proxied (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peername_ip">peername_ip (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peername_port">peername_port (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peername_str">peername_str (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_CONN">PP2_CLIENT_CERT_CONN (proxyprotocol.tlv.SSLClient attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_SESS">PP2_CLIENT_CERT_SESS (proxyprotocol.tlv.SSLClient attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_SSL">PP2_CLIENT_SSL (proxyprotocol.tlv.SSLClient attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CIPHER">PP2_SUBTYPE_SSL_CIPHER (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_CN">PP2_SUBTYPE_SSL_CN (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_KEY_ALG">PP2_SUBTYPE_SSL_KEY_ALG (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_SIG_ALG">PP2_SUBTYPE_SSL_SIG_ALG (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_SUBTYPE_SSL_VERSION">PP2_SUBTYPE_SSL_VERSION (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_ALPN">PP2_TYPE_ALPN (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_AUTHORITY">PP2_TYPE_AUTHORITY (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_CRC32C">PP2_TYPE_CRC32C (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_CUSTOM">PP2_TYPE_MAX_CUSTOM (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_EXPERIMENT">PP2_TYPE_MAX_EXPERIMENT (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_FUTURE">PP2_TYPE_MAX_FUTURE (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_CUSTOM">PP2_TYPE_MIN_CUSTOM (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_EXPERIMENT">PP2_TYPE_MIN_EXPERIMENT (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MIN_FUTURE">PP2_TYPE_MIN_FUTURE (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_NETNS">PP2_TYPE_NETNS (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_NOOP">PP2_TYPE_NOOP (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_SSL">PP2_TYPE_SSL (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_UNIQUE_ID">PP2_TYPE_UNIQUE_ID (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.protocol">protocol (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.proxied">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.protocol">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.proxied">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.protocol">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.proxied">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.protocol">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal.proxied">(proxyprotocol.result.ProxyProtocolResultLocal property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.protocol">(proxyprotocol.sock.SocketInfo property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.proxied">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.protocol">(proxyprotocol.sock.SocketInfoLocal property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.proxied">(proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.protocol">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+      </ul></li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.proxied">proxied (proxyprotocol.result.ProxyResult property)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.proxied">(proxyprotocol.result.ProxyResultIPv4 property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.proxied">(proxyprotocol.result.ProxyResultIPv6 property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.proxied">(proxyprotocol.result.ProxyResultLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.proxied">(proxyprotocol.result.ProxyResultUnix property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.proxied">(proxyprotocol.result.ProxyResultUnknown property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -452,125 +511,135 @@
       <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol">ProxyProtocol (class in proxyprotocol)</a>
 </li>
       <li>
+    proxyprotocol.build
+
+      <ul>
+        <li><a href="proxyprotocol.build.html#module-proxyprotocol.build">module</a>
+</li>
+      </ul></li>
+      <li>
+    proxyprotocol.checksum
+
+      <ul>
+        <li><a href="proxyprotocol.checksum.html#module-proxyprotocol.checksum">module</a>
+</li>
+      </ul></li>
+      <li>
     proxyprotocol.detect
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.detect">module</a>
+        <li><a href="proxyprotocol.detect.html#module-proxyprotocol.detect">module</a>
+</li>
+      </ul></li>
+      <li>
+    proxyprotocol.dnsbl
+
+      <ul>
+        <li><a href="proxyprotocol.dnsbl.html#module-proxyprotocol.dnsbl">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.noop
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.noop">module</a>
+        <li><a href="proxyprotocol.noop.html#module-proxyprotocol.noop">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.reader
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.reader">module</a>
+        <li><a href="proxyprotocol.reader.html#module-proxyprotocol.reader">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.result
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.result">module</a>
-</li>
-      </ul></li>
-      <li>
-    proxyprotocol.server
-
-      <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.server">module</a>
+        <li><a href="proxyprotocol.result.html#module-proxyprotocol.result">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.sock
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.sock">module</a>
+        <li><a href="proxyprotocol.sock.html#module-proxyprotocol.sock">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.tlv
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.tlv">module</a>
+        <li><a href="proxyprotocol.tlv.html#module-proxyprotocol.tlv">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.typing
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.typing">module</a>
+        <li><a href="proxyprotocol.typing.html#module-proxyprotocol.typing">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.v1
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.v1">module</a>
+        <li><a href="proxyprotocol.v1.html#module-proxyprotocol.v1">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.v2
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.v2">module</a>
+        <li><a href="proxyprotocol.v2.html#module-proxyprotocol.v2">module</a>
 </li>
       </ul></li>
       <li>
     proxyprotocol.version
 
       <ul>
-        <li><a href="proxyprotocol.html#module-proxyprotocol.version">module</a>
+        <li><a href="proxyprotocol.version.html#module-proxyprotocol.version">module</a>
 </li>
       </ul></li>
       <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolChecksumError">ProxyProtocolChecksumError</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.detect.ProxyProtocolDetect">ProxyProtocolDetect (class in proxyprotocol.detect)</a>
+      <li><a href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect">ProxyProtocolDetect (class in proxyprotocol.detect)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV">ProxyProtocolExtTLV (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV">ProxyProtocolExtTLV (class in proxyprotocol.tlv)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolIncompleteError">ProxyProtocolIncompleteError</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.noop.ProxyProtocolNoop">ProxyProtocolNoop (class in proxyprotocol.noop)</a>
+      <li><a href="proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop">ProxyProtocolNoop (class in proxyprotocol.noop)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.reader.ProxyProtocolReader">ProxyProtocolReader (class in proxyprotocol.reader)</a>
+      <li><a href="proxyprotocol.reader.html#proxyprotocol.reader.ProxyProtocolReader">ProxyProtocolReader (class in proxyprotocol.reader)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult">ProxyProtocolResult (class in proxyprotocol)</a>
-
-      <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult">(class in proxyprotocol.result)</a>
-</li>
-      </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4">ProxyProtocolResultIPv4 (class in proxyprotocol.result)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6">ProxyProtocolResultIPv6 (class in proxyprotocol.result)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal">ProxyProtocolResultLocal (class in proxyprotocol.result)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix">ProxyProtocolResultUnix (class in proxyprotocol.result)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown">ProxyProtocolResultUnknown (class in proxyprotocol.result)</a>
-</li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV">ProxyProtocolSSLTLV (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV">ProxyProtocolSSLTLV (class in proxyprotocol.tlv)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolSyntaxError">ProxyProtocolSyntaxError</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV">ProxyProtocolTLV (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV">ProxyProtocolTLV (class in proxyprotocol.tlv)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v1.ProxyProtocolV1">ProxyProtocolV1 (class in proxyprotocol.v1)</a>
+      <li><a href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1">ProxyProtocolV1 (class in proxyprotocol.v1)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2">ProxyProtocolV2 (class in proxyprotocol.v2)</a>
+      <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2">ProxyProtocolV2 (class in proxyprotocol.v2)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.v2.ProxyProtocolV2Header">ProxyProtocolV2Header (class in proxyprotocol.v2)</a>
+      <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2Header">ProxyProtocolV2Header (class in proxyprotocol.v2)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion">ProxyProtocolVersion (class in proxyprotocol.version)</a>
+      <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion">ProxyProtocolVersion (class in proxyprotocol.version)</a>
 </li>
       <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolWantRead">ProxyProtocolWantRead (class in proxyprotocol)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult">ProxyResult (class in proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4">ProxyResultIPv4 (class in proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6">ProxyResultIPv6 (class in proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal">ProxyResultLocal (class in proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix">ProxyResultUnix (class in proxyprotocol.result)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown">ProxyResultUnknown (class in proxyprotocol.result)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -578,7 +647,7 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.reader.ProxyProtocolReader.read">read() (proxyprotocol.reader.ProxyProtocolReader method)</a>
+      <li><a href="proxyprotocol.reader.html#proxyprotocol.reader.ProxyProtocolReader.read">read() (proxyprotocol.reader.ProxyProtocolReader method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -586,55 +655,75 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits">secret_bits (proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV.secret_bits">secret_bits (proxyprotocol.tlv.ProxyProtocolExtTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.sig_alg">sig_alg (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.sig_alg">sig_alg (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.size">size (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.size">size (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.TLV.size">(proxyprotocol.tlv.TLV property)</a>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.TLV.size">(proxyprotocol.tlv.TLV property)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.socket">socket (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.SockAddr">SockAddr (in module proxyprotocol.typing)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo">SocketInfo (class in proxyprotocol.sock)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.socket">socket (proxyprotocol.sock.SocketInfo property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.sockname">sockname (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo">SocketInfo (class in proxyprotocol.sock)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.sockname_ip">sockname_ip (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal">SocketInfoLocal (class in proxyprotocol.sock)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.sockname_port">sockname_port (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy">SocketInfoProxy (class in proxyprotocol.sock)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.sockname_str">sockname_str (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.sockname">sockname (proxyprotocol.result.ProxyResult property)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.sockname">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.sockname">(proxyprotocol.result.ProxyResultIPv6 property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.sockname">(proxyprotocol.result.ProxyResultLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.sockname">(proxyprotocol.result.ProxyResultUnix property)</a>
+</li>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.sockname">(proxyprotocol.result.ProxyResultUnknown property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.sockname">(proxyprotocol.sock.SocketInfo property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.sockname">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.sockname">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.source">source (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.sockname_ip">sockname_ip (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.sockname_port">sockname_port (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.sockname_str">sockname_str (proxyprotocol.sock.SocketInfo property)</a>
+</li>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.source">source (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.source">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.source">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.source">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.source">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.source">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.source">(proxyprotocol.result.ProxyResultLocal property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal.source">(proxyprotocol.result.ProxyProtocolResultLocal property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.source">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.source">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
-</li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.source">(proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.source">(proxyprotocol.result.ProxyResultUnknown property)</a>
 </li>
       </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.server.Address.ssl">ssl (proxyprotocol.server.Address property)</a>
-
-      <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.ssl">(proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl">SpamhausDnsbl (class in proxyprotocol.dnsbl)</a>
 </li>
-      </ul></li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.SSLClient">SSLClient (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.ssl">ssl (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.typing.StreamReaderProtocol">StreamReaderProtocol (class in proxyprotocol.typing)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient">SSLClient (class in proxyprotocol.tlv)</a>
+</li>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.StreamReaderProtocol">StreamReaderProtocol (class in proxyprotocol.typing)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -642,29 +731,27 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.TLV">TLV (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.TLV">TLV (class in proxyprotocol.tlv)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocolResult.tlv">tlv (proxyprotocol.ProxyProtocolResult property)</a>
+      <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.tlv">tlv (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResult.tlv">(proxyprotocol.result.ProxyProtocolResult property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.tlv">(proxyprotocol.result.ProxyResultIPv4 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv4.tlv">(proxyprotocol.result.ProxyProtocolResultIPv4 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.tlv">(proxyprotocol.result.ProxyResultIPv6 property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultIPv6.tlv">(proxyprotocol.result.ProxyProtocolResultIPv6 property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal.tlv">(proxyprotocol.result.ProxyResultLocal property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultLocal.tlv">(proxyprotocol.result.ProxyProtocolResultLocal property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.tlv">(proxyprotocol.result.ProxyResultUnix property)</a>
 </li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnix.tlv">(proxyprotocol.result.ProxyProtocolResultUnix property)</a>
-</li>
-        <li><a href="proxyprotocol.html#proxyprotocol.result.ProxyProtocolResultUnknown.tlv">(proxyprotocol.result.ProxyProtocolResultUnknown property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown.tlv">(proxyprotocol.result.ProxyResultUnknown property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.typing.TransportProtocol">TransportProtocol (class in proxyprotocol.typing)</a>
+      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.TransportProtocol">TransportProtocol (class in proxyprotocol.typing)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.Type">Type (class in proxyprotocol.tlv)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type">Type (class in proxyprotocol.tlv)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -672,31 +759,55 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.sock.SocketInfo.unique_id">unique_id (proxyprotocol.sock.SocketInfo property)</a>
+      <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.unique_id">unique_id (proxyprotocol.sock.SocketInfo property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.unique_id">(proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal.unique_id">(proxyprotocol.sock.SocketInfoLocal property)</a>
+</li>
+        <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy.unique_id">(proxyprotocol.sock.SocketInfoProxy property)</a>
+</li>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.unique_id">(proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
       </ul></li>
+      <li><a href="proxyprotocol.detect.html#proxyprotocol.detect.ProxyProtocolDetect.unpack">unpack() (proxyprotocol.detect.ProxyProtocolDetect method)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.unpack">(proxyprotocol.noop.ProxyProtocolNoop method)</a>
+</li>
+        <li><a href="proxyprotocol.html#proxyprotocol.ProxyProtocol.unpack">(proxyprotocol.ProxyProtocol method)</a>
+</li>
+        <li><a href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1.unpack">(proxyprotocol.v1.ProxyProtocolV1 method)</a>
+</li>
+        <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2.unpack">(proxyprotocol.v2.ProxyProtocolV2 method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2.unpack_data">unpack_data() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+</li>
+      <li><a href="proxyprotocol.v2.html#proxyprotocol.v2.ProxyProtocolV2.unpack_header">unpack_header() (proxyprotocol.v2.ProxyProtocolV2 method)</a>
+</li>
+      <li><a href="proxyprotocol.v1.html#proxyprotocol.v1.ProxyProtocolV1.unpack_line">unpack_line() (proxyprotocol.v1.ProxyProtocolV1 method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.V1">V1 (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
+      <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion.V1">V1 (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.version.ProxyProtocolVersion.V2">V2 (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
+      <li><a href="proxyprotocol.version.html#proxyprotocol.version.ProxyProtocolVersion.V2">V2 (proxyprotocol.version.ProxyProtocolVersion attribute)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.verified">verified (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.verified">verified (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.verify">verify (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.verify">verify (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum">verify_checksum() (proxyprotocol.tlv.ProxyProtocolTLV method)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum">verify_checksum() (proxyprotocol.tlv.ProxyProtocolTLV method)</a>
 </li>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.version">version (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.version">version (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -704,7 +815,7 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.html#proxyprotocol.tlv.ProxyProtocolTLV.with_checksum">with_checksum() (proxyprotocol.tlv.ProxyProtocolTLV method)</a>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.with_checksum">with_checksum() (proxyprotocol.tlv.ProxyProtocolTLV method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -726,7 +837,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
     
@@ -759,7 +870,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.8.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.9.0rc1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
@@ -768,7 +879,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
