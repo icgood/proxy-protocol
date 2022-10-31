@@ -35,10 +35,10 @@ v2.
 ```python
 from functools import partial
 
-from proxyprotocol.base import ProxyProtocol
+from proxyprotocol import ProxyProtocol
 from proxyprotocol.detect import ProxyProtocolDetect
 from proxyprotocol.reader import ProxyProtocolReader
-from proxyprotocol.socket import SocketInfo
+from proxyprotocol.sock import SocketInfo
 
 async def run(host: str, port: int) -> None:
     pp_detect = ProxyProtocolDetect()
@@ -51,7 +51,7 @@ async def run(host: str, port: int) -> None:
 async def on_connection(pp_reader: ProxyProtocolReader,
                         reader: StreamReader, writer: StreamWriter) -> None:
     result = await pp_reader.read(reader)
-    info = SocketInfo(writer, result)
+    info = SocketInfo.get(writer, result)
     print(info.family, info.peername)
     # ... continue using connection
 ```
