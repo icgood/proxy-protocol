@@ -152,6 +152,16 @@ class TestProxyProtocolTLV(unittest.TestCase):
         without_auto = ProxyProtocolTLV(init=self.auto)
         self.assertEqual(len(bytes(without_auto)) + 7, self.auto.size)
 
+    def test_bool(self) -> None:
+        self.assertFalse(self.empty)
+        self.assertTrue(self.tlv)
+        self.assertFalse(self.empty.ssl)
+        self.assertFalse(self.empty.ext)
+        self.assertTrue(self.tlv.ssl)
+        self.assertTrue(self.tlv.ext)
+        self.assertTrue(ProxyProtocolSSLTLV(has_ssl=True))
+        self.assertTrue(ProxyProtocolSSLTLV(verified=True))
+
     def test_len(self) -> None:
         self.assertEqual(0, len(self.empty))
         self.assertEqual(8, len(self.tlv))
@@ -179,7 +189,7 @@ class TestProxyProtocolTLV(unittest.TestCase):
 
     def test_kwargs(self) -> None:
         ssl_tlv = ProxyProtocolSSLTLV(has_ssl=True, has_cert_conn=False,
-                                      has_cert_sess=True, verify=0,
+                                      has_cert_sess=True, verified=True,
                                       version='1.0', cn='test_ⓒⓝ',
                                       cipher='test_cipher',
                                       sig_alg='test_sig_alg',
@@ -209,6 +219,6 @@ class TestProxyProtocolTLV(unittest.TestCase):
         ssl_tlv = ProxyProtocolSSLTLV(data, has_cert_sess=False)
         self.assertEqual(0x01, ssl_tlv.client)
         self.assertEqual(37, ssl_tlv.verify)
-        ssl_tlv = ProxyProtocolSSLTLV(data, verify=0)
+        ssl_tlv = ProxyProtocolSSLTLV(data, verified=True)
         self.assertEqual(0x05, ssl_tlv.client)
         self.assertEqual(0, ssl_tlv.verify)
