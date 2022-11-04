@@ -90,10 +90,10 @@ def _build_tlv(ssl_obj: Union[None, SSLObject, SSLSocket],
         cipher, version, secret_bits = ssl_obj.cipher() or (None, None, None)
         peercert: Optional[PeerCert] = ssl_obj.getpeercert()
         ssl_tlv = ProxyProtocolSSLTLV(
-            has_ssl=True, verify=True,
+            has_ssl=True, verified=True,
             has_cert_conn=(peercert is not None),
             cipher=cipher, version=version)
         ext_tlv = ProxyProtocolExtTLV(
             init=ext_tlv, compression=ssl_obj.compression(),
-            secret_bits=secret_bits, peercert=peercert, dnsbl=dnsbl)
+            secret_bits=secret_bits, peercert=peercert)
     return ProxyProtocolTLV(unique_id=unique_id, ssl=ssl_tlv, ext=ext_tlv)

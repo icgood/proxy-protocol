@@ -5,8 +5,8 @@ import json
 import zlib
 from enum import IntEnum, IntFlag
 from struct import Struct, error as struct_error
-from typing import ClassVar, Any, Hashable, Optional, Union, Iterator, \
-    Sequence, Mapping, Dict, List
+from typing import ClassVar, Any, Hashable, Optional, Iterator, Sequence, \
+    Mapping, Dict, List
 
 from .checksum import crc32c
 from .typing import PeerCert
@@ -126,6 +126,9 @@ class TLV(Mapping[int, bytes], Hashable):
     def __iter__(self) -> Iterator[int]:
         return iter(self._tlv)
 
+    def __bool__(self) -> bool:
+        return bool(self._tlv)
+
     def __len__(self) -> int:
         return len(self._tlv)
 
@@ -177,11 +180,11 @@ class ProxyProtocolTLV(TLV):
             results[Type.PP2_TYPE_CRC32C] = self._crc32c_fmt.pack(crc32c)
         if unique_id is not None:
             results[Type.PP2_TYPE_UNIQUE_ID] = unique_id
-        if ssl is not None:
+        if ssl:
             results[Type.PP2_TYPE_SSL] = bytes(ssl)
         if netns is not None:
             results[Type.PP2_TYPE_NETNS] = netns.encode('ascii')
-        if ext is not None:
+        if ext:
             results[Type.PP2_TYPE_NOOP] = bytes(ext)
         super().__init__(data, results)
         self._auto_crc32c = auto_crc32c and crc32c is None
@@ -316,7 +319,7 @@ class ProxyProtocolSSLTLV(TLV):
                  has_ssl: Optional[bool] = None,
                  has_cert_conn: Optional[bool] = None,
                  has_cert_sess: Optional[bool] = None,
-                 verify: Union[None, int, bool] = None,
+                 verified: Optional[bool] = None,
                  version: Optional[str] = None,
                  cn: Optional[str] = None,
                  cipher: Optional[str] = None,
@@ -348,8 +351,8 @@ class ProxyProtocolSSLTLV(TLV):
             self._client |= SSLClient.PP2_CLIENT_CERT_SESS
         elif has_cert_sess is False:
             self._client &= ~SSLClient.PP2_CLIENT_CERT_SESS
-        if verify is not None:
-            self._verify = int(verify)
+        if verified is not None:
+            self._verify = int(not verified)
 
     def _unpack(self, data: bytes) -> Dict[int, bytes]:
         try:
@@ -362,6 +365,9 @@ class ProxyProtocolSSLTLV(TLV):
     def _pack(self) -> bytes:
         prefix = self._prefix_fmt.pack(self.client, self.verify)
         return prefix + super()._pack()
+
+    def __bool__(self) -> bool:
+        return super().__bool__() or bool(self.client) or self.verified
 
     def __hash__(self) -> int:
         return hash((self._frozen, self._client, self._verify))

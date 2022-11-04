@@ -16,6 +16,7 @@ from . import Address
 from .. import ProxyProtocol
 from ..dnsbl import Dnsbl
 from ..build import build_transport_result
+from ..result import ProxyResult
 from ..sock import SocketInfo, SocketInfoLocal
 
 __all__ = ['DownstreamProtocol', 'UpstreamProtocol']
@@ -50,6 +51,10 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
         transport = self._transport
         assert transport is not None
         return transport
+
+    @property
+    def connected(self) -> bool:
+        return self._transport is not None
 
     def close(self) -> None:
         if self._transport is not None:
@@ -120,7 +125,8 @@ class DownstreamProtocol(_Base):
         self._upstream_factory = partial(upstream_protocol, self, buf_len,
                                          upstream.pp)
 
-    def _set_client(self, connect_task: Task[_Connect]) -> None:
+    def _set_client(self, result: ProxyResult,
+                    connect_task: Task[_Connect]) -> None:
         dnsbl_task = self._dnsbl_task
         assert dnsbl_task is not None
         try:
@@ -131,13 +137,13 @@ class DownstreamProtocol(_Base):
             _log.exception('[%s] Connection failed: %s',
                            self.id.hex(), self.upstream)
         else:
-            callback = partial(self._send_initial, upstream)
+            callback = partial(self._send_initial, upstream, result)
             dnsbl_task.add_done_callback(callback)
 
-    def _send_initial(self, upstream: UpstreamProtocol,
+    def _send_initial(self, upstream: UpstreamProtocol, result: ProxyResult,
                       dnsbl_task: Task[Optional[str]]) -> None:
         self._upstream = upstream
-        upstream.write_header(dnsbl_task.result())
+        upstream.write_header(dnsbl_task.result(), result)
         waiting = self._waiting
         while waiting:
             data = waiting.popleft()
@@ -155,7 +161,8 @@ class DownstreamProtocol(_Base):
             loop.create_connection(self._upstream_factory,
                                    self.upstream.host, self.upstream.port or 0,
                                    ssl=self.upstream.ssl))
-        connect_task.add_done_callback(self._set_client)
+        result = build_transport_result(transport, unique_id=self.id)
+        connect_task.add_done_callback(partial(self._set_client, result))
 
     def connection_lost(self, exc: Optional[Exception]) -> None:
         super().connection_lost(exc)
@@ -187,14 +194,16 @@ class UpstreamProtocol(_Base):
         super().close()
         self.downstream.close()
 
-    def build_pp_header(self, dnsbl: Optional[str]) -> bytes:
-        result = build_transport_result(self.downstream.transport,
-                                        unique_id=self.downstream.id,
-                                        dnsbl=dnsbl)
+    def build_pp_header(self, dnsbl: Optional[str],
+                        result: ProxyResult) -> bytes:
+        if self.downstream.connected:
+            result = build_transport_result(self.downstream.transport,
+                                            unique_id=self.downstream.id,
+                                            dnsbl=dnsbl)
         return self.pp.pack(result)
 
-    def write_header(self, dnsbl: Optional[str]) -> None:
-        header = self.build_pp_header(dnsbl)
+    def write_header(self, dnsbl: Optional[str], result: ProxyResult) -> None:
+        header = self.build_pp_header(dnsbl, result)
         self.write(header)
 
     def proxy_data(self, data: bytes) -> None:
