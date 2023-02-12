@@ -107,8 +107,9 @@ class _Base(BufferedProtocol, metaclass=ABCMeta):
 
 class DownstreamProtocol(_Base):
 
-    __slots__ = ['loop', 'dnsbl', 'upstream', 'id', '_dnsbl_task', '_waiting',
-                 '_waiting_closed', '_upstream', '_upstream_factory']
+    __slots__ = ['loop', 'dnsbl', 'upstream', 'id', '_waiting',
+                 '_waiting_closed', '_upstream', '_upstream_factory',
+                 '_dnsbl_task', '_connect_task']
 
     def __init__(self, upstream_protocol: Type[UpstreamProtocol],
                  loop: AbstractEventLoop, buf_len: int, dnsbl: Dnsbl,
@@ -119,6 +120,7 @@ class DownstreamProtocol(_Base):
         self.upstream: Final = upstream
         self.id: Final = uuid4().bytes
         self._dnsbl_task: Optional[Task[Optional[str]]] = None
+        self._connect_task: Optional[Task[_Connect]] = None
         self._waiting: Deque[bytes] = deque()
         self._waiting_closed = False
         self._upstream: Optional[UpstreamProtocol] = None
@@ -128,6 +130,8 @@ class DownstreamProtocol(_Base):
     def _set_client(self, result: ProxyResult,
                     connect_task: Task[_Connect]) -> None:
         dnsbl_task = self._dnsbl_task
+        self._dnsbl_task = None
+        self._connect_task = None
         assert dnsbl_task is not None
         try:
             _, upstream = connect_task.result()
@@ -157,7 +161,7 @@ class DownstreamProtocol(_Base):
                   self.id.hex(), self.sock_info)
         loop = self.loop
         self._dnsbl_task = loop.create_task(self.dnsbl.lookup(self.sock_info))
-        connect_task = loop.create_task(
+        self._connect_task = connect_task = loop.create_task(
             loop.create_connection(self._upstream_factory,
                                    self.upstream.host, self.upstream.port or 0,
                                    ssl=self.upstream.ssl))

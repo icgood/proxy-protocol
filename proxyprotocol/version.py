@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import cast, Optional
+from typing import Optional
 
 from . import ProxyProtocol
 from .detect import ProxyProtocolDetect
@@ -44,4 +44,6 @@ class ProxyProtocolVersion(Enum):
         """
         if not name:
             return cls.NOOP.value
-        return cast(ProxyProtocol, cls[name.upper()].value)
+        pp = cls[name.upper()].value
+        assert isinstance(pp, ProxyProtocol)
+        return pp
