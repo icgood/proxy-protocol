@@ -11,7 +11,7 @@ PROXY protocol library with [asyncio][2] server implementation.
 
 #### [Specification](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)
 #### [API Documentation](http://icgood.github.io/proxy-protocol/)
-#### [Docker Image](https://hub.docker.com/r/icgood/proxy-protocol)
+#### [Docker Image](https://github.com/icgood/proxy-protocol/pkgs/container/proxy-protocol)
 
 ### Table of Contents
 
