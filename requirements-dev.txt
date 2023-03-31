@@ -8,6 +8,4 @@ pytest-cov
 bandit[toml]
 rope
 
-types-setuptools
-
 -r requirements-all.txt

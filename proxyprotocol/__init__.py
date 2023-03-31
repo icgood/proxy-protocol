@@ -1,8 +1,8 @@
 
 from __future__ import annotations
 
-import pkg_resources
 from abc import abstractmethod, ABCMeta
+from importlib.metadata import distribution
 from typing import Optional, Sequence
 from typing_extensions import Final
 
@@ -13,7 +13,7 @@ __all__ = ['__version__', 'ProxyProtocolSyntaxError',
            'ProxyProtocolWantRead', 'ProxyProtocol']
 
 #: The package version string.
-__version__: str = pkg_resources.require('proxy-protocol')[0].version
+__version__: str = distribution('proxy-protocol').version
 
 
 class ProxyProtocolSyntaxError(ValueError):
