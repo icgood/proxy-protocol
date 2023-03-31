@@ -23,7 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install build tools
       run: |
-        python -m pip install --upgrade pip setuptools wheel invoke coveralls
+        python -m pip install --upgrade pip invoke coveralls
     - name: Install package and dependencies
       run: |
         invoke install
@@ -47,9 +47,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    - name: Install dependencies
+    - name: Install build tools
       run: |
-        python -m pip install --upgrade pip setuptools wheel invoke
+        python -m pip install --upgrade pip invoke
     - name: Build the Sphinx documentation
       run: |
         invoke install doc.install doc.build
