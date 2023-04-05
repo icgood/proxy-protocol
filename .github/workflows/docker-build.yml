@@ -27,6 +27,8 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/icgood/proxy-protocol/tree/main/docker
           tags: |
             type=edge,branch=main
             type=pep440,pattern={{major}}

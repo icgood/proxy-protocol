@@ -21,9 +21,7 @@ class Checksum(Protocol):
     """Provides typing compatible with the `crc32c.crc32c
     <https://github.com/ICRAR/crc32c#usage>`_ function, if it is installed.
 
-    Args:
-        val: The bytestring to checksum.
-        crc: The checksum of previous portions of data.
+    .. automethod:: __call__
 
     """
 
@@ -31,4 +29,11 @@ class Checksum(Protocol):
 
     @abstractmethod
     def __call__(self, val: bytes, crc: int = ...) -> int:
+        """The checksum function.
+
+        Args:
+            val: The bytestring to checksum.
+            crc: The checksum of previous portions of data.
+
+        """
         ...
