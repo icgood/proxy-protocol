@@ -43,15 +43,13 @@ from proxyprotocol.sock import SocketInfo
 async def run(host: str, port: int) -> None:
     pp_detect = ProxyProtocolDetect()
     pp_reader = ProxyProtocolReader(pp_detect)
-    callback = partial(on_connection, pp_reader)
+    callback = reader.get_callback(on_connection)
     server = await asyncio.start_server(callback, host, port)
     async with server:
         await server.serve_forever()
 
-async def on_connection(pp_reader: ProxyProtocolReader,
-                        reader: StreamReader, writer: StreamWriter) -> None:
-    result = await pp_reader.read(reader)
-    info = SocketInfo.get(writer, result)
+async def on_connection(reader: StreamReader, writer: StreamWriter,
+                        info: SocketInfo) -> None:
     print(info.family, info.peername)
     # ... continue using connection
 ```

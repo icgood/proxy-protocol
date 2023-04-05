@@ -11,7 +11,6 @@ from asyncio import CancelledError, StreamReader, StreamWriter
 from contextlib import closing
 from functools import partial
 
-from .. import ProxyProtocol
 from ..reader import ProxyProtocolReader
 from ..sock import SocketInfo
 from . import Address
@@ -39,7 +38,8 @@ def main() -> int:
 
 async def run(address: Address) -> int:
     loop = asyncio.get_event_loop()
-    callback = partial(run_conn, address.pp)
+    reader = ProxyProtocolReader(address.pp)
+    callback = reader.get_callback(run_conn)
     server = await asyncio.start_server(
         callback, address.host, address.port or 0, ssl=address.ssl)
     async with server:
@@ -53,12 +53,9 @@ async def run(address: Address) -> int:
     return 0
 
 
-async def run_conn(pp: ProxyProtocol, reader: StreamReader,
-                   writer: StreamWriter) -> None:
-    pp_reader = ProxyProtocolReader(pp)
+async def run_conn(reader: StreamReader, writer: StreamWriter,
+                   sock_info: SocketInfo) -> None:
     with closing(writer):
-        result = await pp_reader.read(reader)
-        sock_info = SocketInfo.get(writer, result)
         _log.info('[%s] Connection received: %s',
                   sock_info.unique_id.hex(), sock_info)
         if sock_info.dnsbl is not None:

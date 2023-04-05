@@ -236,7 +236,7 @@ class TestSocketInfo(unittest.TestCase):
                          "sockname='[::1]:10'>", repr(info))
 
     def test_str_unknown(self) -> None:
-        result = ProxyResultUnknown()
+        result = ProxyResultUnknown(RuntimeError())
         info = SocketInfo.get(self.transport, result)
-        self.assertEqual('<SocketInfoProxy peername=None sockname=None>',
+        self.assertEqual('<SocketInfoProxy exc=RuntimeError()>',
                          repr(info))

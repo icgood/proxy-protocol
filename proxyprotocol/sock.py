@@ -5,9 +5,9 @@ import socket
 from abc import abstractmethod, ABCMeta
 from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
-from typing import Union, Optional
+from typing import Dict, Optional, Union
 
-from .result import ProxyResult
+from .result import is_unknown, ProxyResult
 from .typing import SockAddr, Cipher, PeerCert, TransportProtocol
 
 __all__ = ['SocketInfo', 'SocketInfoProxy', 'SocketInfoLocal']
@@ -324,8 +324,13 @@ class SocketInfoProxy(SocketInfo):
         return self._result.tlv.ext.dnsbl
 
     def __repr__(self) -> str:
-        return f'<SocketInfoProxy peername={self.peername_str!r} ' \
-            f'sockname={self.sockname_str!r}>'
+        data: Dict[str, object] = {'peername': self.peername_str,
+                                   'sockname': self.sockname_str}
+        if is_unknown(self._result):
+            data['exc'] = self._result.exception
+        data_str = ''.join(f' {k}={v!r}' for k, v in data.items()
+                           if v is not None)
+        return f'<SocketInfoProxy{data_str}>'
 
 
 class SocketInfoLocal(SocketInfo):
