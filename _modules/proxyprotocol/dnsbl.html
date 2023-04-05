@@ -1,0 +1,277 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>proxyprotocol.dnsbl &#8212; proxy-protocol 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">proxyprotocol.dnsbl</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for proxyprotocol.dnsbl</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">AbstractEventLoop</span>
+<span class="kn">from</span> <span class="nn">ipaddress</span> <span class="kn">import</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv4Network</span>
+<span class="kn">from</span> <span class="nn">socket</span> <span class="kn">import</span> <span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">.sock</span> <span class="kn">import</span> <span class="n">SocketInfo</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Dnsbl&#39;</span><span class="p">,</span> <span class="s1">&#39;NoopDnsbl&#39;</span><span class="p">,</span> <span class="s1">&#39;BasicDnsbl&#39;</span><span class="p">,</span> <span class="s1">&#39;SpamhausDnsbl&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Dnsbl"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl">[docs]</a><span class="k">class</span> <span class="nc">Dnsbl</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manages the optional lookup of the connecting IP address against a</span>
+<span class="sd">    trusted `DNSBL</span>
+<span class="sd">    &lt;https://en.wikipedia.org/wiki/Domain_Name_System-based_blackhole_list&gt;`_.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Dnsbl.lookup"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl.lookup">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock_info</span><span class="p">:</span> <span class="n">SocketInfo</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                     <span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Looks up the connecting IP address and returns the DNSBL hostname</span>
+<span class="sd">        and the lookup result. Any timeout or misconfiguration is treated as an</span>
+<span class="sd">        empty result.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sock_info: The connection socket info.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span></div>
+
+<div class="viewcode-block" id="Dnsbl.load"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.Dnsbl.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span>
+             <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dnsbl</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a DNSBL hostname, returns a :class:`Dnsbl` implementation that</span>
+<span class="sd">        best suits the given *host*.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            host: The DNSBL hostname, if any.</span>
+<span class="sd">            timeout: The time to wait for a response, in seconds, or None for</span>
+<span class="sd">                indefinite.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: The *host* is invalid for this :class:`Dnsbl`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">NoopDnsbl</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">host</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.spamhaus.org&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SpamhausDnsbl</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BasicDnsbl</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="NoopDnsbl"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.NoopDnsbl">[docs]</a><span class="k">class</span> <span class="nc">NoopDnsbl</span><span class="p">(</span><span class="n">Dnsbl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Disables DNSBL lookup altogether, :meth:`.lookup` always returns</span>
+<span class="sd">    ``None``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="NoopDnsbl.lookup"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.NoopDnsbl.lookup">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock_info</span><span class="p">:</span> <span class="n">SocketInfo</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                     <span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="BasicDnsbl"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl">[docs]</a><span class="k">class</span> <span class="nc">BasicDnsbl</span><span class="p">(</span><span class="n">Dnsbl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A basic :class:`Dnsbl` implementation that simply returns the DNSBL</span>
+<span class="sd">    hostname if the DNS lookup returns any IP addresses.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="n">timeout</span>
+
+<div class="viewcode-block" id="BasicDnsbl.map_results"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl.map_results">[docs]</a>    <span class="k">def</span> <span class="nf">map_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addresses</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IPv4Address</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a list of IP address results from a DNSBL lookup, return a</span>
+<span class="sd">        single string categorizing the results or ``None`` to discard them.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            addresses: The list of IP address results.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">addresses</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="BasicDnsbl.lookup"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.BasicDnsbl.lookup">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock_info</span><span class="p">:</span> <span class="n">SocketInfo</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                     <span class="n">loop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AbstractEventLoop</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span>
+        <span class="n">peername_ip</span> <span class="o">=</span> <span class="n">sock_info</span><span class="o">.</span><span class="n">peername_ip</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">peername_ip</span><span class="p">,</span> <span class="n">IPv4Address</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_results</span><span class="p">([])</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span> <span class="ow">or</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="n">lookup</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">peername_ip</span><span class="o">.</span><span class="n">reverse_pointer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">host</span><span class="p">])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">addrinfo</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">getaddrinfo</span><span class="p">(</span><span class="n">lookup</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">AF_INET</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">SOCK_STREAM</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">addrinfo</span><span class="p">:</span>
+                <span class="n">addresses</span> <span class="o">=</span> <span class="p">[</span><span class="n">IPv4Address</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">addrinfo</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_results</span><span class="p">(</span><span class="n">addresses</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_results</span><span class="p">([])</span></div></div>
+
+
+<div class="viewcode-block" id="SpamhausDnsbl"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl">[docs]</a><span class="k">class</span> <span class="nc">SpamhausDnsbl</span><span class="p">(</span><span class="n">BasicDnsbl</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A :class:`Dnsbl` designed for querying `Spamhaus</span>
+<span class="sd">    &lt;https://www.spamhaus.org/&gt;`_ DNSBLs.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">_mapping</span> <span class="o">=</span> <span class="p">[(</span><span class="n">IPv4Network</span><span class="p">(</span><span class="s1">&#39;127.0.0.2/32&#39;</span><span class="p">),</span> <span class="s1">&#39;https://www.spamhaus.org/sbl/&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">IPv4Network</span><span class="p">(</span><span class="s1">&#39;127.0.0.3/32&#39;</span><span class="p">),</span> <span class="s1">&#39;https://www.spamhaus.org/css/&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">IPv4Network</span><span class="p">(</span><span class="s1">&#39;127.0.0.4/30&#39;</span><span class="p">),</span> <span class="s1">&#39;https://www.spamhaus.org/xbl/&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">IPv4Network</span><span class="p">(</span><span class="s1">&#39;127.0.0.10/31&#39;</span><span class="p">),</span>
+                 <span class="s1">&#39;https://www.spamhaus.org/pbl/&#39;</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="SpamhausDnsbl.map_results"><a class="viewcode-back" href="../../proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl.map_results">[docs]</a>    <span class="k">def</span> <span class="nf">map_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addresses</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IPv4Address</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">addresses</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">addresses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">network</span><span class="p">,</span> <span class="n">host</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">host</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span></div></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">proxyprotocol.dnsbl</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

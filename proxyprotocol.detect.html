@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>proxyprotocol.detect &#8212; proxy-protocol 0.9.1 documentation</title>
+    <title>proxyprotocol.detect &#8212; proxy-protocol 0.10.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -56,7 +56,7 @@
         <li class="right" >
           <a href="proxyprotocol.noop.html" title="proxyprotocol.noop"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code></a></li> 
       </ul>
@@ -73,52 +73,52 @@
 <span id="proxyprotocol-detect"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code><a class="headerlink" href="#module-proxyprotocol.detect" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.detect.ProxyProtocolDetect">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.detect.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolDetect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">versions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.detect.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolDetect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">versions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/detect.html#ProxyProtocolDetect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect" title="Permalink to this definition">¶</a></dt>
 <dd><p>A PROXY protocol implementation that detects the version based on the
 first 8 bytes from the stream and passes it on to the version parser. This
 adds minimal overhead and <em>should</em> be used instead of a specific version.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>versions</strong> (<a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a>) – Override the default set of PROXY protocol implementations.</p>
+<dd class="field-odd"><p><strong>versions</strong> (<a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><em>ProxyProtocol</em></a>) – Override the default set of PROXY protocol implementations.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.detect.ProxyProtocolDetect.is_valid">
-<span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.is_valid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/detect.html#ProxyProtocolDetect.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.is_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the signature is valid for this implementation of
 the PROXY protocol header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring to check.</p>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – The signature bytestring to check.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.detect.ProxyProtocolDetect.choose_version">
-<span class="sig-name descname"><span class="pre">choose_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.choose_version" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">choose_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/detect.html#ProxyProtocolDetect.choose_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.choose_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Choose the PROXY protocol version based on the 8-byte signature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The signature bytestring.</p>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – The signature bytestring.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocol</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.html#proxyprotocol.ProxyProtocol" title="proxyprotocol.ProxyProtocol"><em>ProxyProtocol</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.detect.ProxyProtocolDetect.unpack">
-<span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.unpack" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/detect.html#ProxyProtocolDetect.unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.unpack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>) – The bytestring read for the header thus far.</p>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -132,20 +132,20 @@ information about the original connection.</p>
 </ul>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.detect.ProxyProtocolDetect.pack">
-<span class="sig-name descname"><span class="pre">pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.pack" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/detect.html#ProxyProtocolDetect.pack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.detect.ProxyProtocolDetect.pack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a PROXY protocol header that may be sent at the beginning of
 an outbound, client-side connection to indicate the original
 information about the connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The PROXY protocol result to build into a header.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The PROXY protocol result to build into a header.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -156,7 +156,7 @@ information about the connection.</p>
 </ul>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -252,7 +252,7 @@ information about the connection.</p>
         <li class="right" >
           <a href="proxyprotocol.noop.html" title="proxyprotocol.noop"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.detect</span></code></a></li> 
       </ul>
@@ -260,7 +260,7 @@ information about the connection.</p>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Ian Good.
+        &#169; Copyright 2023, Ian Good.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->

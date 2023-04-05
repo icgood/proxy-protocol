@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>proxyprotocol.result &#8212; proxy-protocol 0.9.1 documentation</title>
+    <title>proxyprotocol.result &#8212; proxy-protocol 0.10.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -56,7 +56,7 @@
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li> 
       </ul>
@@ -73,77 +73,77 @@
 <span id="proxyprotocol-result"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code><a class="headerlink" href="#module-proxyprotocol.result" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.result.is_local">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.is_local" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#is_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.is_local" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the result is an unproxied local connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The proxy protocol result.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The proxy protocol result.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultLocal" title="proxyprotocol.result.ProxyResultLocal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResultLocal</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeGuard" title="(in Python v3.11)"><em>TypeGuard</em></a>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultLocal" title="proxyprotocol.result.ProxyResultLocal"><em>ProxyResultLocal</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.result.is_unknown">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_unknown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.is_unknown" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_unknown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#is_unknown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.is_unknown" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the result is a proxied connection from an unknown origin.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The proxy protocol result.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The proxy protocol result.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultUnknown" title="proxyprotocol.result.ProxyResultUnknown"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResultUnknown</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeGuard" title="(in Python v3.11)"><em>TypeGuard</em></a>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultUnknown" title="proxyprotocol.result.ProxyResultUnknown"><em>ProxyResultUnknown</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.result.is_ipv4">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_ipv4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.is_ipv4" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_ipv4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#is_ipv4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.is_ipv4" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the result is a proxied IPv4 connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The proxy protocol result.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The proxy protocol result.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4" title="proxyprotocol.result.ProxyResultIPv4"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResultIPv4</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeGuard" title="(in Python v3.11)"><em>TypeGuard</em></a>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4" title="proxyprotocol.result.ProxyResultIPv4"><em>ProxyResultIPv4</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.result.is_ipv6">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_ipv6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.is_ipv6" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_ipv6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#is_ipv6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.is_ipv6" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the result is a proxied IPv6 connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The proxy protocol result.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The proxy protocol result.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6" title="proxyprotocol.result.ProxyResultIPv6"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResultIPv6</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeGuard" title="(in Python v3.11)"><em>TypeGuard</em></a>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6" title="proxyprotocol.result.ProxyResultIPv6"><em>ProxyResultIPv6</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.result.is_unix">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_unix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.is_unix" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">is_unix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#is_unix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.is_unix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the result is a proxied UNIX connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a>) – The proxy protocol result.</p>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference internal" href="#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a>) – The proxy protocol result.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix" title="proxyprotocol.result.ProxyResultUnix"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResultUnix</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeGuard" title="(in Python v3.11)"><em>TypeGuard</em></a>[<a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix" title="proxyprotocol.result.ProxyResultUnix"><em>ProxyResultUnix</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResult</span></span><a class="headerlink" href="#proxyprotocol.result.ProxyResult" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResult</span></span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for PROXY protocol results.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResult.proxied">
@@ -200,14 +200,14 @@ form.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultLocal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultLocal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyResultLocal" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultLocal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResultLocal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResultLocal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates that the connection should be treated as if it is not proxied.
 The real socket <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getpeername" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getpeername()</span></code></a> and
 <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.getsockname" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getsockname()</span></code></a> will provide the correct address
 information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a>) – Additional information about the connection.</p>
+<dd class="field-odd"><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><em>ProxyProtocolTLV</em></a>) – Additional information about the connection.</p>
 </dd>
 </dl>
 <dl class="py property">
@@ -253,13 +253,13 @@ form.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultUnknown">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultUnknown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnknown" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultUnknown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResultUnknown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnknown" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicates that the source of the connection is unknown.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>exception</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a>]) – The exception that occurred, if any.</p></li>
-<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a>) – Additional information about the connection.</p></li>
+<li><p><strong>exception</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><em>Exception</em></a><em>]</em>) – The exception that occurred, if any.</p></li>
+<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><em>ProxyProtocolTLV</em></a>) – Additional information about the connection.</p></li>
 </ul>
 </dd>
 </dl>
@@ -313,17 +313,17 @@ form.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv4">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultIPv4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv4" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultIPv4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResultIPv4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv4" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original connection was made with an IPv4 socket. The
 <a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.source" title="proxyprotocol.result.ProxyResultIPv4.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a> and <a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.dest" title="proxyprotocol.result.ProxyResultIPv4.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a tuple of an
 <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a> and a port number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – The source address of the connection.</p></li>
-<li><p><strong>dest</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv4Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – The destination address of the connection.</p></li>
-<li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
-<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a>) – Additional information about the connection.</p></li>
+<li><p><strong>source</strong> (<em>Tuple</em><em>[</em><em>IPv4Address</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The source address of the connection.</p></li>
+<li><p><strong>dest</strong> (<em>Tuple</em><em>[</em><em>IPv4Address</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The destination address of the connection.</p></li>
+<li><p><strong>protocol</strong> (<em>Optional</em><em>[</em><em>SocketKind</em><em>]</em>) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
+<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><em>ProxyProtocolTLV</em></a>) – Additional information about the connection.</p></li>
 </ul>
 </dd>
 </dl>
@@ -382,17 +382,17 @@ form.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv6">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultIPv6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv6" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultIPv6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResultIPv6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv6" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original connection was made with an IPv6 socket. The
 <a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.source" title="proxyprotocol.result.ProxyResultIPv6.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a> and <a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.dest" title="proxyprotocol.result.ProxyResultIPv6.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a tuple of an
 <a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a> and a port number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – The source address of the connection.</p></li>
-<li><p><strong>dest</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPv6Address</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – The destination address of the connection.</p></li>
-<li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
-<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a>) – Additional information about the connection.</p></li>
+<li><p><strong>source</strong> (<em>Tuple</em><em>[</em><em>IPv6Address</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The source address of the connection.</p></li>
+<li><p><strong>dest</strong> (<em>Tuple</em><em>[</em><em>IPv6Address</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – The destination address of the connection.</p></li>
+<li><p><strong>protocol</strong> (<em>Optional</em><em>[</em><em>SocketKind</em><em>]</em>) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
+<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><em>ProxyProtocolTLV</em></a>) – Additional information about the connection.</p></li>
 </ul>
 </dd>
 </dl>
@@ -451,17 +451,17 @@ form.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultUnix">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultUnix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnix" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.result.</span></span><span class="sig-name descname"><span class="pre">ProxyResultUnix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ProxyProtocolTLV()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/result.html#ProxyResultUnix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnix" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original connection was made with a UNIX socket. The <a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.source" title="proxyprotocol.result.ProxyResultUnix.source"><code class="xref py py-attr docutils literal notranslate"><span class="pre">source</span></code></a>
 and <a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.dest" title="proxyprotocol.result.ProxyResultUnix.dest"><code class="xref py py-attr docutils literal notranslate"><span class="pre">dest</span></code></a> properties will contain a the full path to the socket
 file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The source address file of the connection.</p></li>
-<li><p><strong>dest</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The destination address file of the connection.</p></li>
-<li><p><strong>protocol</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">SocketKind</span></code>]) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
-<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyProtocolTLV</span></code></a>) – Additional information about the connection.</p></li>
+<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The source address file of the connection.</p></li>
+<li><p><strong>dest</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – The destination address file of the connection.</p></li>
+<li><p><strong>protocol</strong> (<em>Optional</em><em>[</em><em>SocketKind</em><em>]</em>) – The socket protocol (or <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket.type" title="(in Python v3.11)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a>).</p></li>
+<li><p><strong>tlv</strong> (<a class="reference internal" href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV" title="proxyprotocol.tlv.ProxyProtocolTLV"><em>ProxyProtocolTLV</em></a>) – Additional information about the connection.</p></li>
 </ul>
 </dd>
 </dl>
@@ -668,7 +668,7 @@ form.</p>
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li> 
       </ul>
@@ -676,7 +676,7 @@ form.</p>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Ian Good.
+        &#169; Copyright 2023, Ian Good.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->

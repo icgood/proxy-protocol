@@ -1,0 +1,532 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>proxyprotocol.sock &#8212; proxy-protocol 0.10.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+
+    
+    
+     
+        <script src="../../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">proxyprotocol.sock</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for proxyprotocol.sock</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">ipaddress</span> <span class="kn">import</span> <span class="n">ip_address</span><span class="p">,</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span>
+<span class="kn">from</span> <span class="nn">socket</span> <span class="kn">import</span> <span class="n">AddressFamily</span><span class="p">,</span> <span class="n">SocketKind</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.result</span> <span class="kn">import</span> <span class="n">is_unknown</span><span class="p">,</span> <span class="n">ProxyResult</span>
+<span class="kn">from</span> <span class="nn">.typing</span> <span class="kn">import</span> <span class="n">SockAddr</span><span class="p">,</span> <span class="n">Cipher</span><span class="p">,</span> <span class="n">PeerCert</span><span class="p">,</span> <span class="n">TransportProtocol</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SocketInfo&#39;</span><span class="p">,</span> <span class="s1">&#39;SocketInfoProxy&#39;</span><span class="p">,</span> <span class="s1">&#39;SocketInfoLocal&#39;</span><span class="p">]</span>
+
+<span class="n">_IP</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="SocketInfo"><a class="viewcode-back" href="../../proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo">[docs]</a><span class="k">class</span> <span class="nc">SocketInfo</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides information about the connection, from either the underlying</span>
+<span class="sd">    :mod:`asyncio` transport layer or overridden by the PROXY protocol result.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_transport&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span> <span class="o">=</span> <span class="n">transport</span>
+
+<div class="viewcode-block" id="SocketInfo.get"><a class="viewcode-back" href="../../proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.get">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ProxyResult</span><span class="p">],</span>
+            <span class="o">*</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">SocketInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Choose the :class:`SocketInfo` implementation based on whether the</span>
+<span class="sd">        *result* indicates the connection is</span>
+<span class="sd">        :attr:`~proxyprotocol.result.ProxyResult.proxied`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transport: The :class:`~asyncio.BaseTransport` or</span>
+<span class="sd">                :class:`~asyncio.StreamWriter` for the connection.</span>
+<span class="sd">            result: The PROXY protocol result.</span>
+<span class="sd">            unique_id: A unique ID to associate with the connection, unless</span>
+<span class="sd">                overridden by the PROXY protocol result.</span>
+<span class="sd">            dnsbl: The DNSBL lookup result, if any.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">proxied</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SocketInfoProxy</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SocketInfoLocal</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">unique_id</span><span class="o">=</span><span class="n">unique_id</span><span class="p">,</span> <span class="n">dnsbl</span><span class="o">=</span><span class="n">dnsbl</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">socket</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The underlying socket object.&quot;&quot;&quot;</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;socket&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">_get_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">SockAddr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_IP</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">in</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET6</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+            <span class="n">ip_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">]</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">ip_str</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ip</span><span class="o">.</span><span class="n">ipv4_mapped</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ip</span> <span class="o">=</span> <span class="n">ip_address</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">ipv4_mapped</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ip</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_get_port</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">SockAddr</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">in</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET6</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+            <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">port</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_get_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">:</span> <span class="n">SockAddr</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="n">_IP</span><span class="p">,</span>
+                 <span class="n">port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">in</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET6</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">ip</span><span class="si">!s}</span><span class="s1">]:</span><span class="si">{</span><span class="n">port</span><span class="si">!s}</span><span class="s1">&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">addr</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNSPEC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">sockname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The local address of the socket.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :meth:`~socket.socket.getsockname`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sockname_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The IP address object from :attr:`.sockname`, for</span>
+<span class="sd">        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sockname</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sockname_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The port number from :attr:`.sockname`, for</span>
+<span class="sd">        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_port</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sockname</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sockname_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`.sockname` address as a string. For</span>
+<span class="sd">        :data:`~socket.AF_INET`/:data:`~socket.AF_INET6` families, this is</span>
+<span class="sd">        ``ip:port``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sockname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sockname_ip</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">sockname_port</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">peername</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The remote address of the socket.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :meth:`~socket.socket.getpeername`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peername_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The IP address object from :attr:`.peername`, for</span>
+<span class="sd">        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peername</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peername_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The port number from :attr:`.peername`, for</span>
+<span class="sd">        :data:`~socket.AF_INET` or :data:`~socket.AF_INET6` connections.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_port</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peername</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peername_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`.peername` address as a string. For</span>
+<span class="sd">        :data:`~socket.AF_INET`/:data:`~socket.AF_INET6` families, this is</span>
+<span class="sd">        ``ip:port``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peername</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">peername_ip</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">peername_port</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The socket address family.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :attr:`socket.socket.family`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The socket protocol.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :attr:`socket.socket.type`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :meth:`~ssl.SSLSocket.compression` value for encrypted</span>
+<span class="sd">        connections.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            For proxied connections, this data may be unavailable, depending on</span>
+<span class="sd">            the server implementation and PROXY protocol version.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">cipher</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Cipher</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :meth:`~ssl.SSLSocket.cipher` value for encrypted connections.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            For proxied connections, this data may be unavailable or partially</span>
+<span class="sd">            available, depending on the server implementation and PROXY</span>
+<span class="sd">            protocol version.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">peercert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :meth:`~ssl.SSLSocket.peercert` value for encrypted connections.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            For proxied connections, this data may be unavailable, depending on</span>
+<span class="sd">            the server implementation and PROXY protocol version.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">unique_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A unique identifier for the connection. For proxied connections, the</span>
+<span class="sd">        unique ID from the header (if any) is returned, otherwise returns the</span>
+<span class="sd">        value passed in to the constructor.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">dnsbl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The DNSBL lookup result of the connecting IP address, if any.</span>
+
+<span class="sd">        This value is contextual to the DNSBL in use, but generally any value</span>
+<span class="sd">        here other than ``None`` indicates the IP address should be blocked.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="o">...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">from_localhost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True for local socket connections, if:</span>
+
+<span class="sd">        * :attr:`.family` is :data:`~socket.AF_UNIX`, or</span>
+<span class="sd">        * :attr:`.peername_ip` has True</span>
+<span class="sd">          :attr:`~ipaddress.IPv4Address.is_loopback` flag.</span>
+
+<span class="sd">        To be specific, True for :data:`~socket.AF_UNIX` connections and True</span>
+<span class="sd">        for IPv4/IPv6 connections with True</span>
+<span class="sd">        :attr:`~ipaddress.IPv4Address.is_loopback` flags.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peername_ip</span>
+        <span class="k">if</span> <span class="n">ip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">ip</span><span class="o">.</span><span class="n">is_loopback</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="o">...</span></div>
+
+
+<div class="viewcode-block" id="SocketInfoProxy"><a class="viewcode-back" href="../../proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoProxy">[docs]</a><span class="k">class</span> <span class="nc">SocketInfoProxy</span><span class="p">(</span><span class="n">SocketInfo</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides information about the connection, overridden by the PROXY</span>
+<span class="sd">    protocol result.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        result: The PROXY protocol result.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_result&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span>
+                 <span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="n">result</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sockname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">sockname</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peername</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">peername</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">family</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">protocol</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">compression</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cipher</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Cipher</span><span class="p">]:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">has_ssl</span><span class="p">:</span>
+            <span class="n">cipher</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">cipher</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">version</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">secret_bits</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">secret_bits</span> <span class="ow">or</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">cipher</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">secret_bits</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peercert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">peercert</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unique_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">unique_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dnsbl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">tlv</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">dnsbl</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;peername&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">peername_str</span><span class="p">,</span>
+                                   <span class="s1">&#39;sockname&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sockname_str</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">is_unknown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;exc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">exception</span>
+        <span class="n">data_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                           <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;SocketInfoProxy</span><span class="si">{</span><span class="n">data_str</span><span class="si">}</span><span class="s1">&gt;&#39;</span></div>
+
+
+<div class="viewcode-block" id="SocketInfoLocal"><a class="viewcode-back" href="../../proxyprotocol.sock.html#proxyprotocol.sock.SocketInfoLocal">[docs]</a><span class="k">class</span> <span class="nc">SocketInfoLocal</span><span class="p">(</span><span class="n">SocketInfo</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides information about the connection, from the underlying</span>
+<span class="sd">    :mod:`asyncio` transport layer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        transport: The :class:`~asyncio.BaseTransport` or</span>
+<span class="sd">            :class:`~asyncio.StreamWriter` for the connection.</span>
+<span class="sd">        unique_id: A unique ID to associate with the connection, unless</span>
+<span class="sd">            overridden by the PROXY protocol result.</span>
+<span class="sd">        dnsbl: The DNSBL lookup result, if any.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_transport&#39;</span><span class="p">,</span> <span class="s1">&#39;_unique_id&#39;</span><span class="p">,</span> <span class="s1">&#39;_dnsbl&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span>
+                 <span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ProxyResult</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                 <span class="n">unique_id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unique_id</span> <span class="o">=</span> <span class="n">unique_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dnsbl</span> <span class="o">=</span> <span class="n">dnsbl</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sockname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">SockAddr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;sockname&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peername</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SockAddr</span><span class="p">:</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">SockAddr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;peername&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AddressFamily</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">family</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">SocketKind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;compression&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cipher</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Cipher</span><span class="p">]:</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Cipher</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;cipher&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">peercert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]:</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;peercert&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unique_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unique_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dnsbl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dnsbl</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;SocketInfoLocal peername=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">peername_str</span><span class="si">!r}</span><span class="s1"> &#39;</span> \
+            <span class="sa">f</span><span class="s1">&#39;sockname=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sockname_str</span><span class="si">!r}</span><span class="s1">&gt;&#39;</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> &nbsp; &nbsp;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">proxyprotocol.sock</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

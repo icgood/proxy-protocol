@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>proxyprotocol.build &#8212; proxy-protocol 0.9.1 documentation</title>
+    <title>proxyprotocol.build &#8212; proxy-protocol 0.10.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -56,7 +56,7 @@
         <li class="right" >
           <a href="proxyprotocol.sock.html" title="proxyprotocol.sock"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a></li> 
       </ul>
@@ -73,30 +73,38 @@
 <span id="proxyprotocol-build"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code><a class="headerlink" href="#module-proxyprotocol.build" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.build.build_socket_result">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_socket_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.build.build_socket_result" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_socket_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/build.html#build_socket_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.build.build_socket_result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a <a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a> from the given
 <em>sock</em> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sock</strong> (<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">socket</span></code></a>) – A connected socket object.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sock</strong> (<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.socket" title="(in Python v3.11)"><em>socket</em></a>) – A connected socket object.</p></li>
+<li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>dnsbl</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="proxyprotocol.build.build_transport_result">
-<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_transport_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#proxyprotocol.build.build_transport_result" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">proxyprotocol.build.</span></span><span class="sig-name descname"><span class="pre">build_transport_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dnsbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/build.html#build_transport_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.build.build_transport_result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a <a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a> from the given
 <em>transport</em> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>transport</strong> (<a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.TransportProtocol" title="proxyprotocol.typing.TransportProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransportProtocol</span></code></a>) – A connected transport object.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> (<a class="reference internal" href="proxyprotocol.typing.html#proxyprotocol.typing.TransportProtocol" title="proxyprotocol.typing.TransportProtocol"><em>TransportProtocol</em></a>) – A connected transport object.</p></li>
+<li><p><strong>unique_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>dnsbl</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProxyResult</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult" title="proxyprotocol.result.ProxyResult"><em>ProxyResult</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,7 +193,7 @@
         <li class="right" >
           <a href="proxyprotocol.sock.html" title="proxyprotocol.sock"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.9.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.build</span></code></a></li> 
       </ul>
@@ -193,7 +201,7 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021, Ian Good.
+        &#169; Copyright 2023, Ian Good.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
     </div>
     <!-- cloud_sptheme 1.4 -->
