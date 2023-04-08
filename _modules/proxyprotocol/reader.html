@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.reader &#8212; proxy-protocol 0.10.0 documentation</title>
+    <title>proxyprotocol.reader &#8212; proxy-protocol 0.10.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -47,7 +47,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -71,6 +71,7 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Coroutine</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Final</span><span class="p">,</span> <span class="n">TypeAlias</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ProxyProtocol</span><span class="p">,</span> <span class="n">ProxyProtocolIncompleteError</span><span class="p">,</span> \
     <span class="n">ProxyProtocolWantRead</span>
@@ -152,7 +153,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">ProxyResultUnknown</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
-        <span class="n">sock_info</span> <span class="o">=</span> <span class="n">SocketInfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">sock_info</span> <span class="o">=</span> <span class="n">SocketInfo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">unique_id</span><span class="o">=</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">bytes</span><span class="p">)</span>
         <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">callback</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">sock_info</span><span class="p">))</span></div>
 </pre></div>
 
@@ -204,7 +205,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.10.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.10.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
