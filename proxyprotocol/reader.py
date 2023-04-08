@@ -6,6 +6,7 @@ from asyncio import StreamReader, StreamWriter
 from functools import partial
 from typing import Any, Awaitable, Callable, Coroutine, Union
 from typing_extensions import Final, TypeAlias
+from uuid import uuid4
 
 from . import ProxyProtocol, ProxyProtocolIncompleteError, \
     ProxyProtocolWantRead
@@ -87,5 +88,5 @@ class ProxyProtocolReader:
         except Exception as exc:
             writer.close()
             result = ProxyResultUnknown(exc)
-        sock_info = SocketInfo.get(writer, result)
+        sock_info = SocketInfo.get(writer, result, unique_id=uuid4().bytes)
         asyncio.create_task(callback(reader, writer, sock_info))
