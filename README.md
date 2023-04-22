@@ -115,27 +115,20 @@ proxyprotocol-server --service localhost:10000 localhost:10007
 
 ## Development and Testing
 
-You will need to do some additional setup to develop and test plugins. First
-off, I suggest activating a [venv][5]. Then, install the requirements and a
-local link to the proxy-protocol package:
+You will need to do some additional setup to develop and test plugins. Install
+[Hatch][1] to use the CLI examples below.
 
-```
-$ pip install -r requirements-dev.txt
-```
+Run all tests and linters:
 
-Run the tests with py.test:
-
-```
-$ py.test
+```console
+$ hatch run check
 ```
 
-If you intend to create a pull request, you should make sure the full suite of
-tests run by CI/CD is passing:
+Because this project supports several versions of Python, you can use the
+following to run the checks on all versions:
 
-```
-$ py.test
-$ mypy proxyprotocol test
-$ flake8 proxyprotocol test
+```console
+$ hatch run all:check
 ```
 
 ### Type Hinting
@@ -143,17 +136,17 @@ $ flake8 proxyprotocol test
 This project makes heavy use of Python's [type hinting][6] system, with the
 intention of a clean run of [mypy][7] in strict mode:
 
-```
+```console
 mypy proxyprotocol test
 ```
 
 No code contribution will be accepted unless it makes every effort to use type
 hinting to the extent possible and common in the rest of the codebase.
 
+[1]: https://hatch.pypa.io/latest/install/
 [2]: https://docs.python.org/3/library/asyncio.html
 [3]: https://docs.python.org/3/library/asyncio-stream.html#asyncio.start_server
 [4]: https://github.com/icgood/proxy-protocol/blob/main/proxyprotocol/echo.py
-[5]: https://docs.python.org/3/library/venv.html
 [6]: https://www.python.org/dev/peps/pep-0484/
 [7]: http://mypy-lang.org/
 [8]: https://icgood.github.io/proxy-protocol/proxyprotocol.html#proxyprotocol.server.Address
