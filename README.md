@@ -3,7 +3,7 @@ proxy-protocol
 
 PROXY protocol library with [asyncio][2] server implementation.
 
-[![build](https://github.com/icgood/proxy-protocol/actions/workflows/python-package.yml/badge.svg)](https://github.com/icgood/proxy-protocol/actions/workflows/python-package.yml)
+[![build](https://github.com/icgood/proxy-protocol/actions/workflows/python-check.yml/badge.svg)](https://github.com/icgood/proxy-protocol/actions/workflows/python-check.yml)
 [![Coverage Status](https://coveralls.io/repos/icgood/proxy-protocol/badge.svg)](https://coveralls.io/r/icgood/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/v/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/pyversions/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
