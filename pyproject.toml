@@ -68,9 +68,11 @@ exclude = [
     '/.dockerignore',
     '/doc',
     '/docker',
-    '/tasks',
     '/.github',
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ['proxyprotocol']
 
 [tool.mypy]
 strict = true
