@@ -2,18 +2,14 @@
 from __future__ import annotations
 
 from abc import abstractmethod, ABCMeta
-from importlib.metadata import distribution
 from typing import Optional, Sequence
 from typing_extensions import Final
 
 from .result import ProxyResult
 
-__all__ = ['__version__', 'ProxyProtocolSyntaxError',
-           'ProxyProtocolChecksumError', 'ProxyProtocolIncompleteError',
-           'ProxyProtocolWantRead', 'ProxyProtocol']
-
-#: The package version string.
-__version__: str = distribution('proxy-protocol').version
+__all__ = ['ProxyProtocolSyntaxError', 'ProxyProtocolChecksumError',
+           'ProxyProtocolIncompleteError', 'ProxyProtocolWantRead',
+           'ProxyProtocol']
 
 
 class ProxyProtocolSyntaxError(ValueError):

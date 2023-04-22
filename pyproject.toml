@@ -25,7 +25,6 @@ build-backend = 'hatchling.build'
 
 [project]
 name = 'proxy-protocol'
-version = '0.10.1'
 authors = [
     { name = 'Ian Good', email = 'ian@icgood.net' },
 ]
@@ -47,19 +46,31 @@ classifiers = [
 dependencies = [
     'typing-extensions',
 ]
+dynamic = ['version']
 
 [project.optional-dependencies]
 crc32c = ['crc32c ~= 2.2']
 
 [project.urls]
-homepage = 'https://github.com/icgood/proxy-protocol/'
+'Homepage' = 'https://github.com/icgood/proxy-protocol/'
+'API Documentation' = 'https://icgood.github.io/proxy-protocol/'
+'Docker Image' = 'https://github.com/icgood/proxy-protocol/pkgs/container/proxy-protocol'
 
 [project.scripts]
 proxyprotocol-server = 'proxyprotocol.server.main:main'
 proxyprotocol-echo = 'proxyprotocol.server.echo:main'
 
+[tool.hatch.version]
+path = 'proxyprotocol/__about__.py'
+
 [tool.hatch.build]
-exclude = ['/tasks', '/doc', '/.github']
+exclude = [
+    '/.dockerignore',
+    '/doc',
+    '/docker',
+    '/tasks',
+    '/.github',
+]
 
 [tool.mypy]
 strict = true
@@ -78,10 +89,43 @@ norecursedirs = 'doc'
 
 [tool.coverage.report]
 fail_under = 100
-omit = ['*/reader.py', '*/server/*']
+omit = ['*/__about__.py', '*/reader.py', '*/server/*']
 exclude_lines = [
     'pragma: no cover',
     'NotImplemented',
     '^\s*...\s*$',
     'def __repr__',
 ]
+
+[tool.hatch.envs.default]
+dependencies = [
+    'mypy',
+    'pytest',
+    'pytest-cov',
+    'flake8',
+    'flake8-annotations',
+    'flake8-bugbear',
+    'bandit[toml]',
+]
+features = ['crc32c']
+
+[tool.hatch.envs.default.scripts]
+run-pytest = 'py.test --cov-report=term-missing --cov=proxyprotocol'
+run-mypy = 'mypy proxyprotocol test'
+run-flake8 = 'flake8 proxyprotocol test'
+run-bandit = 'bandit -c pyproject.toml -qr proxyprotocol'
+check = ['run-pytest', 'run-mypy', 'run-flake8', 'run-bandit']
+
+[[tool.hatch.envs.all.matrix]]
+python = ['3.8', '3.9', '3.10', '3.11']
+
+[tool.hatch.envs.doc]
+dependencies = [
+    'sphinx',
+    'sphinx-autodoc-typehints',
+    'cloud_sptheme',
+]
+
+[tool.hatch.envs.doc.scripts]
+build = 'make -C doc html'
+browse = ['build', 'open doc/build/html/index.html']
