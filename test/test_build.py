@@ -1,11 +1,14 @@
 
 import socket
+import sys
 import unittest
 from asyncio import BaseTransport
 from ipaddress import IPv4Address, IPv6Address
 from ssl import SSLSocket
 from typing import Any, Dict
 from unittest.mock import MagicMock
+
+import pytest
 
 from proxyprotocol.build import build_socket_result, build_transport_result
 
@@ -48,6 +51,8 @@ class TestBuild(unittest.TestCase):
         self.assertEqual('host', res.tlv.ext.dnsbl)
 
     def test_unix_socket(self) -> None:
+        if sys.platform == 'win32':
+            pytest.skip('socket.AF_UNIX is not available')
         sock = MagicMock(socket.socket)
         sock.family = socket.AF_UNIX
         sock.type = socket.SOCK_STREAM

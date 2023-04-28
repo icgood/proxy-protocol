@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import socket
+import sys
 from abc import abstractmethod, ABCMeta
+from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
 from typing import Optional, Sequence, Tuple
@@ -12,8 +14,9 @@ from .tlv import ProxyProtocolTLV
 from .typing import Address, SockAddr
 
 __all__ = ['is_local', 'is_unknown', 'is_ipv4', 'is_ipv6', 'is_unix',
-           'ProxyResult', 'ProxyResultLocal', 'ProxyResultUnknown',
-           'ProxyResultIPv4', 'ProxyResultIPv6', 'ProxyResultUnix']
+           'ProxyResultType', 'ProxyResult', 'ProxyResultLocal',
+           'ProxyResultUnknown', 'ProxyResultIPv4', 'ProxyResultIPv6',
+           'ProxyResultUnix']
 
 _empty_tlv = ProxyProtocolTLV()
 
@@ -26,7 +29,7 @@ def is_local(result: ProxyResult) \
         result: The proxy protocol result.
 
     """
-    return not result.proxied
+    return result.type == ProxyResultType.LOCAL
 
 
 def is_unknown(result: ProxyResult) \
@@ -37,7 +40,7 @@ def is_unknown(result: ProxyResult) \
         result: The proxy protocol result.
 
     """
-    return result.proxied and result.family == socket.AF_UNSPEC
+    return result.type == ProxyResultType.UNKNOWN
 
 
 def is_ipv4(result: ProxyResult) -> TypeGuard[ProxyResultIPv4]:
@@ -47,7 +50,7 @@ def is_ipv4(result: ProxyResult) -> TypeGuard[ProxyResultIPv4]:
         result: The proxy protocol result.
 
     """
-    return result.proxied and result.family == socket.AF_INET
+    return result.type == ProxyResultType.IPv4
 
 
 def is_ipv6(result: ProxyResult) -> TypeGuard[ProxyResultIPv6]:
@@ -57,7 +60,7 @@ def is_ipv6(result: ProxyResult) -> TypeGuard[ProxyResultIPv6]:
         result: The proxy protocol result.
 
     """
-    return result.proxied and result.family == socket.AF_INET6
+    return result.type == ProxyResultType.IPv6
 
 
 def is_unix(result: ProxyResult) -> TypeGuard[ProxyResultUnix]:
@@ -67,13 +70,38 @@ def is_unix(result: ProxyResult) -> TypeGuard[ProxyResultUnix]:
         result: The proxy protocol result.
 
     """
-    return result.proxied and result.family == socket.AF_UNIX
+    return result.type == ProxyResultType.UNIX
+
+
+class ProxyResultType(Enum):
+    """The type of proxy result."""
+
+    #: The connection is not proxied at all.
+    LOCAL = 1
+
+    #: The connection is proxied from an unknown address family.
+    UNKNOWN = 2
+
+    #: The connection is proxied from an IPv4 address.
+    IPv4 = 3
+
+    #: The connection is proxied from an IPv6 address.
+    IPv6 = 4
+
+    #: The connection is proxied from a UNIX socket.
+    UNIX = 5
 
 
 class ProxyResult(metaclass=ABCMeta):
     """Base class for PROXY protocol results."""
 
     __slots__: Sequence[str] = []
+
+    @property
+    @abstractmethod
+    def type(self) -> ProxyResultType:
+        """The type of proxy result."""
+        ...
 
     @property
     @abstractmethod
@@ -158,6 +186,8 @@ class ProxyResultLocal(ProxyResult):
 
     __slots__ = ['_tlv']
 
+    type = ProxyResultType.LOCAL
+
     def __init__(self, *, tlv: ProxyProtocolTLV = _empty_tlv) -> None:
         super().__init__()
         self._tlv = tlv
@@ -204,6 +234,8 @@ class ProxyResultUnknown(ProxyResult):
     """
 
     __slots__ = ['_exception', '_tlv']
+
+    type = ProxyResultType.UNKNOWN
 
     def __init__(self, exception: Optional[Exception] = None, *,
                  tlv: ProxyProtocolTLV = _empty_tlv) -> None:
@@ -268,6 +300,8 @@ class ProxyResultIPv4(ProxyResult):
 
     __slots__ = ['_source', '_dest', '_protocol', '_tlv']
 
+    type = ProxyResultType.IPv4
+
     def __init__(self, source: Tuple[IPv4Address, int],
                  dest: Tuple[IPv4Address, int], *,
                  protocol: Optional[SocketKind] = None,
@@ -325,6 +359,8 @@ class ProxyResultIPv6(ProxyResult):
     """
 
     __slots__ = ['_source', '_dest', '_protocol', '_tlv']
+
+    type = ProxyResultType.IPv6
 
     def __init__(self, source: Tuple[IPv6Address, int],
                  dest: Tuple[IPv6Address, int], *,
@@ -384,6 +420,8 @@ class ProxyResultUnix(ProxyResult):
 
     __slots__ = ['_source', '_dest', '_protocol', '_tlv']
 
+    type = ProxyResultType.UNIX
+
     def __init__(self, source: str, dest: str, *,
                  protocol: Optional[SocketKind] = None,
                  tlv: ProxyProtocolTLV = _empty_tlv) -> None:
@@ -407,6 +445,8 @@ class ProxyResultUnix(ProxyResult):
 
     @property
     def family(self) -> AddressFamily:
+        if sys.platform == 'win32':  # pragma: no cover
+            raise AttributeError('AF_UNIX')
         return socket.AF_UNIX
 
     @property

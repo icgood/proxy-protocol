@@ -91,4 +91,4 @@ napoleon_numpy_docstring = False
 
 # -- Options for intersphinx extension ---------------------------------------
 
-intersphinx_mapping = {'https://docs.python.org/3/': None}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}

@@ -1,10 +1,11 @@
 
 import socket
+import sys
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
-from proxyprotocol.result import is_local, is_unknown, \
-    is_ipv4, is_ipv6, is_unix, ProxyResultLocal, ProxyResultUnknown, \
+from proxyprotocol.result import is_local, is_unknown,  is_ipv4, is_ipv6, \
+    is_unix, ProxyResultType, ProxyResultLocal, ProxyResultUnknown, \
     ProxyResultIPv4, ProxyResultIPv6, ProxyResultUnix
 
 
@@ -13,6 +14,7 @@ class TestProxyResult(unittest.TestCase):
     def test_result_local(self) -> None:
         res = ProxyResultLocal()
         self.assertTrue(is_local(res))
+        self.assertEqual(ProxyResultType.LOCAL, res.type)
         self.assertIsNone(res.source)
         self.assertIsNone(res.dest)
         self.assertEqual(socket.AF_UNSPEC, res.family)
@@ -27,6 +29,7 @@ class TestProxyResult(unittest.TestCase):
         exc = RuntimeError('test')
         res = ProxyResultUnknown(exc)
         self.assertTrue(is_unknown(res))
+        self.assertEqual(ProxyResultType.UNKNOWN, res.type)
         self.assertEqual(exc, res.exception)
         self.assertIsNone(res.source)
         self.assertIsNone(res.dest)
@@ -43,6 +46,7 @@ class TestProxyResult(unittest.TestCase):
         res = ProxyResultIPv4((IPv4Address('1.2.3.4'), 10),
                               (IPv4Address('5.6.7.8'), 20))
         self.assertTrue(is_ipv4(res))
+        self.assertEqual(ProxyResultType.IPv4, res.type)
         self.assertEqual((IPv4Address('1.2.3.4'), 10), res.source)
         self.assertEqual((IPv4Address('5.6.7.8'), 20), res.dest)
         self.assertEqual(socket.AF_INET, res.family)
@@ -69,6 +73,7 @@ class TestProxyResult(unittest.TestCase):
         res = ProxyResultIPv6((IPv6Address('::1'), 10),
                               (IPv6Address('::2'), 20))
         self.assertTrue(is_ipv6(res))
+        self.assertEqual(ProxyResultType.IPv6, res.type)
         self.assertEqual((IPv6Address('::1'), 10), res.source)
         self.assertEqual((IPv6Address('::2'), 20), res.dest)
         self.assertEqual(socket.AF_INET6, res.family)
@@ -94,9 +99,14 @@ class TestProxyResult(unittest.TestCase):
     def test_result_unix(self) -> None:
         res = ProxyResultUnix('/source.sock', '/dest.sock')
         self.assertTrue(is_unix(res))
+        self.assertEqual(ProxyResultType.UNIX, res.type)
         self.assertEqual('/source.sock', res.source)
         self.assertEqual('/dest.sock', res.dest)
-        self.assertEqual(socket.AF_UNIX, res.family)
+        if sys.platform == 'win32':
+            with self.assertRaises(AttributeError):
+                _ = res.family  # cannot resolve socket.AF_UNIX
+        else:
+            self.assertEqual(socket.AF_UNIX, res.family)
         self.assertIsNone(res.protocol)
         self.assertTrue(res.proxied)
         self.assertEqual('/source.sock', res.peername)

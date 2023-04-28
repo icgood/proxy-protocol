@@ -70,7 +70,7 @@ def _build_result(sock: socket.socket, peername: SockAddr, sockname: SockAddr,
         return ProxyResultIPv6((IPv6Address(peername[0]), peername[1]),
                                (IPv6Address(sockname[0]), sockname[1]),
                                protocol=protocol, tlv=tlv)
-    elif family == socket.AF_UNIX:
+    elif hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
         assert isinstance(peername, str)
         assert isinstance(sockname, str)
         tlv = _build_tlv(ssl_obj, unique_id, dnsbl)
