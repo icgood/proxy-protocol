@@ -7,6 +7,7 @@ PROXY protocol library with [asyncio][2] server implementation.
 [![Coverage Status](https://coveralls.io/repos/icgood/proxy-protocol/badge.svg)](https://coveralls.io/r/icgood/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/v/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/pyversions/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
+![platforms](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows-blueviolet)
 [![PyPI](https://img.shields.io/pypi/l/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 
 #### [Specification](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)
