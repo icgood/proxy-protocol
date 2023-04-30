@@ -1,13 +1,12 @@
 
 
-
 <!DOCTYPE html>
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.build &#8212; proxy-protocol 0.10.3 documentation</title>
+    <title>proxyprotocol.build &#8212; proxy-protocol 0.11.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -47,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.10.3 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -135,7 +134,7 @@
         <span class="k">return</span> <span class="n">ProxyResultIPv6</span><span class="p">((</span><span class="n">IPv6Address</span><span class="p">(</span><span class="n">peername</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">peername</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                                <span class="p">(</span><span class="n">IPv6Address</span><span class="p">(</span><span class="n">sockname</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">sockname</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                                <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">,</span> <span class="n">tlv</span><span class="o">=</span><span class="n">tlv</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">family</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="s1">&#39;AF_UNIX&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">family</span> <span class="o">==</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">peername</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sockname</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="n">tlv</span> <span class="o">=</span> <span class="n">_build_tlv</span><span class="p">(</span><span class="n">ssl_obj</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">)</span>
@@ -212,7 +211,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.10.3 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
@@ -223,7 +222,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
