@@ -33,8 +33,6 @@ extremely simple. Here is an example, which will detect PROXY protocol v1 or
 v2.
 
 ```python
-from functools import partial
-
 from proxyprotocol import ProxyProtocol
 from proxyprotocol.detect import ProxyProtocolDetect
 from proxyprotocol.reader import ProxyProtocolReader
@@ -70,9 +68,9 @@ The `pp_noop` object in this example is a special case implementation that does
 not read a PROXY protocol header from the stream at all. It may be used to
 disable PROXY protocol use without complicating your server code.
 
-You can also check out the [`proxyprotocol/echo.py`][4] reference
-implementation. If you configure your proxy to send PROXY protocol to
-`localhost:10007`, you can see it in action:
+You can also check out the [`proxyprotocol-echo`][4] reference implementation.
+If you configure your proxy to send PROXY protocol to `localhost:10007`, you
+can see it in action:
 
 ```bash
 $ proxyprotocol-echo --help
@@ -146,7 +144,7 @@ hinting to the extent possible and common in the rest of the codebase.
 [1]: https://hatch.pypa.io/latest/install/
 [2]: https://docs.python.org/3/library/asyncio.html
 [3]: https://docs.python.org/3/library/asyncio-stream.html#asyncio.start_server
-[4]: https://github.com/icgood/proxy-protocol/blob/main/proxyprotocol/echo.py
+[4]: https://github.com/icgood/proxy-protocol/blob/main/proxyprotocol/server/echo.py
 [6]: https://www.python.org/dev/peps/pep-0484/
 [7]: http://mypy-lang.org/
 [8]: https://icgood.github.io/proxy-protocol/proxyprotocol.html#proxyprotocol.server.Address

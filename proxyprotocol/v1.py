@@ -1,15 +1,13 @@
 
 from __future__ import annotations
 
-import socket
 from ipaddress import IPv4Address, IPv6Address
-from socket import AddressFamily
 from typing import Sequence
 
 from . import ProxyProtocolWantRead, ProxyProtocol, ProxyProtocolSyntaxError, \
     ProxyProtocolIncompleteError
-from .result import is_ipv4, is_ipv6, ProxyResult, ProxyResultUnknown, \
-    ProxyResultIPv4, ProxyResultIPv6
+from .result import is_ipv4, is_ipv6, is_unknown, ProxyResult, \
+    ProxyResultUnknown, ProxyResultIPv4, ProxyResultIPv6
 
 
 class ProxyProtocolV1(ProxyProtocol):
@@ -71,7 +69,7 @@ class ProxyProtocolV1(ProxyProtocol):
     def pack(self, result: ProxyResult) -> bytes:
         if not result.proxied:
             raise ValueError('proxied must be True in v1')
-        family_b = self._pack_family(result.family)
+        family_b = self._pack_family(result)
         if is_ipv4(result) or is_ipv6(result):
             source_ip: bytes = result.peername[0].encode('ascii')
             source_port: bytes = str(result.peername[1]).encode('ascii')
@@ -85,12 +83,12 @@ class ProxyProtocolV1(ProxyProtocol):
         return b'PROXY %b %b %b %b %b\r\n' % \
             (family_b, source_ip, dest_ip, source_port, dest_port)
 
-    def _pack_family(self, family: AddressFamily) -> bytes:
-        if family == socket.AF_INET:
+    def _pack_family(self, result: ProxyResult) -> bytes:
+        if is_ipv4(result):
             return b'TCP4'
-        elif family == socket.AF_INET6:
+        elif is_ipv6(result):
             return b'TCP6'
-        elif family == socket.AF_UNSPEC:
+        elif is_unknown(result):
             return b'UNKNOWN'
         else:
-            raise KeyError(family)
+            raise KeyError(type)

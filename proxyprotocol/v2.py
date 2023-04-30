@@ -3,15 +3,16 @@ from __future__ import annotations
 
 import socket
 from ipaddress import IPv4Address, IPv6Address
-from socket import AddressFamily, SocketKind
+from socket import SocketKind
 from struct import Struct
 from typing import Optional, Sequence
 from typing_extensions import Final
 
 from . import ProxyProtocolWantRead, ProxyProtocol, ProxyProtocolSyntaxError, \
     ProxyProtocolChecksumError, ProxyProtocolIncompleteError
-from .result import is_ipv4, is_ipv6, is_unix, ProxyResult, ProxyResultLocal, \
-    ProxyResultUnknown, ProxyResultIPv4, ProxyResultIPv6, ProxyResultUnix
+from .result import is_ipv4, is_ipv6, is_unix, ProxyResultType, ProxyResult, \
+    ProxyResultLocal, ProxyResultUnknown, ProxyResultIPv4, ProxyResultIPv6, \
+    ProxyResultUnix
 from .tlv import ProxyProtocolTLV
 
 __all__ = ['ProxyProtocolV2Header', 'ProxyProtocolV2']
@@ -23,13 +24,13 @@ class ProxyProtocolV2Header:
 
     """
 
-    __slots__ = ['command', 'family', 'protocol', 'data_len']
+    __slots__ = ['command', 'type', 'protocol', 'data_len']
 
-    def __init__(self, command: Optional[str], family: Optional[AddressFamily],
+    def __init__(self, command: Optional[str], type: Optional[ProxyResultType],
                  protocol: Optional[SocketKind], data_len: int) -> None:
         super().__init__()
         self.command: Final = command
-        self.family: Final = family
+        self.type: Final = type
         self.protocol: Final = protocol
         self.data_len: Final = data_len
 
@@ -41,17 +42,18 @@ class ProxyProtocolV2(ProxyProtocol):
 
     _commands = [(0x00, 'local'),
                  (0x01, 'proxy')]
-    _families = [(0x00, socket.AF_UNSPEC),
-                 (0x10, socket.AF_INET),
-                 (0x20, socket.AF_INET6),
-                 (0x30, socket.AF_UNIX)]
+    _types = [(0x00, ProxyResultType.LOCAL),
+              (0x00, ProxyResultType.UNKNOWN),
+              (0x10, ProxyResultType.IPv4),
+              (0x20, ProxyResultType.IPv6),
+              (0x30, ProxyResultType.UNIX)]
     _protocols = [(0x00, None),
                   (0x01, socket.SOCK_STREAM),
                   (0x02, socket.SOCK_DGRAM)]
     _commands_l = {left: right for left, right in _commands}
     _commands_r = {right: left for left, right in _commands}
-    _families_l = {left: right for left, right in _families}
-    _families_r = {right: left for left, right in _families}
+    _types_l = {left: right for left, right in _types}
+    _types_r = {right: left for left, right in _types}
     _protocols_l = {left: right for left, right in _protocols}
     _protocols_r = {right: left for left, right in _protocols}
 
@@ -90,9 +92,9 @@ class ProxyProtocolV2(ProxyProtocol):
         byte_12, byte_13, data_len = self._header_format.unpack_from(
             header_data, 12)
         command = self._commands_l.get(byte_12 & 0x0f)
-        family = self._families_l.get(byte_13 & 0xf0)
+        type = self._types_l.get(byte_13 & 0xf0)
         protocol = self._protocols_l.get(byte_13 & 0x0f)
-        return ProxyProtocolV2Header(command=command, family=family,
+        return ProxyProtocolV2Header(command=command, type=type,
                                      protocol=protocol, data_len=data_len)
 
     def unpack_data(self, header: ProxyProtocolV2Header,
@@ -117,7 +119,7 @@ class ProxyProtocolV2(ProxyProtocol):
             addr_data, tlv_data = b'', data
             tlv = ProxyProtocolTLV(tlv_data)
             result = ProxyResultLocal(tlv=tlv)
-        elif header.family == socket.AF_INET:
+        elif header.type == ProxyResultType.IPv4:
             addr_len = self._ipv4_format.size
             addr_data, tlv_data = data[:addr_len], data[addr_len:]
             source_ip, dest_ip, source_port, dest_port = \
@@ -127,7 +129,7 @@ class ProxyProtocolV2(ProxyProtocol):
             tlv = ProxyProtocolTLV(tlv_data)
             result = ProxyResultIPv4(source_addr4, dest_addr4,
                                      protocol=header.protocol, tlv=tlv)
-        elif header.family == socket.AF_INET6:
+        elif header.type == ProxyResultType.IPv6:
             addr_len = self._ipv6_format.size
             addr_data, tlv_data = data[:addr_len], data[addr_len:]
             source_ip, dest_ip, source_port, dest_port = \
@@ -137,7 +139,7 @@ class ProxyProtocolV2(ProxyProtocol):
             tlv = ProxyProtocolTLV(tlv_data)
             result = ProxyResultIPv6(source_addr6, dest_addr6,
                                      protocol=header.protocol, tlv=tlv)
-        elif header.family == socket.AF_UNIX:
+        elif header.type == ProxyResultType.UNIX:
             addr_len = self._unix_format.size
             addr_data, tlv_data = data[:addr_len], data[addr_len:]
             source_addr_b, dest_addr_b = self._unix_format.unpack(addr_data)
@@ -163,10 +165,10 @@ class ProxyProtocolV2(ProxyProtocol):
     def _pack_header(self, data_len: int, result: ProxyResult) \
             -> bytes:
         command = 'proxy' if result.proxied else 'local'
-        family = result.family
+        type = result.type
         protocol = result.protocol
         byte_12 = 0x20 + self._commands_r[command]
-        byte_13 = self._families_r[family] + self._protocols_r[protocol]
+        byte_13 = self._types_r[type] + self._protocols_r[protocol]
         return b'\r\n\r\n\x00\r\nQUIT\n%b' % \
             self._header_format.pack(byte_12, byte_13, data_len)
 

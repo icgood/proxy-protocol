@@ -7,7 +7,7 @@ from ipaddress import ip_address, IPv4Address, IPv6Address
 from socket import AddressFamily, SocketKind
 from typing import Dict, Optional, Union
 
-from .result import is_unknown, ProxyResult
+from .result import is_ipv4, is_ipv6, is_unix, is_unknown, ProxyResult
 from .typing import SockAddr, Cipher, PeerCert, TransportProtocol
 
 __all__ = ['SocketInfo', 'SocketInfoProxy', 'SocketInfoLocal']
@@ -55,8 +55,23 @@ class SocketInfo(metaclass=ABCMeta):
         ret: socket.socket = self._transport.get_extra_info('socket')
         return ret
 
+    @property
+    @abstractmethod
+    def _is_ipv4_or_ipv6(self) -> bool:
+        ...
+
+    @property
+    @abstractmethod
+    def _is_unix(self) -> bool:
+        ...
+
+    @property
+    @abstractmethod
+    def _is_unknown(self) -> bool:
+        ...
+
     def _get_ip(self, addr: SockAddr) -> _IP:
-        if self.family in (socket.AF_INET, socket.AF_INET6):
+        if self._is_ipv4_or_ipv6:
             assert isinstance(addr, tuple)
             ip_str: str = addr[0]
             ip: Union[IPv4Address, IPv6Address] = ip_address(ip_str)
@@ -66,7 +81,7 @@ class SocketInfo(metaclass=ABCMeta):
         return None
 
     def _get_port(self, addr: SockAddr) -> Optional[int]:
-        if self.family in (socket.AF_INET, socket.AF_INET6):
+        if self._is_ipv4_or_ipv6:
             assert isinstance(addr, tuple)
             port: int = addr[1]
             return port
@@ -74,12 +89,12 @@ class SocketInfo(metaclass=ABCMeta):
 
     def _get_str(self, addr: SockAddr, ip: _IP,
                  port: Optional[int]) -> Optional[str]:
-        if self.family in (socket.AF_INET, socket.AF_INET6):
+        if self._is_ipv4_or_ipv6:
             return f'[{ip!s}]:{port!s}'
-        elif self.family == socket.AF_UNIX:
+        elif self._is_unix:
             assert isinstance(addr, str)
             return addr
-        elif self.family == socket.AF_UNSPEC:
+        elif self._is_unknown:
             return None
         else:  # pragma: no cover
             return str(addr)
@@ -252,7 +267,7 @@ class SocketInfo(metaclass=ABCMeta):
         :attr:`~ipaddress.IPv4Address.is_loopback` flags.
 
         """
-        if self.family == socket.AF_UNIX:
+        if self._is_unix:
             return True
         ip = self.peername_ip
         if ip is None:
@@ -279,6 +294,19 @@ class SocketInfoProxy(SocketInfo):
                  result: ProxyResult) -> None:
         super().__init__(transport)
         self._result = result
+
+    @property
+    def _is_ipv4_or_ipv6(self) -> bool:
+        result = self._result
+        return is_ipv4(result) or is_ipv6(result)
+
+    @property
+    def _is_unix(self) -> bool:
+        return is_unix(self._result)
+
+    @property
+    def _is_unknown(self) -> bool:
+        return is_unknown(self._result)
 
     @property
     def sockname(self) -> SockAddr:
@@ -354,6 +382,18 @@ class SocketInfoLocal(SocketInfo):
         super().__init__(transport)
         self._unique_id = unique_id
         self._dnsbl = dnsbl
+
+    @property
+    def _is_ipv4_or_ipv6(self) -> bool:
+        return self.family in (socket.AF_INET, socket.AF_INET6)
+
+    @property
+    def _is_unix(self) -> bool:
+        return hasattr(socket, 'AF_UNIX') and self.family == socket.AF_UNIX
+
+    @property
+    def _is_unknown(self) -> bool:
+        return self.family == socket.AF_UNSPEC
 
     @property
     def sockname(self) -> SockAddr:

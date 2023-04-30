@@ -1,13 +1,16 @@
 
 import socket
+import sys
 import unittest
 from asyncio import BaseTransport
 from ipaddress import IPv4Address, IPv6Address
 from typing import Any, Dict
 from unittest.mock import MagicMock
 
-from proxyprotocol.result import ProxyResultLocal, ProxyResultUnknown, \
-    ProxyResultIPv6
+import pytest
+
+from proxyprotocol.result import ProxyResultIPv6, ProxyResultLocal, \
+    ProxyResultUnix, ProxyResultUnknown
 from proxyprotocol.sock import SocketInfo, SocketInfoLocal
 from proxyprotocol.tlv import ProxyProtocolTLV, ProxyProtocolSSLTLV, \
     ProxyProtocolExtTLV
@@ -194,10 +197,8 @@ class TestSocketInfo(unittest.TestCase):
         self.assertEqual(b'1234567890', info.unique_id)
 
     def test_from_localhost_unix(self) -> None:
-        result = ProxyResultLocal()
+        result = ProxyResultUnix('source', 'dest')
         info = SocketInfo.get(self.transport, result)
-        self.extra['socket'] = sock = MagicMock(socket.socket)
-        sock.family = socket.AF_UNIX
         self.assertTrue(info.from_localhost)
 
     def test_from_localhost_unknown(self) -> None:
@@ -217,13 +218,21 @@ class TestSocketInfo(unittest.TestCase):
         info = SocketInfo.get(self.transport, result)
         self.assertFalse(info.from_localhost)
 
-    def test_str_unix(self) -> None:
+    def test_str_unix_local(self) -> None:
+        if sys.platform == 'win32':
+            pytest.skip('socket.AF_UNIX is not available')
         info = SocketInfoLocal(self.transport)
-        self.extra['sockname'] = 'source'
-        self.extra['peername'] = 'dest'
+        self.extra['sockname'] = 'dest'
+        self.extra['peername'] = 'source'
         self.extra['socket'] = sock = MagicMock(socket.socket)
         sock.family = socket.AF_UNIX
-        self.assertEqual("<SocketInfoLocal peername='dest' sockname='source'>",
+        self.assertEqual("<SocketInfoLocal peername='source' sockname='dest'>",
+                         repr(info))
+
+    def test_str_unix_proxy(self) -> None:
+        result = ProxyResultUnix('source', 'dest')
+        info = SocketInfo.get(self.transport, result)
+        self.assertEqual("<SocketInfoProxy peername='source' sockname='dest'>",
                          repr(info))
 
     def test_str_ipv6(self) -> None:
@@ -235,7 +244,14 @@ class TestSocketInfo(unittest.TestCase):
         self.assertEqual("<SocketInfoLocal peername='[::2]:20' "
                          "sockname='[::1]:10'>", repr(info))
 
-    def test_str_unknown(self) -> None:
+    def test_str_unknown_local(self) -> None:
+        info = SocketInfoLocal(self.transport)
+        self.extra['socket'] = sock = MagicMock(socket.socket)
+        sock.family = socket.AF_UNSPEC
+        self.assertEqual('<SocketInfoLocal peername=None sockname=None>',
+                         repr(info))
+
+    def test_str_unknown_proxy(self) -> None:
         result = ProxyResultUnknown(RuntimeError())
         info = SocketInfo.get(self.transport, result)
         self.assertEqual('<SocketInfoProxy exc=RuntimeError()>',

@@ -82,8 +82,13 @@ files = ['proxyprotocol', 'test']
 module = 'crc32c.*'
 ignore_missing_imports = true
 
-[tool.bandit]
-skips = ['B101']
+[tool.ruff]
+select = ['ANN', 'B', 'B904', 'E', 'F', 'N', 'S', 'W']
+ignore = ['ANN101', 'ANN102', 'ANN401', 'S101']
+line-length = 79
+
+[tool.ruff.per-file-ignores]
+"test/*" = ['ANN', 'S104']
 
 [tool.pytest.ini_options]
 testpaths = 'test'
@@ -104,19 +109,15 @@ dependencies = [
     'mypy',
     'pytest',
     'pytest-cov',
-    'flake8',
-    'flake8-annotations',
-    'flake8-bugbear',
-    'bandit[toml]',
+    'ruff',
 ]
 features = ['crc32c']
 
 [tool.hatch.envs.default.scripts]
 run-pytest = 'py.test --cov-report=term-missing --cov=proxyprotocol'
 run-mypy = 'mypy proxyprotocol test'
-run-flake8 = 'flake8 proxyprotocol test'
-run-bandit = 'bandit -c pyproject.toml -qr proxyprotocol'
-check = ['run-pytest', 'run-mypy', 'run-flake8', 'run-bandit']
+run-ruff = 'ruff proxyprotocol test'
+check = ['run-pytest', 'run-mypy', 'run-ruff']
 
 [[tool.hatch.envs.all.matrix]]
 python = ['3.8', '3.9', '3.10', '3.11']
