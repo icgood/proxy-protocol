@@ -1,6 +1,5 @@
 
 import socket
-import sys
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
@@ -8,7 +7,7 @@ from proxyprotocol import ProxyProtocolSyntaxError, \
     ProxyProtocolChecksumError, ProxyProtocolIncompleteError
 from proxyprotocol.version import ProxyProtocolVersion
 from proxyprotocol.result import ProxyResultType, ProxyResultLocal, \
-    ProxyResultUnknown,  ProxyResultIPv4, ProxyResultIPv6, ProxyResultUnix
+    ProxyResultUnknown, ProxyResultIPv4, ProxyResultIPv6, ProxyResultUnix
 from proxyprotocol.tlv import ProxyProtocolTLV, \
     ProxyProtocolSSLTLV, ProxyProtocolExtTLV
 from proxyprotocol.v2 import ProxyProtocolV2Header, ProxyProtocolV2
@@ -126,7 +125,7 @@ class TestProxyProtocolV2(unittest.TestCase):
                                        type=ProxyResultType.IPv6,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.unpack_data(
-            header, b'', (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19')
+            header, b'', (b'\x00' * 15 + b'\x01') * 2 + b'\x00\x00\x00\x19')
         if not isinstance(res, ProxyResultIPv6):
             self.fail('expected ProxyResultIPv6 instance')
         self.assertEqual(ProxyResultType.IPv6, res.type)
@@ -145,13 +144,13 @@ class TestProxyProtocolV2(unittest.TestCase):
                                        type=ProxyResultType.UNIX,
                                        protocol=socket.SOCK_STREAM, data_len=0)
         res = pp.unpack_data(
-            header, b'', b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102)
+            header, b'', b'abc' + b'\x00' * 105 + b'defghi' + b'\x00' * 102)
         if not isinstance(res, ProxyResultUnix):
             self.fail('expected ProxyResultUnix instance')
         self.assertEqual('abc', res.source)
         self.assertEqual('defghi', res.dest)
         self.assertEqual(ProxyResultType.UNIX, res.type)
-        if sys.platform != 'win32':
+        if hasattr(socket, 'AF_UNIX'):
             self.assertEqual(socket.AF_UNIX, res.family)
         self.assertEqual(socket.SOCK_STREAM, res.protocol)
 
@@ -186,7 +185,7 @@ class TestProxyProtocolV2(unittest.TestCase):
             protocol=socket.SOCK_STREAM)
         header = pp.pack(result)
         self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n!!\x00+' +
-                         (b'\x00'*15 + b'\x01') * 2 + b'\x00\x00\x00\x19' +
+                         (b'\x00' * 15 + b'\x01') * 2 + b'\x00\x00\x00\x19' +
                          b'\x03\x00\x04p\x86\x92\xe9', header)
 
     def test_pack_unix(self) -> None:
@@ -195,7 +194,7 @@ class TestProxyProtocolV2(unittest.TestCase):
                                  protocol=socket.SOCK_STREAM)
         header = pp.pack(result)
         self.assertEqual(b'\r\n\r\n\x00\r\nQUIT\n\x21\x31\x00\xdf' +
-                         b'abc' + b'\x00'*105 + b'defghi' + b'\x00'*102 +
+                         b'abc' + b'\x00' * 105 + b'defghi' + b'\x00' * 102 +
                          b'\x03\x00\x04W\x8a\x8e\xb4', header)
 
     def test_pack_unknown(self) -> None:

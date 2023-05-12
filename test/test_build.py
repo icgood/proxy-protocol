@@ -1,6 +1,5 @@
 
 import socket
-import sys
 import unittest
 from asyncio import BaseTransport
 from ipaddress import IPv4Address, IPv6Address
@@ -51,7 +50,7 @@ class TestBuild(unittest.TestCase):
         self.assertEqual('host', res.tlv.ext.dnsbl)
 
     def test_unix_socket(self) -> None:
-        if sys.platform == 'win32':
+        if not hasattr(socket, 'AF_UNIX'):
             pytest.skip('socket.AF_UNIX is not available')
         sock = MagicMock(socket.socket)
         sock.family = socket.AF_UNIX

@@ -1,10 +1,9 @@
 
 import socket
-import sys
 import unittest
 from ipaddress import IPv4Address, IPv6Address
 
-from proxyprotocol.result import is_local, is_unknown,  is_ipv4, is_ipv6, \
+from proxyprotocol.result import is_local, is_unknown, is_ipv4, is_ipv6, \
     is_unix, ProxyResultType, ProxyResultLocal, ProxyResultUnknown, \
     ProxyResultIPv4, ProxyResultIPv6, ProxyResultUnix
 
@@ -102,11 +101,11 @@ class TestProxyResult(unittest.TestCase):
         self.assertEqual(ProxyResultType.UNIX, res.type)
         self.assertEqual('/source.sock', res.source)
         self.assertEqual('/dest.sock', res.dest)
-        if sys.platform == 'win32':
+        if hasattr(socket, 'AF_UNIX'):
+            self.assertEqual(socket.AF_UNIX, res.family)
+        else:
             with self.assertRaises(AttributeError):
                 _ = res.family  # cannot resolve socket.AF_UNIX
-        else:
-            self.assertEqual(socket.AF_UNIX, res.family)
         self.assertIsNone(res.protocol)
         self.assertTrue(res.proxied)
         self.assertEqual('/source.sock', res.peername)

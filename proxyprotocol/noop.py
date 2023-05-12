@@ -10,7 +10,7 @@ __all__ = ['ProxyProtocolNoop']
 
 
 class ProxyProtocolNoop(ProxyProtocol):
-    """Implements :class:`~proxyprotocol.base.ProxyProtocol` but does not read
+    """Implements :class:`~proxyprotocol.ProxyProtocol` but does not read
     anything from the stream. A
     :class:`~proxyprotocol.result.ProxyResultLocal` result is always
     returned.

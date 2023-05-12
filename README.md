@@ -4,14 +4,13 @@ proxy-protocol
 PROXY protocol library with [asyncio][2] server implementation.
 
 [![build](https://github.com/icgood/proxy-protocol/actions/workflows/python-check.yml/badge.svg)](https://github.com/icgood/proxy-protocol/actions/workflows/python-check.yml)
-[![Coverage Status](https://coveralls.io/repos/icgood/proxy-protocol/badge.svg)](https://coveralls.io/r/icgood/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/v/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 [![PyPI](https://img.shields.io/pypi/pyversions/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 ![platforms](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows-blueviolet)
 [![PyPI](https://img.shields.io/pypi/l/proxy-protocol.svg)](https://pypi.python.org/pypi/proxy-protocol)
 
 #### [Specification](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)
-#### [API Documentation](http://icgood.github.io/proxy-protocol/)
+#### [API Reference](http://icgood.github.io/proxy-protocol/)
 #### [Docker Image](https://github.com/icgood/proxy-protocol/pkgs/container/proxy-protocol)
 
 ### Table of Contents
@@ -41,8 +40,7 @@ from proxyprotocol.sock import SocketInfo
 
 async def run(host: str, port: int) -> None:
     pp_detect = ProxyProtocolDetect()
-    pp_reader = ProxyProtocolReader(pp_detect)
-    callback = reader.get_callback(on_connection)
+    callback = ProxyProtocolReader(pp_detect).get_callback(on_connection)
     server = await asyncio.start_server(callback, host, port)
     async with server:
         await server.serve_forever()
@@ -59,7 +57,7 @@ read from a string.
 ```python
 from proxyprotocol.version import ProxyProtocolVersion
 
-pp_noop = ProxyProtocolVersion.get()
+pp_noop = ProxyProtocolVersion.get(None)
 pp_detect = ProxyProtocolVersion.get('detect')
 pp_v1 = ProxyProtocolVersion.get('v1')
 pp_v2 = ProxyProtocolVersion.get('v2')
@@ -148,4 +146,4 @@ hinting to the extent possible and common in the rest of the codebase.
 [4]: https://github.com/icgood/proxy-protocol/blob/main/proxyprotocol/server/echo.py
 [6]: https://www.python.org/dev/peps/pep-0484/
 [7]: http://mypy-lang.org/
-[8]: https://icgood.github.io/proxy-protocol/proxyprotocol.html#proxyprotocol.server.Address
+[8]: https://icgood.github.io/proxy-protocol/proxyprotocol.server.html#proxyprotocol.server.Address

@@ -1,6 +1,5 @@
 
 import socket
-import sys
 import unittest
 from asyncio import BaseTransport
 from ipaddress import IPv4Address, IPv6Address
@@ -219,7 +218,7 @@ class TestSocketInfo(unittest.TestCase):
         self.assertFalse(info.from_localhost)
 
     def test_str_unix_local(self) -> None:
-        if sys.platform == 'win32':
+        if not hasattr(socket, 'AF_UNIX'):
             pytest.skip('socket.AF_UNIX is not available')
         info = SocketInfoLocal(self.transport)
         self.extra['sockname'] = 'dest'

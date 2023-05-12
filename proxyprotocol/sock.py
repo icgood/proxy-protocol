@@ -105,7 +105,7 @@ class SocketInfo(metaclass=ABCMeta):
         """The local address of the socket.
 
         See Also:
-            :meth:`~socket.socket.getsockname`
+            :meth:`socket.socket.getsockname`
 
         """
         ...
@@ -142,7 +142,7 @@ class SocketInfo(metaclass=ABCMeta):
         """The remote address of the socket.
 
         See Also:
-            :meth:`~socket.socket.getpeername`
+            :meth:`socket.socket.getpeername`
 
         """
         ...
@@ -224,7 +224,8 @@ class SocketInfo(metaclass=ABCMeta):
     @property
     @abstractmethod
     def peercert(self) -> Optional[PeerCert]:
-        """The :meth:`~ssl.SSLSocket.peercert` value for encrypted connections.
+        """The :meth:`~ssl.SSLSocket.getpeercert` value for encrypted
+        connections.
 
         Note:
             For proxied connections, this data may be unavailable, depending on
@@ -284,6 +285,8 @@ class SocketInfoProxy(SocketInfo):
     protocol result.
 
     Args:
+        transport: The :class:`~asyncio.BaseTransport` or
+            :class:`~asyncio.StreamWriter` for the connection.
         result: The PROXY protocol result.
 
     """
@@ -376,8 +379,7 @@ class SocketInfoLocal(SocketInfo):
 
     __slots__ = ['_transport', '_unique_id', '_dnsbl']
 
-    def __init__(self, transport: TransportProtocol,
-                 result: Optional[ProxyResult] = None, *,
+    def __init__(self, transport: TransportProtocol, *,
                  unique_id: bytes = b'', dnsbl: Optional[str] = None) -> None:
         super().__init__(transport)
         self._unique_id = unique_id

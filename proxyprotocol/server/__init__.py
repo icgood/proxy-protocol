@@ -62,7 +62,7 @@ class Address:
 
     @property
     def ssl(self) -> Optional[SSLContext]:
-        """The: class:`~ssl.SSLContext` to use on the address."""
+        """The :class:`~ssl.SSLContext` to use on the address."""
         if self.url.scheme == 'ssl':
             if self._ssl is None:
                 if self.server:
