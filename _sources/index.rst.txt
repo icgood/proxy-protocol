@@ -23,6 +23,7 @@ Table of Contents
    proxyprotocol.dnsbl
    proxyprotocol.tlv
    proxyprotocol.reader
+   proxyprotocol.server
 
 
 Indices and tables

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.build &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>proxyprotocol.build &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -87,6 +87,8 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        sock: A connected socket object.</span>
+<span class="sd">        unique_id: A unique ID to associate with the connection.</span>
+<span class="sd">        dnsbl: The DNSBL lookup result for the connection.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">peername</span><span class="p">:</span> <span class="n">SockAddr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">getpeername</span><span class="p">()</span>
@@ -105,6 +107,8 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        transport: A connected transport object.</span>
+<span class="sd">        unique_id: A unique ID to associate with the connection.</span>
+<span class="sd">        dnsbl: The DNSBL lookup result for the connection.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sock</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;socket&#39;</span><span class="p">)</span>
@@ -211,7 +215,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>

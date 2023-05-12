@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.tlv &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>proxyprotocol.tlv &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -75,12 +75,17 @@
 <span class="kn">from</span> <span class="nn">.checksum</span> <span class="kn">import</span> <span class="n">crc32c</span>
 <span class="kn">from</span> <span class="nn">.typing</span> <span class="kn">import</span> <span class="n">PeerCert</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;SSLClient&#39;</span><span class="p">,</span> <span class="s1">&#39;TLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ProxyProtocolTLV&#39;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;SSLClient&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtType&#39;</span><span class="p">,</span> <span class="s1">&#39;TLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ProxyProtocolTLV&#39;</span><span class="p">,</span>
            <span class="s1">&#39;ProxyProtocolSSLTLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ProxyProtocolExtTLV&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Type"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.Type">[docs]</a><span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol TLV standard type values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol TLV standard type values.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :class:`ProxyProtocolTLV`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">PP2_TYPE_ALPN</span> <span class="o">=</span> <span class="mh">0x01</span>
     <span class="n">PP2_TYPE_AUTHORITY</span> <span class="o">=</span> <span class="mh">0x02</span>
@@ -102,21 +107,31 @@
     <span class="n">PP2_TYPE_MAX_FUTURE</span> <span class="o">=</span> <span class="mh">0xFF</span></div>
 
 
-<span class="k">class</span> <span class="nc">ExtType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV types.&quot;&quot;&quot;</span>
-
-    <span class="n">PP2_TYPE_EXT_COMPRESSION</span> <span class="o">=</span> <span class="mh">0x01</span>
-    <span class="n">PP2_TYPE_EXT_SECRET_BITS</span> <span class="o">=</span> <span class="mh">0x02</span>
-    <span class="n">PP2_TYPE_EXT_PEERCERT</span> <span class="o">=</span> <span class="mh">0x03</span>
-    <span class="n">PP2_TYPE_EXT_DNSBL</span> <span class="o">=</span> <span class="mh">0x04</span>
-
-
 <div class="viewcode-block" id="SSLClient"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient">[docs]</a><span class="k">class</span> <span class="nc">SSLClient</span><span class="p">(</span><span class="n">IntFlag</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol ``PP2_TYPE_SSL`` client flags.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol ``PP2_TYPE_SSL`` client flags.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :class:`ProxyProtocolSSLTLV`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">PP2_CLIENT_SSL</span> <span class="o">=</span> <span class="mh">0x01</span>
     <span class="n">PP2_CLIENT_CERT_CONN</span> <span class="o">=</span> <span class="mh">0x02</span>
     <span class="n">PP2_CLIENT_CERT_SESS</span> <span class="o">=</span> <span class="mh">0x04</span></div>
+
+
+<div class="viewcode-block" id="ExtType"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType">[docs]</a><span class="k">class</span> <span class="nc">ExtType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV types.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        :class:`ProxyProtocolExtTLV`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PP2_TYPE_EXT_COMPRESSION</span> <span class="o">=</span> <span class="mh">0x01</span>
+    <span class="n">PP2_TYPE_EXT_SECRET_BITS</span> <span class="o">=</span> <span class="mh">0x02</span>
+    <span class="n">PP2_TYPE_EXT_PEERCERT</span> <span class="o">=</span> <span class="mh">0x03</span>
+    <span class="n">PP2_TYPE_EXT_DNSBL</span> <span class="o">=</span> <span class="mh">0x04</span></div>
 
 
 <div class="viewcode-block" id="TLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.TLV">[docs]</a><span class="k">class</span> <span class="nc">TLV</span><span class="p">(</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">Hashable</span><span class="p">):</span>
@@ -518,8 +533,8 @@
 
 
 <div class="viewcode-block" id="ProxyProtocolExtTLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV">[docs]</a><span class="k">class</span> <span class="nc">ProxyProtocolExtTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV, which is hidden inside a ``PP2_TYPE_NOOP``</span>
-<span class="sd">    and must start with :attr:`.MAGIC_PREFIX`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV, which is hidden inside a</span>
+<span class="sd">    :attr:`~Type.PP2_TYPE_NOOP` and must start with :attr:`.MAGIC_PREFIX`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data: TLV data to parse.</span>
@@ -528,8 +543,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#: The ``PP2_TYPE_NOOP`` value must begin with this byte sequence to be</span>
-    <span class="c1">#: parsed as a :class:`ProxyProtocolExtTLV`.</span>
+    <span class="c1">#: The :attr:`~Type.PP2_TYPE_NOOP` value must begin with this byte sequence</span>
+    <span class="c1">#: to be parsed as a :class:`ProxyProtocolExtTLV`.</span>
     <span class="n">MAGIC_PREFIX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x88\x1b\x79\xc1\xce\x96\x85\xb0</span><span class="s1">&#39;</span>
 
     <span class="n">_secret_bits_fmt</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;!H&#39;</span><span class="p">)</span>
@@ -567,8 +582,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compression</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The ``PP2_TYPE_EXT_COMPRESSION`` value. This is used by the</span>
-<span class="sd">        :attr:`~proxyprotocol.sock.SocketInfo.compression` value.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`~ExtType.PP2_TYPE_EXT_COMPRESSION` value. This is used by</span>
+<span class="sd">        the :attr:`~proxyprotocol.sock.SocketInfo.compression` value.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ExtType</span><span class="o">.</span><span class="n">PP2_TYPE_EXT_COMPRESSION</span><span class="p">)</span>
@@ -578,9 +593,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">secret_bits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The ``PP2_TYPE_EXT_SECRET_BITS`` value. This is used to populate</span>
-<span class="sd">        the third member of the: attr:`~proxyprotocol.sock.SocketInfo.cipher`</span>
-<span class="sd">        tuple.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`~ExtType.PP2_TYPE_EXT_SECRET_BITS` value. This is used to</span>
+<span class="sd">        populate the third member of the</span>
+<span class="sd">        :attr:`~proxyprotocol.sock.SocketInfo.cipher` tuple.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ExtType</span><span class="o">.</span><span class="n">PP2_TYPE_EXT_SECRET_BITS</span><span class="p">)</span>
@@ -591,8 +606,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">peercert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The ``PP2_TYPE_EXT_PEERCERT`` value. This is used by the</span>
-<span class="sd">        :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`~ExtType.PP2_TYPE_EXT_PEERCERT` value. This is used by</span>
+<span class="sd">        the :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ExtType</span><span class="o">.</span><span class="n">PP2_TYPE_EXT_PEERCERT</span><span class="p">)</span>
@@ -604,9 +619,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dnsbl</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The ``PP2_TYPE_EXT_DNSBL`` value. This is the hostname or other</span>
-<span class="sd">        identifier that reports a status or reputation of the connecting IP</span>
-<span class="sd">        address.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :attr:`~ExtType.PP2_TYPE_EXT_DNSBL` value. This is the hostname</span>
+<span class="sd">        or other identifier that reports a status or reputation of the</span>
+<span class="sd">        connecting IP address.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ExtType</span><span class="o">.</span><span class="n">PP2_TYPE_EXT_DNSBL</span><span class="p">)</span>
@@ -663,7 +678,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>

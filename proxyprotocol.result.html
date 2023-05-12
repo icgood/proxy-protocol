@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -55,7 +55,7 @@
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li> 
       </ul>
@@ -146,32 +146,44 @@
 <dd><p>The type of proxy result.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.LOCAL">
-<span class="sig-name descname"><span class="pre">LOCAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.LOCAL" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LOCAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1,</span> <span class="pre">'AF_UNSPEC')</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.LOCAL" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connection is not proxied at all.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.UNKNOWN">
-<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2,</span> <span class="pre">'AF_UNSPEC')</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.UNKNOWN" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connection is proxied from an unknown address family.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.IPv4">
-<span class="sig-name descname"><span class="pre">IPv4</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.IPv4" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">IPv4</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(3,</span> <span class="pre">'AF_INET')</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.IPv4" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connection is proxied from an IPv4 address.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.IPv6">
-<span class="sig-name descname"><span class="pre">IPv6</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.IPv6" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">IPv6</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(4,</span> <span class="pre">'AF_INET6')</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.IPv6" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connection is proxied from an IPv6 address.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.UNIX">
-<span class="sig-name descname"><span class="pre">UNIX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.UNIX" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">UNIX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(5,</span> <span class="pre">'AF_UNIX')</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.UNIX" title="Permalink to this definition">¶</a></dt>
 <dd><p>The connection is proxied from a UNIX socket.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultType.family">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AddressFamily</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultType.family" title="Permalink to this definition">¶</a></dt>
+<dd><p>The address family corresponding to the proxy result type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.11)"><strong>AttributeError</strong></a> – The address family does not exist on the current
+    platform, e.g. <a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.AF_UNIX" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">AF_UNIX</span></code></a> on Windows.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -209,6 +221,16 @@ socket.</p>
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResult.family">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AddressFamily</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResult.family" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original socket address family.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#proxyprotocol.result.ProxyResultType.family" title="proxyprotocol.result.ProxyResultType.family"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ProxyResultType.family</span></code></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AttributeError" title="(in Python v3.11)"><strong>AttributeError</strong></a> – An address family was proxied to a platform that
+    does not support it. Use <a class="reference internal" href="#proxyprotocol.result.ProxyResult.type" title="proxyprotocol.result.ProxyResult.type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type</span></code></a> instead when possible.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -388,12 +410,6 @@ socket.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv4.family">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AddressFamily</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv4.family" title="Permalink to this definition">¶</a></dt>
-<dd><p>The original socket address family.</p>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv4.protocol">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">protocol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SocketKind</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv4.protocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original socket protocol.</p>
@@ -454,12 +470,6 @@ socket.</p>
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv6.dest">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address" title="(in Python v3.11)"><span class="pre">IPv6Address</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv6.dest" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original destination address info for the connection.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultIPv6.family">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AddressFamily</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultIPv6.family" title="Permalink to this definition">¶</a></dt>
-<dd><p>The original socket address family.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -526,12 +536,6 @@ socket.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultUnix.family">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AddressFamily</span></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnix.family" title="Permalink to this definition">¶</a></dt>
-<dd><p>The original socket address family.</p>
-</dd></dl>
-
-<dl class="py property">
 <dt class="sig sig-object py" id="proxyprotocol.result.ProxyResultUnix.protocol">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">protocol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SocketKind</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#proxyprotocol.result.ProxyResultUnix.protocol" title="Permalink to this definition">¶</a></dt>
 <dd><p>The original socket protocol.</p>
@@ -582,6 +586,7 @@ form.</p>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultType.IPv4"><code class="docutils literal notranslate"><span class="pre">ProxyResultType.IPv4</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultType.IPv6"><code class="docutils literal notranslate"><span class="pre">ProxyResultType.IPv6</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultType.UNIX"><code class="docutils literal notranslate"><span class="pre">ProxyResultType.UNIX</span></code></a></li>
+<li><a class="reference internal" href="#proxyprotocol.result.ProxyResultType.family"><code class="docutils literal notranslate"><span class="pre">ProxyResultType.family</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResult"><code class="docutils literal notranslate"><span class="pre">ProxyResult</span></code></a><ul>
@@ -619,7 +624,6 @@ form.</p>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.proxied"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.proxied</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.source"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.source</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.dest"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.dest</span></code></a></li>
-<li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.family"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.family</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.protocol"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.protocol</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.tlv"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.tlv</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv4.peername"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv4.peername</span></code></a></li>
@@ -630,7 +634,6 @@ form.</p>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.proxied"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.proxied</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.source"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.source</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.dest"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.dest</span></code></a></li>
-<li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.family"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.family</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.protocol"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.protocol</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.tlv"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.tlv</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultIPv6.peername"><code class="docutils literal notranslate"><span class="pre">ProxyResultIPv6.peername</span></code></a></li>
@@ -641,7 +644,6 @@ form.</p>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.proxied"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.proxied</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.source"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.source</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.dest"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.dest</span></code></a></li>
-<li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.family"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.family</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.protocol"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.protocol</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.tlv"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.tlv</span></code></a></li>
 <li><a class="reference internal" href="#proxyprotocol.result.ProxyResultUnix.peername"><code class="docutils literal notranslate"><span class="pre">ProxyResultUnix.peername</span></code></a></li>
@@ -718,7 +720,7 @@ form.</p>
         <li class="right" >
           <a href="proxyprotocol.html" title="proxyprotocol"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.result</span></code></a></li> 
       </ul>

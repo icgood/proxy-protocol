@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.sock &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>proxyprotocol.sock &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -169,7 +169,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The local address of the socket.</span>
 
 <span class="sd">        See Also:</span>
-<span class="sd">            :meth:`~socket.socket.getsockname`</span>
+<span class="sd">            :meth:`socket.socket.getsockname`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span>
@@ -206,7 +206,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The remote address of the socket.</span>
 
 <span class="sd">        See Also:</span>
-<span class="sd">            :meth:`~socket.socket.getpeername`</span>
+<span class="sd">            :meth:`socket.socket.getpeername`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="o">...</span>
@@ -288,7 +288,8 @@
     <span class="nd">@property</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">peercert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PeerCert</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :meth:`~ssl.SSLSocket.peercert` value for encrypted connections.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The :meth:`~ssl.SSLSocket.getpeercert` value for encrypted</span>
+<span class="sd">        connections.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            For proxied connections, this data may be unavailable, depending on</span>
@@ -348,6 +349,8 @@
 <span class="sd">    protocol result.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        transport: The :class:`~asyncio.BaseTransport` or</span>
+<span class="sd">            :class:`~asyncio.StreamWriter` for the connection.</span>
 <span class="sd">        result: The PROXY protocol result.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -440,8 +443,7 @@
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;_transport&#39;</span><span class="p">,</span> <span class="s1">&#39;_unique_id&#39;</span><span class="p">,</span> <span class="s1">&#39;_dnsbl&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span>
-                 <span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ProxyResult</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
                  <span class="n">unique_id</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_unique_id</span> <span class="o">=</span> <span class="n">unique_id</span>
@@ -553,7 +555,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>Index &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>
@@ -97,8 +97,12 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.Address">Address (in module proxyprotocol.typing)</a>
+      <li><a href="proxyprotocol.server.html#proxyprotocol.server.Address">Address (class in proxyprotocol.server)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.Address">(in module proxyprotocol.typing)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.alpn">alpn (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
@@ -209,6 +213,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.ext">ext (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType">ExtType (class in proxyprotocol.tlv)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -218,11 +224,7 @@
       <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResult.family">family (proxyprotocol.result.ProxyResult property)</a>
 
       <ul>
-        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4.family">(proxyprotocol.result.ProxyResultIPv4 property)</a>
-</li>
-        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6.family">(proxyprotocol.result.ProxyResultIPv6 property)</a>
-</li>
-        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix.family">(proxyprotocol.result.ProxyResultUnix property)</a>
+        <li><a href="proxyprotocol.result.html#proxyprotocol.result.ProxyResultType.family">(proxyprotocol.result.ProxyResultType property)</a>
 </li>
         <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.family">(proxyprotocol.sock.SocketInfo property)</a>
 </li>
@@ -259,11 +261,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_conn">has_cert_conn (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_cert_sess">has_cert_sess (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV.has_ssl">has_ssl (proxyprotocol.tlv.ProxyProtocolSSLTLV property)</a>
+</li>
+      <li><a href="proxyprotocol.server.html#proxyprotocol.server.Address.host">host (proxyprotocol.server.Address property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -361,6 +365,8 @@
 </li>
         <li><a href="proxyprotocol.result.html#module-proxyprotocol.result">proxyprotocol.result</a>
 </li>
+        <li><a href="proxyprotocol.server.html#module-proxyprotocol.server">proxyprotocol.server</a>
+</li>
         <li><a href="proxyprotocol.sock.html#module-proxyprotocol.sock">proxyprotocol.sock</a>
 </li>
         <li><a href="proxyprotocol.tlv.html#module-proxyprotocol.tlv">proxyprotocol.tlv</a>
@@ -444,6 +450,10 @@
 </li>
       <li><a href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo.peername_str">peername_str (proxyprotocol.sock.SocketInfo property)</a>
 </li>
+      <li><a href="proxyprotocol.server.html#proxyprotocol.server.Address.port">port (proxyprotocol.server.Address property)</a>
+</li>
+      <li><a href="proxyprotocol.server.html#proxyprotocol.server.Address.pp">pp (proxyprotocol.server.Address property)</a>
+</li>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_CONN">PP2_CLIENT_CERT_CONN (proxyprotocol.tlv.SSLClient attribute)</a>
 </li>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient.PP2_CLIENT_CERT_SESS">PP2_CLIENT_CERT_SESS (proxyprotocol.tlv.SSLClient attribute)</a>
@@ -465,6 +475,14 @@
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_AUTHORITY">PP2_TYPE_AUTHORITY (proxyprotocol.tlv.Type attribute)</a>
 </li>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_CRC32C">PP2_TYPE_CRC32C (proxyprotocol.tlv.Type attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType.PP2_TYPE_EXT_COMPRESSION">PP2_TYPE_EXT_COMPRESSION (proxyprotocol.tlv.ExtType attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType.PP2_TYPE_EXT_DNSBL">PP2_TYPE_EXT_DNSBL (proxyprotocol.tlv.ExtType attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType.PP2_TYPE_EXT_PEERCERT">PP2_TYPE_EXT_PEERCERT (proxyprotocol.tlv.ExtType attribute)</a>
+</li>
+      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType.PP2_TYPE_EXT_SECRET_BITS">PP2_TYPE_EXT_SECRET_BITS (proxyprotocol.tlv.ExtType attribute)</a>
 </li>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.Type.PP2_TYPE_MAX_CUSTOM">PP2_TYPE_MAX_CUSTOM (proxyprotocol.tlv.Type attribute)</a>
 </li>
@@ -574,6 +592,13 @@
 
       <ul>
         <li><a href="proxyprotocol.result.html#module-proxyprotocol.result">module</a>
+</li>
+      </ul></li>
+      <li>
+    proxyprotocol.server
+
+      <ul>
+        <li><a href="proxyprotocol.server.html#module-proxyprotocol.server">module</a>
 </li>
       </ul></li>
       <li>
@@ -738,8 +763,12 @@
       </ul></li>
       <li><a href="proxyprotocol.dnsbl.html#proxyprotocol.dnsbl.SpamhausDnsbl">SpamhausDnsbl (class in proxyprotocol.dnsbl)</a>
 </li>
-      <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.ssl">ssl (proxyprotocol.tlv.ProxyProtocolTLV property)</a>
+      <li><a href="proxyprotocol.server.html#proxyprotocol.server.Address.ssl">ssl (proxyprotocol.server.Address property)</a>
+
+      <ul>
+        <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.ssl">(proxyprotocol.tlv.ProxyProtocolTLV property)</a>
 </li>
+      </ul></li>
       <li><a href="proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient">SSLClient (class in proxyprotocol.tlv)</a>
 </li>
       <li><a href="proxyprotocol.typing.html#proxyprotocol.typing.StreamReaderProtocol">StreamReaderProtocol (class in proxyprotocol.typing)</a>
@@ -895,7 +924,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href="">Index</a></li> 
       </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.0 documentation</title>
+    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -66,7 +66,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">socket</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABCMeta</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span> <span class="nn">ipaddress</span> <span class="kn">import</span> <span class="n">IPv4Address</span><span class="p">,</span> <span class="n">IPv6Address</span>
@@ -141,19 +140,32 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The type of proxy result.&quot;&quot;&quot;</span>
 
     <span class="c1">#: The connection is not proxied at all.</span>
-    <span class="n">LOCAL</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">LOCAL</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;AF_UNSPEC&#39;</span>
 
     <span class="c1">#: The connection is proxied from an unknown address family.</span>
-    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;AF_UNSPEC&#39;</span>
 
     <span class="c1">#: The connection is proxied from an IPv4 address.</span>
-    <span class="n">IPv4</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">IPv4</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;AF_INET&#39;</span>
 
     <span class="c1">#: The connection is proxied from an IPv6 address.</span>
-    <span class="n">IPv6</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">IPv6</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;AF_INET6&#39;</span>
 
     <span class="c1">#: The connection is proxied from a UNIX socket.</span>
-    <span class="n">UNIX</span> <span class="o">=</span> <span class="mi">5</span></div>
+    <span class="n">UNIX</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;AF_UNIX&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The address family corresponding to the proxy result type.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: The address family does not exist on the current</span>
+<span class="sd">                platform, e.g. :data:`~socket.AF_UNIX` on Windows.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">family_attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">family</span><span class="p">:</span> <span class="n">AddressFamily</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">family_attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">family</span></div>
 
 
 <div class="viewcode-block" id="ProxyResult"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResult">[docs]</a><span class="k">class</span> <span class="nc">ProxyResult</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -190,8 +202,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The original socket address family.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNSPEC</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The original socket address family.</span>
+
+<span class="sd">        See Also:</span>
+<span class="sd">            :attr:`ProxyResultType.family`</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: An address family was proxied to a platform that</span>
+<span class="sd">                does not support it. Use :attr:`.type` instead when possible.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">family</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
@@ -389,10 +410,6 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dest</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span>
 
@@ -449,10 +466,6 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dest</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET6</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span>
 
@@ -506,12 +519,6 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dest</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dest</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">family</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddressFamily</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;win32&#39;</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;AF_UNIX&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SocketKind</span><span class="p">]:</span>
@@ -578,7 +585,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.0 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
