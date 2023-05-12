@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import socket
-import sys
 from abc import abstractmethod, ABCMeta
 from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
@@ -77,19 +76,32 @@ class ProxyResultType(Enum):
     """The type of proxy result."""
 
     #: The connection is not proxied at all.
-    LOCAL = 1
+    LOCAL = 1, 'AF_UNSPEC'
 
     #: The connection is proxied from an unknown address family.
-    UNKNOWN = 2
+    UNKNOWN = 2, 'AF_UNSPEC'
 
     #: The connection is proxied from an IPv4 address.
-    IPv4 = 3
+    IPv4 = 3, 'AF_INET'
 
     #: The connection is proxied from an IPv6 address.
-    IPv6 = 4
+    IPv6 = 4, 'AF_INET6'
 
     #: The connection is proxied from a UNIX socket.
-    UNIX = 5
+    UNIX = 5, 'AF_UNIX'
+
+    @property
+    def family(self) -> AddressFamily:
+        """The address family corresponding to the proxy result type.
+
+        Raises:
+            AttributeError: The address family does not exist on the current
+                platform, e.g. :data:`~socket.AF_UNIX` on Windows.
+
+        """
+        family_attr = self.value[1]
+        family: AddressFamily = getattr(socket, family_attr)
+        return family
 
 
 class ProxyResult(metaclass=ABCMeta):
@@ -126,8 +138,17 @@ class ProxyResult(metaclass=ABCMeta):
 
     @property
     def family(self) -> AddressFamily:
-        """The original socket address family."""
-        return socket.AF_UNSPEC
+        """The original socket address family.
+
+        See Also:
+            :attr:`ProxyResultType.family`
+
+        Raises:
+            AttributeError: An address family was proxied to a platform that
+                does not support it. Use :attr:`.type` instead when possible.
+
+        """
+        return self.type.family
 
     @property
     def protocol(self) -> Optional[SocketKind]:
@@ -325,10 +346,6 @@ class ProxyResultIPv4(ProxyResult):
         return self._dest
 
     @property
-    def family(self) -> AddressFamily:
-        return socket.AF_INET
-
-    @property
     def protocol(self) -> Optional[SocketKind]:
         return self._protocol
 
@@ -385,10 +402,6 @@ class ProxyResultIPv6(ProxyResult):
         return self._dest
 
     @property
-    def family(self) -> AddressFamily:
-        return socket.AF_INET6
-
-    @property
     def protocol(self) -> Optional[SocketKind]:
         return self._protocol
 
@@ -442,12 +455,6 @@ class ProxyResultUnix(ProxyResult):
     @property
     def dest(self) -> str:
         return self._dest
-
-    @property
-    def family(self) -> AddressFamily:
-        if sys.platform == 'win32':  # pragma: no cover
-            raise AttributeError('AF_UNIX')
-        return socket.AF_UNIX
 
     @property
     def protocol(self) -> Optional[SocketKind]:

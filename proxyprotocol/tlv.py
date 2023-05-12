@@ -11,12 +11,17 @@ from typing import ClassVar, Any, Hashable, Optional, Iterator, Sequence, \
 from .checksum import crc32c
 from .typing import PeerCert
 
-__all__ = ['Type', 'SSLClient', 'TLV', 'ProxyProtocolTLV',
+__all__ = ['Type', 'SSLClient', 'ExtType', 'TLV', 'ProxyProtocolTLV',
            'ProxyProtocolSSLTLV', 'ProxyProtocolExtTLV']
 
 
 class Type(IntEnum):
-    """The PROXY protocol TLV standard type values."""
+    """The PROXY protocol TLV standard type values.
+
+    See Also:
+        :class:`ProxyProtocolTLV`
+
+    """
 
     PP2_TYPE_ALPN = 0x01
     PP2_TYPE_AUTHORITY = 0x02
@@ -38,21 +43,31 @@ class Type(IntEnum):
     PP2_TYPE_MAX_FUTURE = 0xFF
 
 
+class SSLClient(IntFlag):
+    """The PROXY protocol ``PP2_TYPE_SSL`` client flags.
+
+    See Also:
+        :class:`ProxyProtocolSSLTLV`
+
+    """
+
+    PP2_CLIENT_SSL = 0x01
+    PP2_CLIENT_CERT_CONN = 0x02
+    PP2_CLIENT_CERT_SESS = 0x04
+
+
 class ExtType(IntEnum):
-    """Non-standard extension TLV types."""
+    """Non-standard extension TLV types.
+
+    See Also:
+        :class:`ProxyProtocolExtTLV`
+
+    """
 
     PP2_TYPE_EXT_COMPRESSION = 0x01
     PP2_TYPE_EXT_SECRET_BITS = 0x02
     PP2_TYPE_EXT_PEERCERT = 0x03
     PP2_TYPE_EXT_DNSBL = 0x04
-
-
-class SSLClient(IntFlag):
-    """The PROXY protocol ``PP2_TYPE_SSL`` client flags."""
-
-    PP2_CLIENT_SSL = 0x01
-    PP2_CLIENT_CERT_CONN = 0x02
-    PP2_CLIENT_CERT_SESS = 0x04
 
 
 class TLV(Mapping[int, bytes], Hashable):
@@ -454,8 +469,8 @@ class ProxyProtocolSSLTLV(TLV):
 
 
 class ProxyProtocolExtTLV(TLV):
-    """Non-standard extension TLV, which is hidden inside a ``PP2_TYPE_NOOP``
-    and must start with :attr:`.MAGIC_PREFIX`.
+    """Non-standard extension TLV, which is hidden inside a
+    :attr:`~Type.PP2_TYPE_NOOP` and must start with :attr:`.MAGIC_PREFIX`.
 
     Args:
         data: TLV data to parse.
@@ -464,8 +479,8 @@ class ProxyProtocolExtTLV(TLV):
 
     """
 
-    #: The ``PP2_TYPE_NOOP`` value must begin with this byte sequence to be
-    #: parsed as a :class:`ProxyProtocolExtTLV`.
+    #: The :attr:`~Type.PP2_TYPE_NOOP` value must begin with this byte sequence
+    #: to be parsed as a :class:`ProxyProtocolExtTLV`.
     MAGIC_PREFIX: ClassVar[bytes] = b'\x88\x1b\x79\xc1\xce\x96\x85\xb0'
 
     _secret_bits_fmt = Struct('!H')
@@ -503,8 +518,8 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def compression(self) -> Optional[str]:
-        """The ``PP2_TYPE_EXT_COMPRESSION`` value. This is used by the
-        :attr:`~proxyprotocol.sock.SocketInfo.compression` value.
+        """The :attr:`~ExtType.PP2_TYPE_EXT_COMPRESSION` value. This is used by
+        the :attr:`~proxyprotocol.sock.SocketInfo.compression` value.
 
         """
         val = self.get(ExtType.PP2_TYPE_EXT_COMPRESSION)
@@ -514,9 +529,9 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def secret_bits(self) -> Optional[int]:
-        """The ``PP2_TYPE_EXT_SECRET_BITS`` value. This is used to populate
-        the third member of the: attr:`~proxyprotocol.sock.SocketInfo.cipher`
-        tuple.
+        """The :attr:`~ExtType.PP2_TYPE_EXT_SECRET_BITS` value. This is used to
+        populate the third member of the
+        :attr:`~proxyprotocol.sock.SocketInfo.cipher` tuple.
 
         """
         val = self.get(ExtType.PP2_TYPE_EXT_SECRET_BITS)
@@ -527,8 +542,8 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def peercert(self) -> Optional[PeerCert]:
-        """The ``PP2_TYPE_EXT_PEERCERT`` value. This is used by the
-        :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.
+        """The :attr:`~ExtType.PP2_TYPE_EXT_PEERCERT` value. This is used by
+        the :attr:`~proxyprotocol.sock.SocketInfo.peercert` value.
 
         """
         val = self.get(ExtType.PP2_TYPE_EXT_PEERCERT)
@@ -540,9 +555,9 @@ class ProxyProtocolExtTLV(TLV):
 
     @property
     def dnsbl(self) -> Optional[str]:
-        """The ``PP2_TYPE_EXT_DNSBL`` value. This is the hostname or other
-        identifier that reports a status or reputation of the connecting IP
-        address.
+        """The :attr:`~ExtType.PP2_TYPE_EXT_DNSBL` value. This is the hostname
+        or other identifier that reports a status or reputation of the
+        connecting IP address.
 
         """
         val = self.get(ExtType.PP2_TYPE_EXT_DNSBL)

@@ -23,6 +23,8 @@ def build_socket_result(sock: socket.socket, *,
 
     Args:
         sock: A connected socket object.
+        unique_id: A unique ID to associate with the connection.
+        dnsbl: The DNSBL lookup result for the connection.
 
     """
     peername: SockAddr = sock.getpeername()
@@ -41,6 +43,8 @@ def build_transport_result(transport: TransportProtocol, *,
 
     Args:
         transport: A connected transport object.
+        unique_id: A unique ID to associate with the connection.
+        dnsbl: The DNSBL lookup result for the connection.
 
     """
     sock: socket.socket = transport.get_extra_info('socket')

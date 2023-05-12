@@ -25,6 +25,7 @@ build-backend = 'hatchling.build'
 
 [project]
 name = 'proxy-protocol'
+dynamic = ['version']
 authors = [
     { name = 'Ian Good', email = 'ian@icgood.net' },
 ]
@@ -46,7 +47,6 @@ classifiers = [
 dependencies = [
     'typing-extensions',
 ]
-dynamic = ['version']
 
 [project.optional-dependencies]
 crc32c = ['crc32c ~= 2.2']
@@ -83,12 +83,15 @@ module = 'crc32c.*'
 ignore_missing_imports = true
 
 [tool.ruff]
-select = ['ANN', 'B', 'B904', 'E', 'F', 'N', 'S', 'W']
+select = ['ANN', 'B', 'E', 'F', 'N', 'S', 'W']
 ignore = ['ANN101', 'ANN102', 'ANN401', 'S101']
 line-length = 79
 
 [tool.ruff.per-file-ignores]
 "test/*" = ['ANN', 'S104']
+
+[tool.autopep8]
+aggressive = 1
 
 [tool.pytest.ini_options]
 testpaths = 'test'
@@ -110,6 +113,8 @@ dependencies = [
     'pytest',
     'pytest-cov',
     'ruff',
+    'pycodestyle',
+    'autopep8',
 ]
 features = ['crc32c']
 
@@ -117,7 +122,8 @@ features = ['crc32c']
 run-pytest = 'py.test --cov-report=term-missing --cov=proxyprotocol'
 run-mypy = 'mypy proxyprotocol test'
 run-ruff = 'ruff proxyprotocol test'
-check = ['run-pytest', 'run-mypy', 'run-ruff']
+run-autopep8 = 'autopep8 --exit-code -dr proxyprotocol test'
+check = ['run-pytest', 'run-autopep8', 'run-mypy', 'run-ruff']
 
 [[tool.hatch.envs.all.matrix]]
 python = ['3.8', '3.9', '3.10', '3.11']

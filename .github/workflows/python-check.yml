@@ -27,7 +27,7 @@ jobs:
           3.11
     - name: Install build tools
       run: |
-        python -m pip install hatch coveralls
+        python -m pip install hatch
     - name: Run test suites, type checks, and linters
       run: |
         hatch run all:check
