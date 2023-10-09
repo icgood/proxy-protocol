@@ -43,6 +43,7 @@ classifiers = [
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
 dependencies = [
     'typing-extensions',
@@ -126,7 +127,7 @@ run-autopep8 = 'autopep8 --exit-code -dr proxyprotocol test'
 check = ['run-pytest', 'run-autopep8', 'run-mypy', 'run-ruff']
 
 [[tool.hatch.envs.all.matrix]]
-python = ['3.8', '3.9', '3.10', '3.11']
+python = ['3.8', '3.9', '3.10', '3.11', '3.12']
 
 [tool.hatch.envs.doc]
 dependencies = [
