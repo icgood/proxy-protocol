@@ -8,7 +8,7 @@ from struct import Struct, error as struct_error
 from typing import ClassVar, Any, Hashable, Optional, Iterator, Sequence, \
     Mapping, Dict, List
 
-from .checksum import crc32c
+from .checksum import crc32c as crc32c_checksum
 from .typing import PeerCert
 
 __all__ = ['Type', 'SSLClient', 'ExtType', 'TLV', 'ProxyProtocolTLV',
@@ -202,7 +202,9 @@ class ProxyProtocolTLV(TLV):
         if ext:
             results[Type.PP2_TYPE_NOOP] = bytes(ext)
         super().__init__(data, results)
-        self._auto_crc32c = auto_crc32c and crc32c is None
+        self._auto_crc32c = auto_crc32c \
+            and crc32c is None \
+            and crc32c_checksum is not None
 
     def _pack(self) -> bytes:
         if self._auto_crc32c:
@@ -215,17 +217,17 @@ class ProxyProtocolTLV(TLV):
 
     @property
     def size(self) -> int:
-        if self.crc32c is None and self._auto_crc32c and crc32c is not None:
+        if self.crc32c is None and self._auto_crc32c:
             return self._zero_crc32c.size
         else:
             return super().size
 
     def _compute_checksum(self, before: Sequence[bytes]) -> int:
-        assert crc32c is not None
-        crc = crc32c(b'')
+        assert crc32c_checksum is not None
+        crc = crc32c_checksum(b'')
         for data in before:
-            crc = crc32c(data, crc)
-        return crc32c(bytes(self._zero_crc32c), crc)
+            crc = crc32c_checksum(data, crc)
+        return crc32c_checksum(bytes(self._zero_crc32c), crc)
 
     def with_checksum(self, *before: bytes) -> ProxyProtocolTLV:
         """Return a copy of the current TLV values with the :attr:`.crc32c`
@@ -236,7 +238,7 @@ class ProxyProtocolTLV(TLV):
                 is included in the checksum.
 
         """
-        if not self._auto_crc32c or crc32c is None:
+        if not self._auto_crc32c:
             return self
         crc = self._compute_checksum(before)
         return ProxyProtocolTLV(init=self, crc32c=crc)
@@ -251,7 +253,7 @@ class ProxyProtocolTLV(TLV):
                 is included in the checksum.
 
         """
-        if self.crc32c is None or crc32c is None:
+        if self.crc32c is None or crc32c_checksum is None:
             return True
         crc = self._compute_checksum(before)
         return self.crc32c == crc
