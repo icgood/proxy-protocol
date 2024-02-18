@@ -9,5 +9,5 @@ RUN apk --update add --virtual build-dependencies python3-dev build-base \
   && hatch env create docker \
   && apk del build-dependencies
 
-ENTRYPOINT ["hatch", "run", "-e", "docker", "proxyprotocol-server"]
+ENTRYPOINT ["hatch", "-e", "docker", "run", "proxyprotocol-server"]
 CMD ["--help"]
