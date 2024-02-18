@@ -134,15 +134,12 @@ check = ['run-pytest', 'run-autopep8', 'run-mypy', 'run-ruff']
 [[tool.hatch.envs.all.matrix]]
 python = ['3.8', '3.9', '3.10', '3.11', '3.12']
 
+[tool.hatch.envs.docker]
+features = ['crc32c']
+
 [tool.hatch.envs.doc]
 features = ['doc']
 
 [tool.hatch.envs.doc.scripts]
 build = 'make -C doc html'
 browse = ['build', 'open doc/build/html/index.html']
-
-[tool.hatch.envs.docker]
-features = ['crc32c']
-
-[tool.hatch.envs.docker.scripts]
-server = 'proxyprotocol-server'
