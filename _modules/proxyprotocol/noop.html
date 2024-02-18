@@ -2,18 +2,18 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.noop &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <title>proxyprotocol.noop &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=60336169"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -73,7 +73,9 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ProxyProtocolNoop&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="ProxyProtocolNoop"><a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop">[docs]</a><span class="k">class</span> <span class="nc">ProxyProtocolNoop</span><span class="p">(</span><span class="n">ProxyProtocol</span><span class="p">):</span>
+<div class="viewcode-block" id="ProxyProtocolNoop">
+<a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyProtocolNoop</span><span class="p">(</span><span class="n">ProxyProtocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements :class:`~proxyprotocol.ProxyProtocol` but does not read</span>
 <span class="sd">    anything from the stream. A</span>
 <span class="sd">    :class:`~proxyprotocol.result.ProxyResultLocal` result is always</span>
@@ -83,15 +85,25 @@
 
     <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="ProxyProtocolNoop.is_valid"><a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.is_valid">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+<div class="viewcode-block" id="ProxyProtocolNoop.is_valid">
+<a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.is_valid">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
         <span class="c1"># This implementation may not be detected</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ProxyProtocolNoop.unpack"><a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.unpack">[docs]</a>    <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyResultLocal</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProxyProtocolNoop.unpack">
+<a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.unpack">[docs]</a>
+    <span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyResultLocal</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ProxyResultLocal</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ProxyProtocolNoop.pack"><a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.pack">[docs]</a>    <span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span></div></div>
+
+<div class="viewcode-block" id="ProxyProtocolNoop.pack">
+<a class="viewcode-back" href="../../proxyprotocol.noop.html#proxyprotocol.noop.ProxyProtocolNoop.pack">[docs]</a>
+    <span class="k">def</span> <span class="nf">pack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span></div>
+</div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -142,7 +154,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
@@ -152,8 +164,8 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

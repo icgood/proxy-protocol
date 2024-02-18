@@ -2,18 +2,18 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <title>proxyprotocol.result &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=60336169"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -84,7 +84,9 @@
 <span class="n">_empty_tlv</span> <span class="o">=</span> <span class="n">ProxyProtocolTLV</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="is_local"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_local">[docs]</a><span class="k">def</span> <span class="nf">is_local</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> \
+<div class="viewcode-block" id="is_local">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_local">[docs]</a>
+<span class="k">def</span> <span class="nf">is_local</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultLocal</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the result is an unproxied local connection.</span>
 
@@ -95,7 +97,10 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ProxyResultType</span><span class="o">.</span><span class="n">LOCAL</span></div>
 
 
-<div class="viewcode-block" id="is_unknown"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_unknown">[docs]</a><span class="k">def</span> <span class="nf">is_unknown</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> \
+
+<div class="viewcode-block" id="is_unknown">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_unknown">[docs]</a>
+<span class="k">def</span> <span class="nf">is_unknown</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultUnknown</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the result is a proxied connection from an unknown origin.</span>
 
@@ -106,7 +111,10 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ProxyResultType</span><span class="o">.</span><span class="n">UNKNOWN</span></div>
 
 
-<div class="viewcode-block" id="is_ipv4"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_ipv4">[docs]</a><span class="k">def</span> <span class="nf">is_ipv4</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultIPv4</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="is_ipv4">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_ipv4">[docs]</a>
+<span class="k">def</span> <span class="nf">is_ipv4</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultIPv4</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the result is a proxied IPv4 connection.</span>
 
 <span class="sd">    Args:</span>
@@ -116,7 +124,10 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ProxyResultType</span><span class="o">.</span><span class="n">IPv4</span></div>
 
 
-<div class="viewcode-block" id="is_ipv6"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_ipv6">[docs]</a><span class="k">def</span> <span class="nf">is_ipv6</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultIPv6</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="is_ipv6">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_ipv6">[docs]</a>
+<span class="k">def</span> <span class="nf">is_ipv6</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultIPv6</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the result is a proxied IPv6 connection.</span>
 
 <span class="sd">    Args:</span>
@@ -126,7 +137,10 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ProxyResultType</span><span class="o">.</span><span class="n">IPv6</span></div>
 
 
-<div class="viewcode-block" id="is_unix"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_unix">[docs]</a><span class="k">def</span> <span class="nf">is_unix</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultUnix</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="is_unix">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.is_unix">[docs]</a>
+<span class="k">def</span> <span class="nf">is_unix</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">ProxyResult</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">ProxyResultUnix</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if the result is a proxied UNIX connection.</span>
 
 <span class="sd">    Args:</span>
@@ -136,7 +150,10 @@
     <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ProxyResultType</span><span class="o">.</span><span class="n">UNIX</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultType"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultType">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultType">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultType">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The type of proxy result.&quot;&quot;&quot;</span>
 
     <span class="c1">#: The connection is not proxied at all.</span>
@@ -168,7 +185,10 @@
         <span class="k">return</span> <span class="n">family</span></div>
 
 
-<div class="viewcode-block" id="ProxyResult"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResult">[docs]</a><span class="k">class</span> <span class="nc">ProxyResult</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResult">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResult">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResult</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for PROXY protocol results.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -258,7 +278,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultLocal"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultLocal</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultLocal">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultLocal">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultLocal</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates that the connection should be treated as if it is not proxied.</span>
 <span class="sd">    The real socket :meth:`~socket.socket.getpeername` and</span>
 <span class="sd">    :meth:`~socket.socket.getsockname` will provide the correct address</span>
@@ -309,7 +332,10 @@
             <span class="k">return</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultUnknown"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultUnknown</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultUnknown">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnknown">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultUnknown</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates that the source of the connection is unknown.</span>
 
 <span class="sd">    Args:</span>
@@ -370,7 +396,10 @@
         <span class="k">return</span> <span class="n">args</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultIPv4"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultIPv4</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultIPv4">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv4">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultIPv4</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The original connection was made with an IPv4 socket. The</span>
 <span class="sd">    :attr:`.source` and :attr:`.dest` properties will contain a tuple of an</span>
 <span class="sd">    :class:`~ipaddress.IPv4Address` and a port number.</span>
@@ -426,7 +455,10 @@
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultIPv6"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultIPv6</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultIPv6">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultIPv6">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultIPv6</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The original connection was made with an IPv6 socket. The</span>
 <span class="sd">    :attr:`.source` and :attr:`.dest` properties will contain a tuple of an</span>
 <span class="sd">    :class:`~ipaddress.IPv6Address` and a port number.</span>
@@ -482,7 +514,10 @@
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span></div>
 
 
-<div class="viewcode-block" id="ProxyResultUnix"><a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix">[docs]</a><span class="k">class</span> <span class="nc">ProxyResultUnix</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyResultUnix">
+<a class="viewcode-back" href="../../proxyprotocol.result.html#proxyprotocol.result.ProxyResultUnix">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyResultUnix</span><span class="p">(</span><span class="n">ProxyResult</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The original connection was made with a UNIX socket. The :attr:`.source`</span>
 <span class="sd">    and :attr:`.dest` properties will contain a the full path to the socket</span>
 <span class="sd">    file.</span>
@@ -535,6 +570,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sockname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -585,7 +621,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
@@ -595,8 +631,8 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

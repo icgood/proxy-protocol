@@ -2,18 +2,18 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.build &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <title>proxyprotocol.build &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=60336169"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -79,7 +79,9 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_socket_result&#39;</span><span class="p">,</span> <span class="s1">&#39;build_transport_result&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="build_socket_result"><a class="viewcode-back" href="../../proxyprotocol.build.html#proxyprotocol.build.build_socket_result">[docs]</a><span class="k">def</span> <span class="nf">build_socket_result</span><span class="p">(</span><span class="n">sock</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+<div class="viewcode-block" id="build_socket_result">
+<a class="viewcode-back" href="../../proxyprotocol.build.html#proxyprotocol.build.build_socket_result">[docs]</a>
+<span class="k">def</span> <span class="nf">build_socket_result</span><span class="p">(</span><span class="n">sock</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
                         <span class="n">unique_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                         <span class="n">dnsbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`~proxyprotocol.result.ProxyResult` from the given</span>
@@ -99,7 +101,10 @@
     <span class="k">return</span> <span class="n">_build_result</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">peername</span><span class="p">,</span> <span class="n">sockname</span><span class="p">,</span> <span class="n">ssl_sock</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="build_transport_result"><a class="viewcode-back" href="../../proxyprotocol.build.html#proxyprotocol.build.build_transport_result">[docs]</a><span class="k">def</span> <span class="nf">build_transport_result</span><span class="p">(</span><span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+
+<div class="viewcode-block" id="build_transport_result">
+<a class="viewcode-back" href="../../proxyprotocol.build.html#proxyprotocol.build.build_transport_result">[docs]</a>
+<span class="k">def</span> <span class="nf">build_transport_result</span><span class="p">(</span><span class="n">transport</span><span class="p">:</span> <span class="n">TransportProtocol</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
                            <span class="n">unique_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">dnsbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`~proxyprotocol.result.ProxyResult` from the given</span>
@@ -116,6 +121,7 @@
     <span class="n">sockname</span><span class="p">:</span> <span class="n">SockAddr</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;sockname&#39;</span><span class="p">)</span>
     <span class="n">ssl_obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SSLObject</span><span class="p">]</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s1">&#39;ssl_object&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_build_result</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">peername</span><span class="p">,</span> <span class="n">sockname</span><span class="p">,</span> <span class="n">ssl_obj</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">dnsbl</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_build_result</span><span class="p">(</span><span class="n">sock</span><span class="p">:</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span> <span class="n">peername</span><span class="p">:</span> <span class="n">SockAddr</span><span class="p">,</span> <span class="n">sockname</span><span class="p">:</span> <span class="n">SockAddr</span><span class="p">,</span>
@@ -215,7 +221,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
@@ -225,8 +231,8 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

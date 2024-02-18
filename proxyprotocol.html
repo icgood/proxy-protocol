@@ -2,19 +2,19 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>proxyprotocol &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <title>proxyprotocol &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=60336169"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -55,7 +55,7 @@
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -69,10 +69,10 @@
           <div class="body" role="main">
             
   <section id="module-proxyprotocol">
-<span id="proxyprotocol"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code><a class="headerlink" href="#module-proxyprotocol" title="Permalink to this heading">¶</a></h1>
+<span id="proxyprotocol"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code><a class="headerlink" href="#module-proxyprotocol" title="Link to this heading">¶</a></h1>
 <dl class="py exception">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolSyntaxError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolSyntaxError</span></span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolSyntaxError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolSyntaxError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolSyntaxError</span></span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolSyntaxError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolSyntaxError" title="Link to this definition">¶</a></dt>
 <dd><p>Indicates a failure in parsing the PROXY protocol header. This indicates
 a syntax issue in the header, not simply bad data.</p>
 <div class="admonition warning">
@@ -85,7 +85,7 @@ and closed.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolChecksumError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolChecksumError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolChecksumError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolChecksumError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolChecksumError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolChecksumError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolChecksumError" title="Link to this definition">¶</a></dt>
 <dd><p>The PROXY protocol header was parsed but contained a CRC32C checksum
 that did not match the expected value.</p>
 <dl class="field-list simple">
@@ -100,7 +100,7 @@ that did not match the expected value.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolIncompleteError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolIncompleteError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_read</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolIncompleteError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolIncompleteError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolIncompleteError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_read</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolIncompleteError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolIncompleteError" title="Link to this definition">¶</a></dt>
 <dd><p>Thrown when the PROXY protocol header cannot be parsed because the
 provided data is not enough to be parsed. The <em>want_read</em> conditions should
 be satisfied before trying to parse again.</p>
@@ -116,15 +116,15 @@ be satisfied before trying to parse again.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocolWantRead">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolWantRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">want_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolWantRead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolWantRead" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolWantRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">want_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">want_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocolWantRead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocolWantRead" title="Link to this definition">¶</a></dt>
 <dd><p>Specifies how much additional data must be read before PROXY protocol
 header parsing may be completed. Either <em>want_bytes</em> or <em>want_line</em> must be
 given, but not both.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>want_bytes</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – Number of bytes needed before parsing may proceed.</p></li>
-<li><p><strong>want_line</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Additional data should be read until the end of a line.</p></li>
+<li><p><strong>want_bytes</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – Number of bytes needed before parsing may proceed.</p></li>
+<li><p><strong>want_line</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Additional data should be read until the end of a line.</p></li>
 </ul>
 </dd>
 </dl>
@@ -132,31 +132,31 @@ given, but not both.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocol">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocol</span></span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocol</span></span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol" title="Link to this definition">¶</a></dt>
 <dd><p>The base class for PROXY protocol implementations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocol.is_valid">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.is_valid" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.is_valid" title="Link to this definition">¶</a></dt>
 <dd><p>Returns True if the signature is valid for this implementation of
 the PROXY protocol header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – The signature bytestring to check.</p>
+<dd class="field-odd"><p><strong>signature</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><em>bytes</em></a>) – The signature bytestring to check.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocol.unpack">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.unpack" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.unpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.unpack" title="Link to this definition">¶</a></dt>
 <dd><p>Parse a PROXY protocol header from the given bytestring and return
 information about the original connection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><em>bytes</em></a>) – The bytestring read for the header thus far.</p>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><em>bytes</em></a>) – The bytestring read for the header thus far.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -165,7 +165,7 @@ information about the original connection.</p>
     parsing.</p></li>
 <li><p><a class="reference internal" href="#proxyprotocol.ProxyProtocolSyntaxError" title="proxyprotocol.ProxyProtocolSyntaxError"><strong>ProxyProtocolSyntaxError</strong></a> – The header failed to parse due to
     a syntax error or unsupported format.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – Malformed or out-of-range data was encountered
     in the header.</p></li>
 </ul>
 </dd>
@@ -177,7 +177,7 @@ information about the original connection.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.ProxyProtocol.pack">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.pack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.pack" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol.html#ProxyProtocol.pack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.ProxyProtocol.pack" title="Link to this definition">¶</a></dt>
 <dd><p>Builds a PROXY protocol header that may be sent at the beginning of
 an outbound, client-side connection to indicate the original
 information about the connection.</p>
@@ -187,14 +187,14 @@ information about the connection.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.11)"><strong>KeyError</strong></a> – This PROXY protocol header format does not support
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.12)"><strong>KeyError</strong></a> – This PROXY protocol header format does not support
     the socket information.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – The address data could not be written to the
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – The address data could not be written to the
     PROXY protocol header format.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)">bytes</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)">bytes</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -293,7 +293,7 @@ information about the connection.</p>
         <li class="right" >
           <a href="index.html" title="proxy-protocol Documentation"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol</span></code></a></li> 
       </ul>
@@ -301,8 +301,8 @@ information about the connection.</p>
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

@@ -2,19 +2,19 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>proxyprotocol.reader &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <title>proxyprotocol.reader &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=60336169"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -55,7 +55,7 @@
         <li class="right" >
           <a href="proxyprotocol.tlv.html" title="proxyprotocol.tlv"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code></a></li> 
       </ul>
@@ -69,10 +69,10 @@
           <div class="body" role="main">
             
   <section id="module-proxyprotocol.reader">
-<span id="proxyprotocol-reader"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code><a class="headerlink" href="#module-proxyprotocol.reader" title="Permalink to this heading">¶</a></h1>
+<span id="proxyprotocol-reader"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code><a class="headerlink" href="#module-proxyprotocol.reader" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.reader.ProxyProtocolReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.reader.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.reader.</span></span><span class="sig-name descname"><span class="pre">ProxyProtocolReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader" title="Link to this definition">¶</a></dt>
 <dd><p>Read a PROXY protocol header from a stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -81,7 +81,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.reader.ProxyProtocolReader.read">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader.read" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader.read" title="Link to this definition">¶</a></dt>
 <dd><p>Read a complete PROXY protocol header from the input stream and
 return the result.</p>
 <dl class="field-list simple">
@@ -96,24 +96,24 @@ return the result.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.reader.ProxyProtocolReader.get_callback">
-<span class="sig-name descname"><span class="pre">get_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader.get_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader.get_callback" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/reader.html#ProxyProtocolReader.get_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.reader.ProxyProtocolReader.get_callback" title="Link to this definition">¶</a></dt>
 <dd><p>Get a callback object for use as the <em>client_connected_cb</em> argument
-to <a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.start_server" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.start_server()</span></code></a>.</p>
+to <a class="reference external" href="https://docs.python.org/3/library/asyncio-stream.html#asyncio.start_server" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.start_server()</span></code></a>.</p>
 <p>The returned callback will first read the PROXY protocol header before
-starting the provided <em>callback</em> as a <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Task" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a>. The
+starting the provided <em>callback</em> as a <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#asyncio.Task" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Task</span></code></a>. The
 <em>callback</em> argument is similar to <em>client_connected_cb</em> but with an
 additional positional argument – the
 <a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo" title="proxyprotocol.sock.SocketInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SocketInfo</span></code></a> read from the header.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><em>Callable</em></a><em>[</em><em>[</em><em>StreamReader</em><em>, </em><em>StreamWriter</em><em>, </em><a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo" title="proxyprotocol.sock.SocketInfo"><em>SocketInfo</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Coroutine" title="(in Python v3.11)"><em>Coroutine</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><em>Any</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><em>Any</em></a><em>, </em><em>None</em><em>]</em><em>]</em>) – Async function with arguments <code class="docutils literal notranslate"><span class="pre">(reader,</span> <span class="pre">writer,</span>
+<li><p><strong>callback</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a><em>[</em><em>[</em><em>StreamReader</em><em>, </em><em>StreamWriter</em><em>, </em><a class="reference internal" href="proxyprotocol.sock.html#proxyprotocol.sock.SocketInfo" title="proxyprotocol.sock.SocketInfo"><em>SocketInfo</em></a><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Coroutine" title="(in Python v3.12)"><em>Coroutine</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>, </em><em>None</em><em>]</em><em>]</em>) – Async function with arguments <code class="docutils literal notranslate"><span class="pre">(reader,</span> <span class="pre">writer,</span>
 <span class="pre">sock_info)</span></code> called after successfully reading the header.</p></li>
-<li><p><strong>timeout</strong> (<em>None</em><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – A timeout in seconds to allow for reading the header.</p></li>
+<li><p><strong>timeout</strong> (<em>None</em><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – A timeout in seconds to allow for reading the header.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.11)"><em>Callable</em></a>[[<em>StreamReader</em>, <em>StreamWriter</em>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.11)"><em>Awaitable</em></a>[None]]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><em>Callable</em></a>[[<em>StreamReader</em>, <em>StreamWriter</em>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Awaitable" title="(in Python v3.12)"><em>Awaitable</em></a>[None]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,7 +207,7 @@ additional positional argument – the
         <li class="right" >
           <a href="proxyprotocol.tlv.html" title="proxyprotocol.tlv"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.reader</span></code></a></li> 
       </ul>
@@ -215,8 +215,8 @@ additional positional argument – the
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

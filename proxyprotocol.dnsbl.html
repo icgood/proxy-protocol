@@ -2,19 +2,19 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>proxyprotocol.dnsbl &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
+    <title>proxyprotocol.dnsbl &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=60336169"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -55,7 +55,7 @@
         <li class="right" >
           <a href="proxyprotocol.checksum.html" title="proxyprotocol.checksum"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.dnsbl</span></code></a></li> 
       </ul>
@@ -69,15 +69,15 @@
           <div class="body" role="main">
             
   <section id="module-proxyprotocol.dnsbl">
-<span id="proxyprotocol-dnsbl"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.dnsbl</span></code><a class="headerlink" href="#module-proxyprotocol.dnsbl" title="Permalink to this heading">¶</a></h1>
+<span id="proxyprotocol-dnsbl"></span><h1><code class="docutils literal notranslate"><span class="pre">proxyprotocol.dnsbl</span></code><a class="headerlink" href="#module-proxyprotocol.dnsbl" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.Dnsbl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">Dnsbl</span></span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">Dnsbl</span></span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl" title="Link to this definition">¶</a></dt>
 <dd><p>Manages the optional lookup of the connecting IP address against a
 trusted <a class="reference external" href="https://en.wikipedia.org/wiki/Domain_Name_System-based_blackhole_list">DNSBL</a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.Dnsbl.lookup">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl.lookup" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl.lookup" title="Link to this definition">¶</a></dt>
 <dd><p>Looks up the connecting IP address and returns the DNSBL hostname
 and the lookup result. Any timeout or misconfiguration is treated as an
 empty result.</p>
@@ -89,26 +89,26 @@ empty result.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.Dnsbl.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl.load" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#Dnsbl.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.Dnsbl.load" title="Link to this definition">¶</a></dt>
 <dd><p>Given a DNSBL hostname, returns a <a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dnsbl</span></code></a> implementation that
 best suits the given <em>host</em>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – The DNSBL hostname, if any.</p></li>
-<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> | </em><em>None</em>) – The time to wait for a response, in seconds, or None for
+<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> | </em><em>None</em>) – The DNSBL hostname, if any.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em> | </em><em>None</em>) – The time to wait for a response, in seconds, or None for
 indefinite.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – The <em>host</em> is invalid for this <a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dnsbl</span></code></a>.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – The <em>host</em> is invalid for this <a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dnsbl</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><em>Dnsbl</em></a></p>
@@ -120,12 +120,12 @@ indefinite.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.NoopDnsbl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">NoopDnsbl</span></span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#NoopDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.NoopDnsbl" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">NoopDnsbl</span></span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#NoopDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.NoopDnsbl" title="Link to this definition">¶</a></dt>
 <dd><p>Disables DNSBL lookup altogether, <a class="reference internal" href="#proxyprotocol.dnsbl.NoopDnsbl.lookup" title="proxyprotocol.dnsbl.NoopDnsbl.lookup"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lookup()</span></code></a> always returns
 <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.NoopDnsbl.lookup">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#NoopDnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.NoopDnsbl.lookup" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#NoopDnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.NoopDnsbl.lookup" title="Link to this definition">¶</a></dt>
 <dd><p>Looks up the connecting IP address and returns the DNSBL hostname
 and the lookup result. Any timeout or misconfiguration is treated as an
 empty result.</p>
@@ -137,7 +137,7 @@ empty result.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -146,35 +146,35 @@ empty result.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.BasicDnsbl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">BasicDnsbl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">BasicDnsbl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl" title="Link to this definition">¶</a></dt>
 <dd><p>A basic <a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dnsbl</span></code></a> implementation that simply returns the DNSBL
 hostname if the DNS lookup returns any IP addresses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
-<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.BasicDnsbl.map_results">
-<span class="sig-name descname"><span class="pre">map_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl.map_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl.map_results" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">map_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl.map_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl.map_results" title="Link to this definition">¶</a></dt>
 <dd><p>Given a list of IP address results from a DNSBL lookup, return a
 single string categorizing the results or <code class="docutils literal notranslate"><span class="pre">None</span></code> to discard them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>addresses</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.11)"><em>IPv4Address</em></a><em>]</em>) – The list of IP address results.</p>
+<dd class="field-odd"><p><strong>addresses</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.12)"><em>IPv4Address</em></a><em>]</em>) – The list of IP address results.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.BasicDnsbl.lookup">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl.lookup" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock_info</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#BasicDnsbl.lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.BasicDnsbl.lookup" title="Link to this definition">¶</a></dt>
 <dd><p>Looks up the connecting IP address and returns the DNSBL hostname
 and the lookup result. Any timeout or misconfiguration is treated as an
 empty result.</p>
@@ -186,7 +186,7 @@ empty result.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -195,27 +195,27 @@ empty result.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.SpamhausDnsbl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">SpamhausDnsbl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#SpamhausDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.SpamhausDnsbl" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">proxyprotocol.dnsbl.</span></span><span class="sig-name descname"><span class="pre">SpamhausDnsbl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#SpamhausDnsbl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.SpamhausDnsbl" title="Link to this definition">¶</a></dt>
 <dd><p>A <a class="reference internal" href="#proxyprotocol.dnsbl.Dnsbl" title="proxyprotocol.dnsbl.Dnsbl"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dnsbl</span></code></a> designed for querying <a class="reference external" href="https://www.spamhaus.org/">Spamhaus</a> DNSBLs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
-<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>host</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="proxyprotocol.dnsbl.SpamhausDnsbl.map_results">
-<span class="sig-name descname"><span class="pre">map_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#SpamhausDnsbl.map_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.SpamhausDnsbl.map_results" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">map_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proxyprotocol/dnsbl.html#SpamhausDnsbl.map_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#proxyprotocol.dnsbl.SpamhausDnsbl.map_results" title="Link to this definition">¶</a></dt>
 <dd><p>Given a list of IP address results from a DNSBL lookup, return a
 single string categorizing the results or <code class="docutils literal notranslate"><span class="pre">None</span></code> to discard them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>addresses</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.11)"><em>IPv4Address</em></a><em>]</em>) – The list of IP address results.</p>
+<dd class="field-odd"><p><strong>addresses</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address" title="(in Python v3.12)"><em>IPv4Address</em></a><em>]</em>) – The list of IP address results.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a> | None</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -322,7 +322,7 @@ single string categorizing the results or <code class="docutils literal notransl
         <li class="right" >
           <a href="proxyprotocol.checksum.html" title="proxyprotocol.checksum"
              >previous</a> &nbsp; &nbsp;</li>
-    <li><a href="index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
         <li class="nav-item nav-item-this"><a href=""><code class="docutils literal notranslate"><span class="pre">proxyprotocol.dnsbl</span></code></a></li> 
       </ul>
@@ -330,8 +330,8 @@ single string categorizing the results or <code class="docutils literal notransl
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

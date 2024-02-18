@@ -2,18 +2,18 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>proxyprotocol.tlv &#8212; proxy-protocol 0.11.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css" />
+    <title>proxyprotocol.tlv &#8212; proxy-protocol 0.11.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/cloud.css?v=98ea126a" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=60336169"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
 
     
     
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" accesskey="U">proxyprotocol</a> &#187;</li>
@@ -72,14 +72,16 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> \
     <span class="n">Mapping</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">.checksum</span> <span class="kn">import</span> <span class="n">crc32c</span>
+<span class="kn">from</span> <span class="nn">.checksum</span> <span class="kn">import</span> <span class="n">crc32c</span> <span class="k">as</span> <span class="n">crc32c_checksum</span>
 <span class="kn">from</span> <span class="nn">.typing</span> <span class="kn">import</span> <span class="n">PeerCert</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;SSLClient&#39;</span><span class="p">,</span> <span class="s1">&#39;ExtType&#39;</span><span class="p">,</span> <span class="s1">&#39;TLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ProxyProtocolTLV&#39;</span><span class="p">,</span>
            <span class="s1">&#39;ProxyProtocolSSLTLV&#39;</span><span class="p">,</span> <span class="s1">&#39;ProxyProtocolExtTLV&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Type"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.Type">[docs]</a><span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="Type">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.Type">[docs]</a>
+<span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol TLV standard type values.</span>
 
 <span class="sd">    See Also:</span>
@@ -107,7 +109,10 @@
     <span class="n">PP2_TYPE_MAX_FUTURE</span> <span class="o">=</span> <span class="mh">0xFF</span></div>
 
 
-<div class="viewcode-block" id="SSLClient"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient">[docs]</a><span class="k">class</span> <span class="nc">SSLClient</span><span class="p">(</span><span class="n">IntFlag</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SSLClient">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.SSLClient">[docs]</a>
+<span class="k">class</span> <span class="nc">SSLClient</span><span class="p">(</span><span class="n">IntFlag</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The PROXY protocol ``PP2_TYPE_SSL`` client flags.</span>
 
 <span class="sd">    See Also:</span>
@@ -120,7 +125,10 @@
     <span class="n">PP2_CLIENT_CERT_SESS</span> <span class="o">=</span> <span class="mh">0x04</span></div>
 
 
-<div class="viewcode-block" id="ExtType"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType">[docs]</a><span class="k">class</span> <span class="nc">ExtType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ExtType">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ExtType">[docs]</a>
+<span class="k">class</span> <span class="nc">ExtType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV types.</span>
 
 <span class="sd">    See Also:</span>
@@ -134,7 +142,10 @@
     <span class="n">PP2_TYPE_EXT_DNSBL</span> <span class="o">=</span> <span class="mh">0x04</span></div>
 
 
-<div class="viewcode-block" id="TLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.TLV">[docs]</a><span class="k">class</span> <span class="nc">TLV</span><span class="p">(</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">Hashable</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TLV">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.TLV">[docs]</a>
+<span class="k">class</span> <span class="nc">TLV</span><span class="p">(</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">Hashable</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the basic parsing and structure of a PROXY protocol TLV vector.</span>
 <span class="sd">    The unpacked TLV values are available as dict-style keys of this object,</span>
 <span class="sd">    e.g. ``tlv[0xE2]``. To serialize back to a bytestring, use ``bytes(tlv)``.</span>
@@ -224,7 +235,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 
-<div class="viewcode-block" id="ProxyProtocolTLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV">[docs]</a><span class="k">class</span> <span class="nc">ProxyProtocolTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyProtocolTLV">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyProtocolTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the TLV values that may be appended to a PROXY protocol header.</span>
 <span class="sd">    These values can provide additional information not stored in the address</span>
 <span class="sd">    data. Refer to the PROXY protocol spec for more information about each TLV.</span>
@@ -266,7 +280,9 @@
         <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
             <span class="n">results</span><span class="p">[</span><span class="n">Type</span><span class="o">.</span><span class="n">PP2_TYPE_NOOP</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span> <span class="o">=</span> <span class="n">auto_crc32c</span> <span class="ow">and</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span> <span class="o">=</span> <span class="n">auto_crc32c</span> \
+            <span class="ow">and</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span> \
+            <span class="ow">and</span> <span class="n">crc32c_checksum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_pack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span><span class="p">:</span>
@@ -279,19 +295,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span> <span class="ow">and</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zero_crc32c</span><span class="o">.</span><span class="n">size</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">size</span>
 
     <span class="k">def</span> <span class="nf">_compute_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">bytes</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="n">crc</span> <span class="o">=</span> <span class="n">crc32c</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">crc32c_checksum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">crc</span> <span class="o">=</span> <span class="n">crc32c_checksum</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">before</span><span class="p">:</span>
-            <span class="n">crc</span> <span class="o">=</span> <span class="n">crc32c</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">crc</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">crc32c</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_zero_crc32c</span><span class="p">),</span> <span class="n">crc</span><span class="p">)</span>
+            <span class="n">crc</span> <span class="o">=</span> <span class="n">crc32c_checksum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">crc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">crc32c_checksum</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_zero_crc32c</span><span class="p">),</span> <span class="n">crc</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ProxyProtocolTLV.with_checksum"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.with_checksum">[docs]</a>    <span class="k">def</span> <span class="nf">with_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">before</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyProtocolTLV</span><span class="p">:</span>
+<div class="viewcode-block" id="ProxyProtocolTLV.with_checksum">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.with_checksum">[docs]</a>
+    <span class="k">def</span> <span class="nf">with_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">before</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProxyProtocolTLV</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the current TLV values with the :attr:`.crc32c`</span>
 <span class="sd">        checksum populated according to the rules in the PROXY protocol spec.</span>
 
@@ -300,12 +318,15 @@
 <span class="sd">                is included in the checksum.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span> <span class="ow">or</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_crc32c</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
         <span class="n">crc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_checksum</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ProxyProtocolTLV</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">crc32c</span><span class="o">=</span><span class="n">crc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ProxyProtocolTLV.verify_checksum"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum">[docs]</a>    <span class="k">def</span> <span class="nf">verify_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">before</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProxyProtocolTLV.verify_checksum">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolTLV.verify_checksum">[docs]</a>
+    <span class="k">def</span> <span class="nf">verify_checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">before</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Verifies the :attr:`.crc32c` checksum, if present, correctly matches</span>
 <span class="sd">        the expected value computed for the PROXY protocol header. If this</span>
 <span class="sd">        method returns False, the connection should likely be aborted.</span>
@@ -315,10 +336,11 @@
 <span class="sd">                is included in the checksum.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crc32c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">crc32c_checksum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="n">crc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_checksum</span><span class="p">(</span><span class="n">before</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">crc32c</span> <span class="o">==</span> <span class="n">crc</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">alpn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
@@ -378,7 +400,10 @@
         <span class="k">return</span> <span class="n">ProxyProtocolExtTLV</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ProxyProtocolSSLTLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV">[docs]</a><span class="k">class</span> <span class="nc">ProxyProtocolSSLTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyProtocolSSLTLV">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolSSLTLV">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyProtocolSSLTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The ``PP2_TYPE_SSL`` TLV, which is prefixed with a struct containing</span>
 <span class="sd">    *client* and *verify* values, then follows with ``PP2_SUBTYPE_SSL_*`` TLVs.</span>
 
@@ -532,7 +557,10 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="ProxyProtocolExtTLV"><a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV">[docs]</a><span class="k">class</span> <span class="nc">ProxyProtocolExtTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProxyProtocolExtTLV">
+<a class="viewcode-back" href="../../proxyprotocol.tlv.html#proxyprotocol.tlv.ProxyProtocolExtTLV">[docs]</a>
+<span class="k">class</span> <span class="nc">ProxyProtocolExtTLV</span><span class="p">(</span><span class="n">TLV</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard extension TLV, which is hidden inside a</span>
 <span class="sd">    :attr:`~Type.PP2_TYPE_NOOP` and must start with :attr:`.MAGIC_PREFIX`.</span>
 
@@ -628,6 +656,7 @@
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
 </pre></div>
 
             <div class="clearer"></div>
@@ -678,7 +707,7 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> &nbsp; &nbsp;</li>
-    <li><a href="../../index.html">proxy-protocol 0.11.1 documentation</a> &#187;</li>
+    <li><a href="../../index.html">proxy-protocol 0.11.2 documentation</a> &#187;</li>
 
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../proxyprotocol.html" >proxyprotocol</a> &#187;</li>
@@ -688,8 +717,8 @@
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Ian Good.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+    &#169; Copyright 2024, Ian Good.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
