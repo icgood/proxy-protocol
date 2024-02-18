@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Ian C. Good
+# Copyright (c) 2024 Ian C. Good
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -51,6 +51,19 @@ dependencies = [
 
 [project.optional-dependencies]
 crc32c = ['crc32c ~= 2.2']
+dev = [
+    'mypy',
+    'pytest',
+    'pytest-cov',
+    'ruff',
+    'pycodestyle',
+    'autopep8',
+]
+doc = [
+    'sphinx',
+    'sphinx-autodoc-typehints',
+    'cloud_sptheme',
+]
 
 [project.urls]
 'Homepage' = 'https://github.com/icgood/proxy-protocol/'
@@ -109,15 +122,7 @@ exclude_lines = [
 ]
 
 [tool.hatch.envs.default]
-dependencies = [
-    'mypy',
-    'pytest',
-    'pytest-cov',
-    'ruff',
-    'pycodestyle',
-    'autopep8',
-]
-features = ['crc32c']
+features = ['dev', 'crc32c']
 
 [tool.hatch.envs.default.scripts]
 run-pytest = 'py.test --cov-report=term-missing --cov=proxyprotocol'
@@ -130,12 +135,14 @@ check = ['run-pytest', 'run-autopep8', 'run-mypy', 'run-ruff']
 python = ['3.8', '3.9', '3.10', '3.11', '3.12']
 
 [tool.hatch.envs.doc]
-dependencies = [
-    'sphinx',
-    'sphinx-autodoc-typehints',
-    'cloud_sptheme',
-]
+features = ['doc']
 
 [tool.hatch.envs.doc.scripts]
 build = 'make -C doc html'
 browse = ['build', 'open doc/build/html/index.html']
+
+[tool.hatch.envs.docker]
+features = ['crc32c']
+
+[tool.hatch.envs.docker.scripts]
+server = 'proxyprotocol-server'

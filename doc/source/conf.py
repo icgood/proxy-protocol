@@ -22,7 +22,7 @@ import cloud_sptheme as csp  # type: ignore
 # -- Project information -----------------------------------------------------
 
 project = 'proxy-protocol'
-copyright = '2023, Ian Good'
+copyright = '2024, Ian Good'
 author = 'Ian Good'
 
 # The short X.Y version
