@@ -97,11 +97,13 @@ module = 'crc32c.*'
 ignore_missing_imports = true
 
 [tool.ruff]
-select = ['ANN', 'B', 'E', 'F', 'N', 'S', 'W']
-ignore = ['ANN101', 'ANN102', 'ANN401', 'S101']
 line-length = 79
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint]
+select = ['ANN', 'B', 'E', 'F', 'N', 'S', 'W']
+ignore = ['ANN101', 'ANN102', 'ANN401', 'S101']
+
+[tool.ruff.lint.per-file-ignores]
 "test/*" = ['ANN', 'S104']
 
 [tool.autopep8]
@@ -127,7 +129,7 @@ features = ['dev', 'crc32c']
 [tool.hatch.envs.default.scripts]
 run-pytest = 'py.test --cov-report=term-missing --cov=proxyprotocol'
 run-mypy = 'mypy proxyprotocol test'
-run-ruff = 'ruff proxyprotocol test'
+run-ruff = 'ruff check proxyprotocol test'
 run-autopep8 = 'autopep8 --exit-code -dr proxyprotocol test'
 check = ['run-pytest', 'run-autopep8', 'run-mypy', 'run-ruff']
 
