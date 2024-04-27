@@ -1,13 +1,10 @@
-FROM python:3.12-alpine
+FROM python:3.12-slim
 
 WORKDIR /src
 COPY . .
 
-RUN pip install -U pip wheel setuptools hatch typing-extensions
-
-RUN apk --update add --virtual build-dependencies python3-dev build-base \
-  && hatch env create docker \
-  && apk del build-dependencies
+RUN pip install hatch
+RUN hatch env create docker
 
 ENTRYPOINT ["hatch", "-e", "docker", "run", "proxyprotocol-server"]
 CMD ["--help"]
